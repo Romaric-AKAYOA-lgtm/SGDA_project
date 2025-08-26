@@ -1,0 +1,120 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}Accueil référentiel{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid mb-5  bg-warning-subtle min-vh-100 py-1 px-3"> <!-- ✅ OUVERT -->
+
+<!-- Contenu principal -->
+<div class="contenu-principal">
+  <div class="container-fluid my-5">
+          <div class="container-fluid my-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 text-center">
+                <i class="fas fa-database fa-7x text-primary mb-4"></i>
+                <h2 class="mb-4 fw-bold">Bienvenue dans le module Référentiel</h2>
+                <p class="lead">
+                  Utilisez les cartes ci-dessous ou le menu à gauche pour accéder aux différentes sections du référentiel : structures, unités, fonctions et organisations.
+                </p>
+              </div>
+            </div>
+          </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <!-- Cartes modules -->
+      <div class="col">
+        <div class="card h-100 text-center shadow-sm position-relative card-hover" data-href="{% url 'structure:liste' %}">
+          <div class="card-body">
+            <i class="fas fa-folder-open fa-3x mb-3"></i>
+            <h5 class="card-title">Structures</h5>
+            <p class="card-text">Gérer les structures.</p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Voir plus</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'structure:liste' %}">Liste des structures</a></li>
+                <li><a class="dropdown-item" href="{% url 'structure:ajouter' %}">Ajouter une structure</a></li>
+                <li><a class="dropdown-item" href="{% url 'structure:imprimer' %}">Imprimer la liste</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center shadow-sm position-relative card-hover" data-href="{% url 'unite:liste' %}">
+          <div class="card-body">
+            <i class="fas fa-cubes fa-3x mb-3"></i>
+            <h5 class="card-title">Unités</h5>
+            <p class="card-text">Gérer les unités fonctionnelles.</p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Voir plus</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'unite:liste' %}">Liste des unités</a></li>
+                <li><a class="dropdown-item" href="{% url 'unite:ajouter' %}">Nouvelle unité</a></li>
+                <li><a class="dropdown-item" href="{% url 'unite:imprimer' %}">Exporter PDF</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center shadow-sm position-relative card-hover" data-href="{% url 'fonction:liste' %}">
+          <div class="card-body">
+            <i class="fas fa-user-tie fa-3x mb-3"></i>
+            <h5 class="card-title">Fonctions</h5>
+            <p class="card-text">Gérer les fonctions disponibles.</p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Voir plus</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'fonction:liste' %}">Liste des fonctions</a></li>
+                <li><a class="dropdown-item" href="{% url 'fonction:ajouter' %}">Ajouter une fonction</a></li>
+                <li><a class="dropdown-item" href="{% url 'fonction:imprimer' %}">Exporter PDF</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center shadow-sm position-relative card-hover" data-href="{% url 'organisation_unite:liste' %}">
+          <div class="card-body">
+            <i class="fas fa-sitemap fa-3x mb-3"></i>
+            <h5 class="card-title">Organisations</h5>
+            <p class="card-text">Gérer les organisations d'unités.</p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Voir plus</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'organisation_unite:liste' %}">Liste des organisations</a></li>
+                <li><a class="dropdown-item" href="{% url 'organisation_unite:ajouter' %}">Ajouter une organisation</a></li>
+                <li><a class="dropdown-item" href="{% url 'organisation_unite:imprimer' %}">Impression PDF</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card-hover').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.dropdown-toggle') || e.target.closest('.dropdown-menu')) return;
+        const href = card.getAttribute('data-href');
+        if (href) window.location.href = href;
+      });
+    });
+  });
+</script>
+{% endblock %}

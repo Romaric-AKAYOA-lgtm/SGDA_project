@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block titre %}Dashboard{% endblock %}</title>
+
+  <!-- CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/dist/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'fontawesome-free-7.0.0-web/css/all.min.css' %}">
+
+  
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="custom sticky-top content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <h1 class="header-title text-center l-2">
+            <i class="fas fa-building-columns me-2"></i>{{ administration.raison_sociale }}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<!-- Navbar Mobile -->
+<nav class="navbar bg-light d-md-none">
+  <div class="container-fluid">
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+      <i class="fas fa-bars"></i> Menu
+    </button>
+  </div>
+</nav>
+
+<!-- Sidebar Mobile -->
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="sidebarOffcanvasLabel"><i class="fas fa-list-ul me-2"></i> Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.namespace == 'referentiel' and request.resolver_match.url_name == 'home_referentiel' %}active{% endif %}" href="{% url 'referentiel:home_referentiel' %}">
+          <i class="fas fa-home me-1"></i> Accueil
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if request.resolver_match.namespace in 'structure unite fonction organisation_unite' %}active{% endif %}" 
+          data-bs-toggle="collapse" href="#menuReferentielMobile" role="button"
+          aria-expanded="{% if request.resolver_match.namespace in 'structure unite fonction organisation_unite' %}true{% else %}false{% endif %}"
+          aria-controls="menuReferentielMobile"
+        >
+          <i class="fas fa-database me-1"></i> Référentiel
+        </a>
+        <div class="collapse {% if request.resolver_match.namespace in 'structure unite fonction organisation_unite' %}show{% endif %}" id="menuReferentielMobile">
+          <ul class="nav flex-column ms-3">
+            <li>
+              <a class="nav-link {% if request.resolver_match.namespace == 'structure' and request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'structure:liste' %}">
+                <i class="fas fa-building me-1"></i> Structures
+              </a>
+            </li>
+            <li>
+              <a class="nav-link {% if request.resolver_match.namespace == 'unite' and request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'unite:liste' %}">
+                <i class="fas fa-layer-group me-1"></i> Unités
+              </a>
+            </li>
+            <li>
+              <a class="nav-link {% if request.resolver_match.namespace == 'fonction' and request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'fonction:liste' %}">
+                <i class="fas fa-user-tie me-1"></i> Fonctions
+              </a>
+            </li>
+            <li>
+              <a class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' and request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'organisation_unite:liste' %}">
+                <i class="fas fa-network-wired me-1"></i> U. organisationnelles
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#menuRechercheMobile" role="button"
+           aria-expanded="{% if request.resolver_match.namespace in 'unite fonction organisation_unite structure employe operation' %}true{% else %}false{% endif %}"
+           aria-controls="menuRechercheMobile">
+          <i class="fas fa-search me-1"></i> Recherches
+        </a>
+        <div class="collapse {% if request.resolver_match.namespace in 'unite fonction organisation_unite structure employe operation' %}show{% endif %}" id="menuRechercheMobile">
+          <ul class="nav flex-column ms-3">
+            <li><a class="nav-link {% if request.resolver_match.namespace == 'unite' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'unite:rechercher' %}"><i class="fas fa-layer-group me-1"></i> Unité</a></li>
+            <li><a class="nav-link {% if request.resolver_match.namespace == 'fonction' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'fonction:rechercher' %}"><i class="fas fa-user-tie me-1"></i> Fonction</a></li>
+            <li><a class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'organisation_unite:rechercher' %}"><i class="fas fa-network-wired me-1"></i> U. organisationnelle</a></li>
+            <li><a class="nav-link {% if request.resolver_match.namespace == 'structure' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'structure:rechercher' %}"><i class="fas fa-building me-1"></i> Structure</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}" href="{% url 'compte:logout' %}">
+          <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+        </a>
+      </li>
+
+      <div class="utilisateur-connecte fixed-bottom border-top shadow-sm px-3 py-3">
+        {% if user.is_authenticated %}
+          <div class="d-flex align-items-center gap-3">
+             {% if user.image %}
+               <img src="{{ user.image.url }}" alt="Photo de profil" class="rounded-circle" width="40" height="40" />
+             {% else %}
+              <i class="bi bi-person-circle fs-1 text-secondary rounded-circle bg-light p-1" style="width:40px; height:40px; line-height:38px;"></i>
+            {% endif %}
+            <div class="d-flex flex-column">
+              <span class="fw-semibold text-width">Bienvenue, {{ user.username }} !</span>
+              <small class="text-danger">Statut : En ligne</small>  </div>
+          </div>
+        {% else %}
+          <p class="mb-0 text-danger text-center">
+            <i class="bi bi-exclamation-circle me-1"></i> Vous n'êtes pas connecté.
+          </p>
+        {% endif %}
+      </div>
+    </ul>
+  </div>
+</div>
+
+<!-- Sidebar Desktop -->
+<div class="sidebar d-none d-md-block position-fixed bg-light vh-100 p-3" style="width: 260px;">
+  <h5 class="text-center mb-4"><i class="fas fa-list me-1"></i> Menu Principal</h5>
+  <ul class="nav flex-column">
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.namespace == 'referentiel' and request.resolver_match.url_name == 'home_referentiel' %}active{% endif %}" href="{% url 'referentiel:home_referentiel' %}">
+        <i class="fas fa-home me-1"></i> Accueil
+      </a>
+    </li>
+
+    <!-- Référentiel : Structures -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.namespace == 'structure' %}active{% endif %}" data-bs-toggle="collapse" href="#structureSubmenu" role="button"
+         aria-expanded="{% if request.resolver_match.namespace == 'structure' %}true{% else %}false{% endif %}"
+         aria-controls="structureSubmenu">
+        <i class="fas fa-building me-1"></i> Structures <i class="fas fa-caret-down ms-1"></i>
+      </a>
+      <div class="collapse {% if request.resolver_match.namespace == 'structure' %}show{% endif %}" id="structureSubmenu">
+        <ul class="nav flex-column ms-3">
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'structure:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'structure:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'structure:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'imprimer' %}active{% endif %}" href="{% url 'structure:imprimer' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- Référentiel : Unités -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.namespace == 'unite' %}active{% endif %}" data-bs-toggle="collapse" href="#uniteSubmenu" role="button"
+         aria-expanded="{% if request.resolver_match.namespace == 'unite' %}true{% else %}false{% endif %}"
+         aria-controls="uniteSubmenu">
+        <i class="fas fa-layer-group me-1"></i> Unités <i class="fas fa-caret-down ms-1"></i>
+      </a>
+      <div class="collapse {% if request.resolver_match.namespace == 'unite' %}show{% endif %}" id="uniteSubmenu">
+        <ul class="nav flex-column ms-3">
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'unite:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'unite:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'unite:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'imprimer' %}active{% endif %}" href="{% url 'unite:imprimer' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- Référentiel : Fonctions -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.namespace == 'fonction' %}active{% endif %}" data-bs-toggle="collapse" href="#fonctionSubmenu" role="button"
+         aria-expanded="{% if request.resolver_match.namespace == 'fonction' %}true{% else %}false{% endif %}"
+         aria-controls="fonctionSubmenu">
+        <i class="fas fa-user-tie me-1"></i> Fonctions <i class="fas fa-caret-down ms-1"></i>
+      </a>
+      <div class="collapse {% if request.resolver_match.namespace == 'fonction' %}show{% endif %}" id="fonctionSubmenu">
+        <ul class="nav flex-column ms-3">
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'fonction:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'fonction:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'fonction:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'imprimer' %}active{% endif %}" href="{% url 'fonction:imprimer' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- Référentiel : Organisation Unités -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' %}active{% endif %}" data-bs-toggle="collapse" href="#organisationUniteSubmenu" role="button"
+         aria-expanded="{% if request.resolver_match.namespace == 'organisation_unite' %}true{% else %}false{% endif %}"
+         aria-controls="organisationUniteSubmenu">
+        <i class="fas fa-network-wired me-1"></i> Organisation Unités <i class="fas fa-caret-down ms-1"></i>
+      </a>
+      <div class="collapse {% if request.resolver_match.namespace == 'organisation_unite' %}show{% endif %}" id="organisationUniteSubmenu">
+        <ul class="nav flex-column ms-3">
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'organisation_unite:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'organisation_unite:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'organisation_unite:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+          <li><a class="nav-link {% if request.resolver_match.url_name == 'imprimer' %}active{% endif %}" href="{% url 'organisation_unite:imprimer' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li>
+      <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}" href="{% url 'compte:logout' %}">
+        <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+      </a>
+    </li>
+
+    <div class="utilisateur-connecte fixed-bottom border-top shadow-sm px-3 py-3">
+      {% if user.is_authenticated %}
+        <div class="d-flex align-items-center gap-3">
+          {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="Photo de profil" class="rounded-circle" width="40" height="40" />
+          {% else %}
+            <i class="bi bi-person-circle fs-1 text-secondary rounded-circle bg-light p-1" style="width:40px; height:40px; line-height:38px;"></i>
+          {% endif %}
+          <div class="d-flex flex-column">
+            <span class="fw-semibold text-width">Bienvenue, {{ user.username }} !</span>
+            <small class="text-success">Statut : En ligne</small>
+          </div>
+        </div>
+      {% else %}
+        <p class="mb-0 text-danger text-center">
+          <i class="bi bi-exclamation-circle me-1"></i> Vous n'êtes pas connecté.
+        </p>
+      {% endif %}
+    </div>
+
+  </ul>
+</div>
+
+  <!-- Main Content -->
+  <div class="content mt-1"   >
+    <div class="container-fluid">
+      {% block contenue %}
+        {% block contenu_referentiel %}
+        {% endblock %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="custom-footer custom content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center">
+          <p>Design by <strong>Géoffroy Romaric AAKAYOA</strong></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

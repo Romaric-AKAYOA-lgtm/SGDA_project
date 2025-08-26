@@ -1,0 +1,74 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}Ajouter une prise en charge{% else %}Modifier la prise en charge{% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="priseEnChargeModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-notes-medical text-primary me-2"></i> Ajouter une prise en charge
+          {% else %}
+            <i class="fas fa-edit text-warning me-2"></i> Modifier la prise en charge
+          {% endif %}
+        </h5>
+        <a href="{% url 'prise_en_charge:list' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          {% for field in form %}
+            <div class="mb-3">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ field.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+        </div>
+
+        <!-- Pied de page -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'prise_en_charge:list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary me-2">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark me-2">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

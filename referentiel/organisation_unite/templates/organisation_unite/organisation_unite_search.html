@@ -1,0 +1,81 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}Liste des organisations unités trouvées{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-3">
+      <i class="fas fa-list"></i> Liste des organisations unités trouvées
+    </h1>
+
+    <!-- Barre d'action : bouton gauche (Ajouter + Imprimer), recherche droite -->
+    <div class="d-flex justify-content-between align-items-center my-4 px-3">
+      <div>
+        <a href="{% url 'organisation_unite:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm my-2">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+        <a href="{% url 'organisation_unite:imprimer' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm my-2">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+      </div>
+      <form class="d-flex" method="GET" action="{% url 'organisation_unite:rechercher' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher une organisation unité..."
+          aria-label="Recherche"
+          value="{{ query }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+      </form>
+    </div>
+
+    <!-- Tableau avec bord arrondi -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"><i class="fas fa-tag"></i> Désignation</th>
+            <th scope="col"><i class="fas fa-sitemap"></i> Organisation Unité Parente</th>
+            <th scope="col"><i class="fas fa-box"></i> Unité</th>
+            <th scope="col"><i class="fas fa-building"></i> Structure</th>
+            <th scope="col"><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for organisation in organisations %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ organisation.designation }}</td>
+            <td>
+              {% if organisation.organisation_unite_parent %}
+                {{ organisation.organisation_unite_parent.designation }}
+              {% else %}
+                <span class="text-muted fst-italic">Aucune</span>
+              {% endif %}
+            </td>
+            <td>{{ organisation.unite }}</td>
+            <td>{{ organisation.structure }}</td>
+            <td class="text-center">
+              <a href="{% url 'organisation_unite:modifier' organisation.id %}" class="btn btn-sm btn-primary fw-bold me-2 my-2">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">Aucune organisation unité trouvée.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+
+{% block titre %}Résultats de recherche des cotisations{% endblock %}
+
+{% block contenue %}
+<div class="bg-info-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-3">
+      <i class="fas fa-search"></i> Cotisations trouvées
+    </h1>
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'cotisation:cotisation_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+      </div>
+
+      <form class="d-flex" method="GET" action="{% url 'cotisation:cotisation_search' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> 
+        </button>
+      </form>
+    </div>
+
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle text-center">
+        <thead class="table-warning text-uppercase">
+          <tr>
+            <th>#</th>
+            <th>Adhérent</th>
+            <th>Type</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cotisation in cotisations %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ cotisation.adherent }}</td>
+            <td>{{ cotisation.type_cotisation }}</td>
+            <td>{{ cotisation.montant }}</td>
+            <td>{{ cotisation.date_cotisation|date:"d/m/Y" }}</td>
+            <td>{{ cotisation.statut }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">Aucune cotisation trouvée pour "{{ query }}".</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

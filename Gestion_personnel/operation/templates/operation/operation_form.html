@@ -1,0 +1,142 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}Ajouter une opération{% else %}Modifier l'opération{% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="operationModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-plus-circle text-primary me-2"></i> Ajouter une opération
+          {% else %}
+            <i class="fas fa-edit text-warning me-2"></i> Modifier l'opération
+          {% endif %}
+        </h5>
+        <a href="{% url 'operation:liste' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+          {{ form.non_field_errors }}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.numero_note.label_tag }}
+              {{ form.numero_note }}
+              {{ form.numero_note.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.numero_fiche.label_tag }}
+              {{ form.numero_fiche }}
+              {{ form.numero_fiche.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.date_debut.label_tag }}
+              {{ form.date_debut }}
+              {{ form.date_debut.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.date_fin.label_tag }}
+              {{ form.date_fin }}
+              {{ form.date_fin.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.type_operation.label_tag }}
+              {{ form.type_operation }}
+              {{ form.type_operation.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.statut.label_tag }}
+              {{ form.statut }}
+              {{ form.statut.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.id_employe.label_tag }}
+              {{ form.id_employe }}
+              {{ form.id_employe.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.id_organisation_unite.label_tag }}
+              {{ form.id_organisation_unite }}
+              {{ form.id_organisation_unite.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.id_fonction.label_tag }}
+              {{ form.id_fonction }}
+              {{ form.id_fonction.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.id_employe_responsable.label_tag }}
+              {{ form.id_employe_responsable }}
+              {{ form.id_employe_responsable.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              {{ form.id_employe_enregitre.label_tag }}
+              {{ form.id_employe_enregitre }}
+              {{ form.id_employe_enregitre.errors }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Pied de formulaire -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'operation:liste' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary me-2">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark me-2">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('.select2').select2({
+      placeholder: "Sélectionner une valeur",
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>
+{% endblock %}

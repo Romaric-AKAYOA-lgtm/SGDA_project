@@ -1,0 +1,88 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'update' %}
+    Modifier le compte
+  {% else %}
+    Créer un compte
+  {% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="registerModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'update' %}
+            <i class="fas fa-user-edit text-primary me-2"></i> Modification du compte utilisateur
+          {% else %}
+            <i class="fas fa-user-plus text-success me-2"></i> Création d’un compte utilisateur
+          {% endif %}
+        </h5>
+        <a href="{% url 'home' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <div class="row">
+            {% for field in form %}
+              <div class="col-md-6 mb-3">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                {% if field.errors %}
+                  <div class="text-danger small">{{ field.errors|striptags }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Pied du formulaire -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+          <button type="submit" class="btn {% if mode == 'update' %}btn-primary{% else %}btn-success{% endif %}">
+            {% if mode == 'update' %}
+              <i class="fas fa-save me-1"></i> Enregistrer les modifications
+            {% else %}
+              <i class="fas fa-check-circle me-1"></i> Valider l’inscription
+            {% endif %}
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    $('.select2').select2({
+      placeholder: "Sélectionner une valeur",
+      width: '100%',
+      allowClear: true
+    });
+  });
+</script>
+{% endblock %}

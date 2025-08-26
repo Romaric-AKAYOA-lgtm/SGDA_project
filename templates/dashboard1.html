@@ -1,0 +1,130 @@
+{% extends "template_base.html" %}
+
+{% load static %}
+
+{% block titre %}
+    Accueil
+{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid mt-4 mx-2">
+
+<h1 class="text-center bg-primary text-white py-5 px-4 rounded fw-bold fs-3">
+  <i class="fas fa-tachometer-alt me-2"></i>
+  <span class="text-light">Tableau de bord</span> 
+  <span class="text-warning">INRAP</span>
+
+  <p class="mt-2 text-light fs-5">
+    Suivi des opérations et gestion des données en temps réel.
+    <i class="fas fa-chart-line text-success ms-2 fs-4"></i>
+  </p>
+</h1>
+
+
+
+
+
+  {% for section in sections %}
+    <div class="section mb-5">
+      <h3 class="mt-4">{{ section.title }}</h3>
+      <h5>Total : {{ section.total }}</h5>
+
+      <!-- Cartes statistiques avec grille Bootstrap -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for label, count in section.data_pairs %}
+          <div class="col">
+            <div class="card h-100 shadow-lg">
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ label }}</h5>
+                <p class="display-6">{{ count }}</p>
+
+                <!-- Données brutes pour débogage -->
+                <div class="mt-3">
+                  <h6 class="text-muted">Données brutes :</h6>
+                  <ul class="list-unstyled">
+                    <li><strong>Total :</strong> {{ section.total }}</li>
+                    <li><strong>Labels :</strong> {{ section.labels }}</li>
+                    <li><strong>Données :</strong> {{ section.data }}</li>
+                  </ul>
+                </div>
+                <!-- Fin Données brutes -->
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Graphique responsive -->
+      <div class="chart-container mb-4">
+        <canvas id="chart-{{ forloop.counter }}" class="w-100"></canvas>
+      </div>
+
+      <hr>
+    </div>
+  {% endfor %}
+
+  <!-- Accès rapide 
+  <div class="quick-links">
+    <h3>Accès rapide aux applications</h3>
+    <ul class="list-unstyled">
+      {% for link in quick_links %}
+        <li><a href="{% url link.url_name %}" class="btn btn-link">{{ link.verbose_name_plural }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+-->
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    {% for section in sections %}
+      const ctx{{ forloop.counter }} = document.getElementById('chart-{{ forloop.counter }}').getContext('2d');
+      new Chart(ctx{{ forloop.counter }}, {
+        type: 'bar',
+        data: {
+          labels: {{ section.labels|safe }},
+          datasets: [{
+            label: '{{ section.title }}',
+            data: {{ section.data|safe }},
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(255, 205, 86, 0.5)',
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(201, 203, 207, 0.5)'
+            ],
+            borderColor: [
+              'rgba(75, 192, 192, 1)',
+              'rgba(255, 205, 86, 1)',
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(201, 203, 207, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,  // Permet de garder l'aspect ratio tout en étant responsive
+          scales: {
+            y: {
+              beginAtZero: true,
+              precision: 0
+            }
+          },
+          plugins: {
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+            }
+          }
+        }
+      });
+    {% endfor %}
+  </script>
+
+</div> <!-- ✅ FIN .container-fluid mt-5 -->
+
+{% endblock %}

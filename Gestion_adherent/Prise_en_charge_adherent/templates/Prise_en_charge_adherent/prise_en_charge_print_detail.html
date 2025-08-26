@@ -1,0 +1,29 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}Détail de la prise en charge{% endblock %}
+
+{% block contenue %}
+<div class="container py-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4>Détail de la prise en charge</h4>
+    </div>
+    <div class="card-body">
+      <p><strong>Objet :</strong> {{ prise.objet }}</p>
+      <p><strong>Description :</strong> {{ prise.description }}</p>
+      <p><strong>Nom complet médecin :</strong> {{ prise.nom_complet_medecin }}</p>
+      <p><strong>Fonction :</strong> {{ prise.fonction_medecin }}</p>
+      <p><strong>Spécialité :</strong> {{ prise.specialite_medecin }}</p>
+      <p><strong>Date création :</strong> {{ prise.date_creation|date:"d/m/Y H:i" }}</p>
+
+      <a href="{% url 'prise_en_charge:list' %}" class="btn btn-outline-secondary mt-3">
+        <i class="fas fa-arrow-left"></i> Retour
+      </a>
+      <a href="{% url 'prise_en_charge:print_detail' prise.id %}" target="_blank" class="btn btn-success mt-3">
+        <i class="fas fa-print"></i> Imprimer
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

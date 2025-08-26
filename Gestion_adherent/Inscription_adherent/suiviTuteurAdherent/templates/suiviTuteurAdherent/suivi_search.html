@@ -1,0 +1,70 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}Résultats de recherche des Suivis{% endblock %}
+
+{% block contenue %}
+<div class="bg-info-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-3">
+      <i class="fas fa-search"></i> Suivis trouvés
+    </h1>
+    <!-- Barre d'action -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'suivi_tuteur:suivi_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+        <a href="{% url 'suivi_tuteur:suivi_print_list' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+      </div>
+
+      <form class="d-flex" method="GET" action="{% url 'suivi_tuteur:suivi_search' %}">
+        <input class="form-control me-2" type="search" name="q" placeholder="Rechercher un adhérent ou tuteur..."
+               value="{{ request.GET.q|default:'' }}">
+        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <!-- Tableau -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle text-center">
+        <thead class="table-warning text-uppercase">
+          <tr>
+            <th>#</th>
+            <th>Adhérent</th>
+            <th>Tuteur</th>
+            <th>Statut</th>
+            <th>Date de création</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for suivi in suivis %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ suivi.adherent.first_name }} {{ suivi.adherent.last_name }}</td>
+            <td>{{ suivi.tuteur.first_name }} {{ suivi.tuteur.last_name }}</td>
+            <td>{{ suivi.get_statut_display }}</td>
+            <td>{{ suivi.date_creation|date:"d/m/Y H:i" }}</td>
+            <td class="text-center">
+              <a href="{% url 'suivi_tuteur:suivi_update' suivi.id %}" class="btn btn-primary btn-sm me-1">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+              <a href="{% url 'suivi_tuteur:suivi_archive' suivi.id %}" class="btn btn-danger btn-sm"
+                 onclick="return confirm('Voulez-vous vraiment supprimer ce suivi ?');">
+                <i class="fas fa-trash"></i> Supprimer
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">Aucun suivi trouvé pour "{{ query }}".</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

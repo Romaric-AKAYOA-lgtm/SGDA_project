@@ -1,0 +1,575 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block titre %}Dashboard{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/dist/style.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'fontawesome-free-7.0.0-web/css/all.min.css' %}">
+
+  
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="custom sticky-top content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <h1 class="header-title text-center l-2">
+            <i class="fas fa-building-columns me-2"></i>{{ administration.raison_sociale }}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<!-- Navbar (mobile) -->
+<nav class="navbar bg-light d-md-none">
+  <div class="container-fluid">
+    <button
+      class="btn btn-outline-primary button"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#sidebarOffcanvas"
+      aria-controls="sidebarOffcanvas"
+    >
+      <i class="fas fa-bars"></i> Menu
+    </button>
+  </div>
+</nav>
+
+<!-- Offcanvas Sidebar pour mobile -->
+<div
+  class="offcanvas offcanvas-start d-md-none"
+  tabindex="-1"
+  id="sidebarOffcanvas"
+  aria-labelledby="sidebarOffcanvasLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a
+          class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+          href="{% url 'home' %}"
+        >
+          <i class="fas fa-home me-1"></i> Accueil
+        </a>
+      </li>
+
+<!-- Menu Référentiel mobile -->
+<!-- Menu Référentiel mobile avec icônes dans les liens -->
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'structure' %}active{% endif %}"
+          href="{% url 'structure:liste' %}"
+        >
+          <i class="fas fa-building me-2"></i> Structures
+        </a>
+      </li>
+
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'unite' %}active{% endif %}"
+          href="{% url 'unite:liste' %}"
+        >
+          <i class="fas fa-cogs me-2"></i> Unités
+        </a>
+      </li>
+
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'fonction' %}active{% endif %}"
+          href="{% url 'fonction:liste' %}"
+        >
+          <i class="fas fa-user-tag me-2"></i> Fonctions
+        </a>
+      </li>
+
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' %}active{% endif %}"
+          href="{% url 'organisation_unite:liste' %}"
+        >
+          <i class="fas fa-sitemap me-2"></i> Unités organisationnelles
+        </a>
+      </li>
+
+      <!-- Menu Personnel mobile -->
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#menuPersonnelMobile"
+          role="button"
+          aria-expanded="{% if request.resolver_match.namespace in 'employe operation absence ' %}true{% else %}false{% endif %}"
+          aria-controls="menuPersonnelMobile"
+        >
+          <i class="fas fa-users me-1"></i> Personnel
+        </a>
+        <div
+          class="collapse {% if request.resolver_match.namespace in 'employe operation absence ' %}show{% endif %}"
+          id="menuPersonnelMobile"
+        >
+          <ul class="nav flex-column ms-3">
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'employe' %}active{% endif %}"
+                href="{% url 'employe:employe_list' %}"
+              >
+                Employés
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'operation' %}active{% endif %}"
+                href="{% url 'operation:liste' %}"
+              >
+                Opérations
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'absence' %}active{% endif %}"
+                href="{% url 'absence:liste' %}"
+              >
+                Absences
+              </a>
+            </li>
+<!-- Menu Gestion Adhérent desktop -->
+<li class="nav-item">
+  <a
+    class="nav-link"
+    data-bs-toggle="collapse"
+    href="#menuAdherent"
+    role="button"
+    aria-expanded="{% if request.resolver_match.namespace in 'adherent tuteur suivi_tuteur cotisation prise_en_charge' %}true{% else %}false{% endif %}"
+    aria-controls="menuAdherent"
+  >
+    <i class="fas fa-user-graduate me-1"></i> Gestion Adhérent
+  </a>
+  <div
+    class="collapse {% if request.resolver_match.namespace in 'adherent tuteur suivi_tuteur cotisation prise_en_charge' %}show{% endif %}"
+    id="menuAdherent"
+  >
+    <ul class="nav flex-column ms-3">
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'adherent' %}active{% endif %}"
+          href="{% url 'adherent:adherent_list' %}"
+        >
+          <i class="fas fa-users me-1"></i> Adhérents
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'tuteur' %}active{% endif %}"
+          href="{% url 'tuteur:tuteur_list' %}"
+        >
+          <i class="fas fa-chalkboard-teacher me-1"></i> Tuteurs
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'suivi_tuteur' %}active{% endif %}"
+          href="{% url 'suivi_tuteur:suivi_list' %}"
+        >
+          <i class="fas fa-file-alt me-1"></i> Suivi Tuteur
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'cotisation' %}active{% endif %}"
+          href="{% url 'cotisation:cotisation_list' %}"
+        >
+          <i class="fas fa-coins me-1"></i> Cotisations
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'prise_en_charge' %}active{% endif %}"
+          href="{% url 'prise_en_charge:list' %}"
+        >
+          <i class="fas fa-hand-holding-heart me-1"></i> Prises en charge
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
+
+          </ul>
+        </div>
+      </li>
+
+      <!-- Menu Recherche mobile -->
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#menuRechercheMobile"
+          role="button"
+          aria-expanded="{% if request.resolver_match.namespace in 'unite fonction organisation_unite structure employe operation' %}true{% else %}false{% endif %}"
+          aria-controls="menuRechercheMobile"
+        >
+          <i class="fas fa-search me-1"></i> Recherches
+        </a>
+        <div
+          class="collapse {% if request.resolver_match.namespace in 'unite fonction organisation_unite structure employe operation' %}show{% endif %}"
+          id="menuRechercheMobile"
+        >
+          <ul class="nav flex-column ms-3">
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'unite' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}"
+                href="{% url 'unite:rechercher' %}"
+              >
+                Unité
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'fonction' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}"
+                href="{% url 'fonction:rechercher' %}"
+              >
+                Fonction
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}"
+                href="{% url 'organisation_unite:rechercher' %}"
+              >
+                Unité organisationnelle
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'structure' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}"
+                href="{% url 'structure:rechercher' %}"
+              >
+                Structure
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'employe' and request.resolver_match.url_name == 'employe_search' %}active{% endif %}"
+                href="{% url 'employe:employe_search' %}"
+              >
+                Employé
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-link {% if request.resolver_match.namespace == 'operation' and request.resolver_match.url_name == 'rechercher' %}active{% endif %}"
+                href="{% url 'operation:rechercher' %}"
+              >
+                Opérations
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+
+    </ul>
+  </div>
+</div>
+
+<!-- Sidebar fixe sur desktop -->
+<div class="sidebar d-none d-md-block position-fixed bg-light vh-100 p-3" style="width: 260px;">
+  <h5 class="text-center mb-4">Menu Principal</h5>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a
+        class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+        href="{% url 'home' %}"
+      >
+        <i class="fas fa-home me-1"></i> Accueil
+      </a>
+    </li>
+
+    <!-- Menu Référentiel desktop -->
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        data-bs-toggle="collapse"
+        href="#menuReferentiel"
+        role="button"
+        aria-expanded="{% if request.resolver_match.namespace in 'structure unite fonction organisation_unite' %}true{% else %}false{% endif %}"
+        aria-controls="menuReferentiel"
+      >
+        <i class="fas fa-folder-open me-1"></i> Référentiel
+      </a>
+      <div
+        class="collapse {% if request.resolver_match.namespace in 'structure unite fonction organisation_unite' %}show{% endif %}"
+        id="menuReferentiel"
+      >
+        <ul class="nav flex-column ms-3">
+          <li>
+            <a
+              class="nav-link {% if request.resolver_match.namespace == 'structure' %}active{% endif %}"
+              href="{% url 'structure:liste' %}"
+            >
+              Structures
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link {% if request.resolver_match.namespace == 'unite' %}active{% endif %}"
+              href="{% url 'unite:liste' %}"
+            >
+              Unités
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link {% if request.resolver_match.namespace == 'fonction' %}active{% endif %}"
+              href="{% url 'fonction:liste' %}"
+            >
+              Fonctions
+            </a>
+          </li>
+          <li>
+            <a
+              class="nav-link {% if request.resolver_match.namespace == 'organisation_unite' %}active{% endif %}"
+              href="{% url 'organisation_unite:liste' %}"
+            >
+              Unités organisationnelles
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+<!-- Menu Personnel desktop -->
+<li class="nav-item">
+  <a
+    class="nav-link"
+    data-bs-toggle="collapse"
+    href="#menuPersonnel"
+    role="button"
+    aria-expanded="{% if request.resolver_match.namespace in 'employe operation absence' %}true{% else %}false{% endif %}"
+    aria-controls="menuPersonnel"
+  >
+    <i class="fas fa-users me-1"></i> Personnel
+  </a>
+  <div
+    class="collapse {% if request.resolver_match.namespace in 'employe operation absence ' %}show{% endif %}"
+    id="menuPersonnel"
+  >
+    <ul class="nav flex-column ms-3">
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'employe' %}active{% endif %}"
+          href="{% url 'employe:employe_list' %}"
+        >
+          <i class="fas fa-user me-1"></i> Employés
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'operation' %}active{% endif %}"
+          href="{% url 'operation:liste' %}"
+        >
+          <i class="fas fa-tasks me-1"></i> Opérations
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'absence' %}active{% endif %}"
+          href="{% url 'absence:liste' %}"
+        >
+          <i class="fas fa-calendar-times me-1"></i> Absences
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
+<!-- Menu Gestion Adhérent desktop -->
+<li class="nav-item">
+  <a
+    class="nav-link"
+    data-bs-toggle="collapse"
+    href="#menuAdherent"
+    role="button"
+    aria-expanded="{% if request.resolver_match.namespace in 'adherent tuteur suivi_tuteur cotisation prise_en_charge' %}true{% else %}false{% endif %}"
+    aria-controls="menuAdherent"
+  >
+    <i class="fas fa-user-graduate me-1"></i> Gestion Adhérent
+  </a>
+  <div
+    class="collapse {% if request.resolver_match.namespace in 'adherent tuteur suivi_tuteur cotisation prise_en_charge' %}show{% endif %}"
+    id="menuAdherent"
+  >
+    <ul class="nav flex-column ms-3">
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'adherent' %}active{% endif %}"
+          href="{% url 'adherent:adherent_list' %}"
+        >
+          <i class="fas fa-users me-1"></i> Adhérents
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'tuteur' %}active{% endif %}"
+          href="{% url 'tuteur:tuteur_list' %}"
+        >
+          <i class="fas fa-chalkboard-teacher me-1"></i> Tuteurs
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'suivi_tuteur' %}active{% endif %}"
+          href="{% url 'suivi_tuteur:suivi_list' %}"
+        >
+          <i class="fas fa-file-alt me-1"></i> Suivi Tuteur
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'cotisation' %}active{% endif %}"
+          href="{% url 'cotisation:cotisation_list' %}"
+        >
+          <i class="fas fa-coins me-1"></i> Cotisations
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link {% if request.resolver_match.namespace == 'prise_en_charge' %}active{% endif %}"
+          href="{% url 'prise_en_charge:list' %}"
+        >
+          <i class="fas fa-hand-holding-heart me-1"></i> Prises en charge
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
+
+
+
+
+    <li>
+      <a
+        class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+        href="{% url 'myadmin:dashboard' %}"
+      >
+        <i class="fas fa-chart-pie me-1"></i> Dashboard
+      </a>
+    </li>
+    <li>
+      <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}" href="{% url 'compte:logout' %}">
+        <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+      </a>
+    </li>
+  </ul>
+
+  <div class="utilisateur-connecte fixed-bottom border-top shadow-sm px-3 py-3">
+    {% if user.is_authenticated %}
+      <div class="d-flex align-items-center gap-3">
+         {% if user.image %}
+               <img src="{{ user.image.url }}" alt="Photo de profil" class="rounded-circle" width="40" height="40" />
+        {% else %}
+          <i class="bi bi-person-circle fs-1 text-secondary rounded-circle bg-light p-1" style="width:40px; height:40px; line-height:38px;"></i>
+        {% endif %}
+        <div class="d-flex flex-column">
+          <span class="fw-semibold text-width">Bienvenue, {{ user.username }} !</span>
+           <small class="text-danger">Statut : En ligne</small>
+         </div>
+      </div>
+    {% else %}
+      <p class="mb-0 text-danger text-center">
+        <i class="bi bi-exclamation-circle me-1"></i> Vous n'êtes pas connecté.
+      </p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Contenu principal -->
+<div class="content ">
+  <div class="container-fluid">
+    {% block contenue %}
+
+    <!-- Exemple d'offcanvas dans le contenu -->
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"
+    >
+      Enable both scrolling & backdrop
+    </button>
+
+    <div
+      class="offcanvas offcanvas-start"
+      data-bs-scroll="true"
+      tabindex="-1"
+      id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel"
+    >
+
+    </div>
+
+    {% endblock %}
+  </div>
+</div>
+
+  <!-- Footer -->
+
+<footer class="custom-footer custom content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-center">
+        <p>
+          Design by <strong>Géoffroy Romaric AKAYOA</strong> |
+        <a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#infoAppModal">
+          Infos application
+        </a>
+
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal d'informations de l'application -->
+<div class="modal fade" id="infoAppModal" tabindex="-1" aria-labelledby="infoAppModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoAppModalLabel">Informations Techniques</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li>Nom de l'application : Gestion Personnel Visites INRAP</li>
+          <li>Version : 1.0</li>
+          <li>Auteur : Géoffroy Romaric AKAYOA</li>
+          <li>Technologies utilisées : Django, Bootstrap, Font Awesome</li>
+          <li>Date de mise à jour : 24 août 2025</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Scripts -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

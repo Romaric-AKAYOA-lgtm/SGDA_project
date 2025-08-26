@@ -1,0 +1,145 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}Résultats de recherche d'employés{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-3">
+      <i class="fas fa-users"></i> Employés trouvés
+    </h1>
+
+    <!-- Barre d'action -->
+    <div class="d-flex justify-content-between align-items-center my-4 px-3 flex-wrap gap-2">
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'employe:employe_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+        <a href="{% url 'employe:employe_print_list' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+
+        {% if employes %}
+        <button type="submit" form="archive-form" class="btn btn-primary fw-semibold shadow-sm btn-sm"
+                onclick="return confirm('Voulez-vous vraiment archiver les employés sélectionnés ?');">
+          <i class="fas fa-archive"></i> Archiver les sélectionnés
+        </button>
+        {% endif %}
+      </div>
+
+      <form class="d-flex" method="GET" action="{% url 'employe:employe_search' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher un employé..."
+          aria-label="Recherche"
+          value="{{ query }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> 
+        </button>
+      </form>
+    </div>
+
+    <!-- Formulaire pour archivage en groupe -->
+    <form id="archive-form" method="POST" action="{% url 'employe:employe_archive_group' %}">
+      {% csrf_token %}
+
+      <!-- Tableau -->
+      <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+        <table class="table table-hover align-middle">
+          <thead class="table-warning text-uppercase text-center">
+            <tr>
+              <th scope="col">
+                <input type="checkbox" id="select-all" title="Sélectionner tout">
+              </th>
+              <th>#</th>
+              <th><i class="fas fa-id-badge"></i> Matricule</th>
+              <th><i class="fas fa-user"></i> Nom complet</th>
+              <th><i class="fas fa-envelope"></i> Email</th>
+              <th><i class="fas fa-phone-alt"></i> Téléphone</th>
+              <th><i class="fas fa-sitemap"></i> Statut</th>
+              <th><i class="fas fa-tools"></i> Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for employe in employes %}
+            <tr>
+              <td class="text-center">
+                <input type="checkbox" name="matricules" value="{{ employe.matricule }}">
+              </td>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ employe.matricule }}</td>
+              <td>{{ employe.last_name }} {{ employe.first_name }}</td>
+              <td>
+                <a href="mailto:{{ employe.email }}" class="text-decoration-none">
+                  <i class="fas fa-envelope text-primary me-1"></i> {{ employe.email }}
+                </a>
+              </td>
+              <td>
+                <a href="tel:{{ employe.telephone }}" class="me-2 text-decoration-none">
+                  <i class="fas fa-phone-alt text-success"></i> {{ employe.telephone }}
+                </a>
+                <a href="https://wa.me/{{ employe.telephone|cut:" " }}" target="_blank" class="text-decoration-none">
+                  <i class="fab fa-whatsapp text-success"></i> {{ employe.telephone }}
+                </a>
+              </td>
+              <td>{{ employe.get_statut_display }}</td>
+              <td class="text-center">
+
+                <a href="{% url 'employe:employe_update' employe.id %}" class="btn btn-primary fw-semibold shadow-sm text-white me-2 my-2 btn-sm">
+                  <i class="fas fa-edit"></i> Modifier
+                </a>
+                <a href="{% url 'employe:employe_archive' employe.id %}" 
+                   class="btn btn-primary fw-semibold shadow-sm text-white my-2 btn-sm"
+                   onclick="return confirm('Voulez-vous vraiment archiver cet employé ?');">
+                  <i class="fas fa-archive"></i> Archiver
+                </a>
+                <div class="btn-group my-2">
+                  <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-print"></i> Imprimer
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item dropdown-print" href="{% url 'employe:employe_print_detail' employe.id %}" target="_blank">
+                        <i class="fas fa-file-pdf me-1 text-primary"></i> Imprimer un employé
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item dropdown-print" href="{% url 'employe:employe_print_list_operatrion' employe.id %}" target="_blank" onclick="setTimeout(() => location.reload(), 2000);">
+                        <i class="fas fa-print me-1 text-success"></i> Imprimer toutes les informations
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <a href="{% url 'compte:register' employe.id %}" class="btn btn-primary fw-semibold shadow-sm btn-sm my-2">
+                  <i class="fas fa-user-plus me-1"></i> Créer un compte
+                </a>
+
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8" class="text-center py-4 text-muted">Aucun employé trouvé pour "{{ query }}".</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Cocher/Décocher tous les checkboxes "matricules"
+  document.getElementById('select-all').addEventListener('change', function(e) {
+    const checkboxes = document.querySelectorAll('input[name="matricules"]');
+    checkboxes.forEach(cb => cb.checked = e.target.checked);
+  });
+</script>
+{% endblock %}

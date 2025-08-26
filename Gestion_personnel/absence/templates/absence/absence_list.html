@@ -1,0 +1,139 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+{% block titre %}Liste des Absences{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-user-clock"></i> Liste des Absences
+    </h1>
+
+    <!-- Barre d'action -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+<div class="d-flex gap-1 align-items-center">
+    <a href="{% url 'absence:ajouter' %}" 
+       class="btn btn-primary fw-semibold shadow-sm btn-sm py-1 px-2">
+        <i class="fas fa-plus"></i> Ajouter
+    </a>
+
+    <div class="btn-group">
+        <button id="dropdownDocAbsence{{ absence.id }}" type="button" 
+                class="btn btn-primary fw-semibold shadow-sm btn-sm py-1 px-2 dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-file-pdf"></i> Imprimer
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownDocAbsence{{ absence.id }}">
+            <li>
+                <a class="dropdown-item" href="{% url 'absence:imprimer_conges_annuels' %}" target="_blank">
+                    Imprimer Congés Annuels
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'absence:imprimer' %}" target="_blank">
+                    Imprimer
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+      <form class="d-flex" method="GET" action="{% url 'absence:liste' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher une absence..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> 
+        </button>
+      </form>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th>#</th>
+            <th><i class="fas fa-file-alt"></i> Fiche</th>
+            <th><i class="fas fa-user"></i> Employé</th>
+            <th><i class="fas fa-calendar-alt"></i> Début</th>
+            <th><i class="fas fa-hourglass-half"></i> Durée</th>
+            <th><i class="fas fa-calendar-check"></i> Retour prévu</th>
+            <th><i class="fas fa-calendar-day"></i> Retour effectif</th>
+            <th><i class="fas fa-map-marker-alt"></i> Lieu</th>
+            <th><i class="fas fa-info-circle"></i> Motif</th>
+            <th><i class="fas fa-clipboard-check"></i> Statut</th>
+            <th><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for absence in absences %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ absence.numero_fiche }}</td>
+           <td>{{ absence.id_absence_operation_employe.id_employe }}</td>
+            <td>{{ absence.date_debut|date:"d/m/Y" }}</td>
+            <td>{{ absence.duree }} jours</td>
+            <td>{{ absence.date_retour|date:"d/m/Y" }}</td>
+            <td>
+              {% if absence.date_retour_effective %}
+                {{ absence.date_retour_effective|date:"d/m/Y" }}
+              {% else %}
+                <span class="text-muted">Non renseigné</span>
+              {% endif %}
+            </td>
+            <td>{{ absence.lieu }}</td>
+            <td>{{ absence.motif|default:"-" }}</td>
+            <td>{{ absence.get_statut_display }}</td>
+            <td class="text-center">
+              <!-- Modifier directement -->
+              <a href="{% url 'absence:modifier' absence.id %}" class="btn btn-primary fw-semibold shadow-sm btn-sm text-white me-2 my-2">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+
+              <!-- Dropdown autres documents -->
+              <div class="btn-group">
+                <button id="dropdownDocAbsence{{ absence.id }}" type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle me-2 my-2" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-pdf"></i>Imprimer
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownDocAbsence{{ absence.id }}">
+                  <!-- Répéter Modifier dans le dropdown -->
+
+                  <!-- Autres documents -->
+                  <li>
+                    <a class="dropdown-item" href="{% url 'absence:certificat_reprise_service' absence.id %}" target="_blank">
+                      Certificat de reprise de service
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'absence:attestation_cessation_service' absence.id %}" target="_blank">
+                      Attestation de cessation de service
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'absence:attestation_presence' absence.id %}" target="_blank">
+                      Attestation d'absence
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="11" class="text-center py-4 text-muted">Aucune absence trouvée.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

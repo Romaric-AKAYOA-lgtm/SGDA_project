@@ -1,0 +1,149 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}Liste des Opérations{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-briefcase"></i> Liste des Opérations
+    </h1>
+
+    <!-- Barre d'action -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+      <!-- Groupe boutons Ajouter + Imprimer -->
+      <div class="d-flex align-items-center gap-2">
+        <a href="{% url 'operation:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+
+        <!-- Dropdown pour autres documents PDF -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" >
+            <i class="fas fa-file-pdf"></i> Imprimer
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'operation:imprimer_toutes_operations' %}" target="_blank">
+                Imprimer toutes les opérations
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'operation:imprimer_operations_mois' %}" target="_blank">
+                Imprimer les opérations du mois
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'operation:imprimer_operations_annee' %}" target="_blank">
+                Imprimer les opérations de l’année
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+        
+      <form class="d-flex" method="GET" action="{% url 'operation:liste' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher une opération..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th>#</th>
+            <th><i class="fas fa-file-alt"></i> Fiche</th>
+            <th><i class="fas fa-user"></i> Employé</th>
+            <th><i class="fas fa-sitemap"></i> Unité</th>
+            <th><i class="fas fa-briefcase"></i> Fonction</th>
+            <th><i class="fas fa-calendar-alt"></i> Début</th>
+            <th><i class="fas fa-calendar-times"></i> Fin</th>
+            <th><i class="fas fa-clipboard-check"></i> Statut</th>
+            <th><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for operation in operations %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ operation.numero_fiche }}</td>
+            <td>{{ operation.id_employe.last_name }} {{ operation.id_employe.first_name }}</td>
+            <td>{{ operation.id_organisation_unite }}</td>
+            <td>{{ operation.id_fonction }}</td>
+            <td>{{ operation.date_debut|date:"d/m/Y" }}</td>
+            <td>
+              {% if operation.date_fin %}
+                {{ operation.date_fin|date:"d/m/Y" }}
+              {% else %}
+                <span class="text-muted">En cours</span>
+              {% endif %}
+            </td>
+            <td>{{ operation.get_statut_display }}</td>
+            <td class="text-center">
+
+              <!-- Bouton Modifier -->
+              <a href="{% url 'operation:modifier' operation.id %}" class="btn btn-primary fw-semibold shadow-sm btn-sm text-white me-2 my-2">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+
+
+              <!-- Dropdown pour autres documents PDF -->
+              <div class="btn-group my-2">
+                <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-pdf"></i> Imprimer
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'operation:certificat_prise_service' operation.id %}" target="_blank">
+                      Certificat de prise de service
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'operation:attestation_prise_service' operation.id %}" target="_blank">
+                      Attestation de prise de service
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'operation:attestation_presence' operation.id %}" target="_blank">
+                      Attestation de présence au poste
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'operation:attestation_employeur' operation.id %}" target="_blank">
+                      Attestation de l’employeur
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'operation:attestation_cessation' operation.id %}" target="_blank">
+                      Attestation de cessation de service
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="9" class="text-center py-4 text-muted">Aucune opération trouvée.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

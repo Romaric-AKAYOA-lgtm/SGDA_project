@@ -1,0 +1,98 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}Ajouter une organisation unité{% else %}Modifier l'organisation unité{% endif %}
+{% endblock %}
+
+{% block contenue %}
+<!-- Modale toujours visible -->
+<div class="modal fade show d-block" id="organisationUniteModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête de la modale -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-plus-circle text-primary me-2"></i> Ajouter une organisation unité
+          {% else %}
+            <i class="fas fa-edit text-warning me-2"></i> Modifier l'organisation unité
+          {% endif %}
+        </h5>
+        <a href="{% url 'organisation_unite:liste' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+          {{ form.non_field_errors }}
+
+          <div class="mb-3">
+            {{ form.designation.label_tag }}
+            {{ form.designation }}
+            {{ form.designation.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.organisation_unite_parent.label_tag }}
+            {{ form.organisation_unite_parent }}
+            {{ form.organisation_unite_parent.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.unite.label_tag }}
+            {{ form.unite }}
+            {{ form.unite.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.structure.label_tag }}
+            {{ form.structure }}
+            {{ form.structure.errors }}
+          </div>
+        </div>
+
+        <!-- Pied de page avec boutons -->
+        <div class="modal-footer bg-light justify-content-between">
+          <!-- Bouton Annuler à gauche -->
+          <a href="{% url 'organisation_unite:liste' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+
+          <!-- Boutons à droite -->
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- jQuery, Bootstrap et Select2 JS -->
+
+<script>
+  $(document).ready(function () {
+    $('.select2').select2({
+      placeholder: "Sélectionner une organisation unité parente",
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>
+{% endblock %}

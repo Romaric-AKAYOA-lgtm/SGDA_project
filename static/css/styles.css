@@ -1,0 +1,277 @@
+/* Style général */
+* {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin: 0;
+}
+/* Reset de base */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: blue;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  list-style: none;
+  color: black;
+}
+
+/* Sidebar fixe sur toute la hauteur de l'écran */
+.sidebar {
+  height: 100vh; /* hauteur totale de la fenêtre */
+  width: 260px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #001f3f !important;
+  color: white !important;
+  padding-top: 20px;
+  overflow-y: auto;
+  z-index: 1040;
+}
+
+.btn{
+    font-size: 20px;
+
+}
+/* Cibler uniquement le h2 dans ce container */
+.bg-warning-subtle .container-fluid h2 {
+margin: 40px;
+}
+
+/* Responsive : sur petits écrans, empiler les boutons et augmenter l'espacement vertical */
+@media (max-width: 576px) {
+  .modal-footer {
+      flex-direction: column;
+      align-items: stretch;
+  }
+  .modal-footer .btn {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+  }
+}
+
+.btn-primary{
+    background-color: #001f3f !important;
+    border-color: #001f3f !important;;
+    /*  font-size: 25px; */
+
+}
+.table{
+      font-size: 20px;
+}
+.h5{
+        font-size: 20px;
+}
+.nav-link{
+        font-size: 20px;
+}
+    /*  font-size: 25px; */
+.form-control{
+    font-size: 20px;
+}
+.bg-primary{
+    background-color: #001f3f !important;
+    border-color: #001f3f !important;;
+}
+/* Surcharge complète de Bootstrap .table-warning */
+.table-warning th {
+  background-color: #001f3f !important;
+  color: white !important;
+}
+
+
+/* Effet de survol sur les cartes */
+.hover-bg-primary:hover {
+  background-color: #007bff !important; /* Fond bleu primaire de Bootstrap */
+  color: white !important; /* Texte blanc */
+  transform: scale(1.05); /* Légère augmentation de la taille lors du survol */
+  transition: all 0.3s ease-in-out; /* Transition fluide pour le fond, la couleur et la taille */
+}
+
+.hover-bg-primary .card-body {
+  transition: color 0.3s ease; /* Transition fluide pour la couleur du texte dans la carte */
+}
+
+.hover-bg-primary:hover .card-body {
+  color: white !important; /* Texte blanc lors du survol */
+}
+
+.card {
+  border: 2px solid transparent;
+  border-radius: 0.25rem; /* Bord arrondi */
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  transition: all 0.3s ease; /* Transition fluide pour bordure et ombre */
+}
+
+.card:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Augmentation de l'ombre portée lors du survol */
+}
+.button{
+        background-color: #001f3f !important;
+  color: white !important;
+}
+.navbar{
+      background-color: #001f3f !important;
+  color: white !important;
+}
+  .card-hover {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-hover:hover {
+    background-color: #0d6efd !important;
+    color: white !important;
+    box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.5);
+  }
+
+  .card-hover:hover .card-title,
+  .card-hover:hover .card-text,
+  .card-hover:hover i {
+    color: white !important;
+  }
+
+  .card-footer {
+    background-color: white;
+    border: none;
+    padding-top: 0.5rem;
+  }
+
+  /* Eviter que le clic sur dropdown ferme la navigation de la carte */
+  .card-footer .dropdown-toggle {
+    cursor: pointer;
+  }
+
+  /* Style dropdown pour être au-dessus */
+  .dropdown-menu {
+    z-index: 1050;
+  }
+  .utilisateur-connecte{
+      background-color: #001f3f !important;
+  width: 230px;
+  }
+.custom {
+  display: flex; /* Active le modèle Flexbox */
+  align-items: center; /* Centre verticalement les éléments dans l'élément (axe Y) */
+  margin: 0 auto; /* Centre l'élément horizontalement si nécessaire */
+
+  overflow-y: auto;
+  background-color: #001f3f !important;
+  border: 3px solid red; /* Bordure rouge de 3px */
+
+
+  color: white !important;
+  flex-direction: column; /* Optionnel si tu veux empiler les éléments verticalement */
+}
+
+
+/* Sidebar mobile (offcanvas) */
+.offcanvas {
+  background-color: #001f3f !important;
+  color: white !important;
+}
+
+/* Contenu principal */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+.content {
+  margin: 0;
+  margin-left: 260px;
+  padding: 0;
+  height: auto;
+}
+
+
+/* Responsive : mobile */
+@media (max-width: 767px) {
+  .sidebar {
+    width: 200px;
+    position: relative;
+    height: auto;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+}
+
+/* Liens dans la sidebar et offcanvas */
+.sidebar a.nav-link,
+.offcanvas a.nav-link {
+  color: white !important;
+}
+
+.sidebar a.nav-link:hover,
+.offcanvas a.nav-link:hover {
+  background-color: #003366 !important;
+  color: white !important;
+}
+
+/* Titre sidebar et titre offcanvas */
+.sidebar h5,
+.offcanvas-title {
+  color: white !important;
+}
+
+/* Bouton de fermeture blanc dans offcanvas */
+.btn-close {
+  filter: invert(1);
+}
+
+/* Bouton de retour en haut */
+.btn-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0d6efd;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 50%;
+  font-size: 18px;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-top:hover {
+  background-color: #ffffff;
+  color: #0d6efd;
+}
+
+    /* Style lien actif */
+    .nav-link.active {
+      background-color: #0056b3 !important; /* bleu vif */
+      color: white !important;
+      font-weight: bold;
+      border-left: 4px solid white;
+    }

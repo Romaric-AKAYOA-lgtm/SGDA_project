@@ -1,0 +1,125 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}Accueil Gestion du Personnel{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid bg-warning-subtle min-vh-100 p-0"> <!-- ✅ MARGES/PADDINGS retirés -->
+
+<div class="container-fluid py-5">
+  
+  <!-- Section de bienvenue -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-10 text-center">
+      <i class="fas fa-users-cog fa-4x text-primary mb-3"></i>
+      <h2 class="mb-4 fw-bold">Bienvenue dans le module de Gestion du Personnel</h2>
+      <p class="lead">
+        Utilisez le menu à gauche pour accéder aux différentes fonctionnalités telles que la gestion des employés, des absences, des opérations et des affectations.
+      </p>
+    </div>
+  </div>
+
+  <!-- Cartes de navigation -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    {% comment %} Carte Employés {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'employe:employe_list' %}">
+        <div class="card-body">
+          <i class="fas fa-user fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Employés</h5>
+          <p class="card-text">Gérer les employés du personnel.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'employe:employe_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'employe:employe_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'employe:employe_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'employe:employe_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Absences {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'absence:liste' %}">
+        <div class="card-body">
+          <i class="fas fa-calendar-times fa-3x mb-3 text-danger"></i>
+          <h5 class="card-title">Absences</h5>
+          <p class="card-text">Suivre les absences du personnel.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'absence:liste' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'absence:ajouter' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'absence:rechercher' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'absence:imprimer' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Opérations {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'operation:liste' %}">
+        <div class="card-body">
+          <i class="fas fa-briefcase fa-3x mb-3 text-success"></i>
+          <h5 class="card-title">Opérations</h5>
+          <p class="card-text">Gérer les opérations internes.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'operation:liste' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'operation:ajouter' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'operation:rechercher' %}">Rechercher</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {% comment %} Carte Statistiques du Personnel {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'Gestion_personnel:statistique_personnel' %}">
+        <div class="card-body">
+          <i class="fas fa-chart-bar fa-3x mb-3 text-warning"></i>
+          <h5 class="card-title">Statistiques du Personnel</h5>
+          <p class="card-text">Consultez les statistiques et indicateurs concernant les employés et leurs affectations.</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+</div>
+
+<!-- JS de navigation -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card-hover').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.dropdown-toggle') || e.target.closest('.dropdown-menu')) return;
+        const href = card.getAttribute('data-href');
+        if (href) window.location.href = href;
+      });
+    });
+  });
+</script>
+{% endblock %}

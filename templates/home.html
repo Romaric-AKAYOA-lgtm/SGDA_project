@@ -1,0 +1,153 @@
+{% extends "template_base.html" %}
+
+{% load static %}
+
+{% block titre %}Accueil{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 text-center">
+      <i class="fas fa-user-tie fa-7x text-primary mb-4"></i>
+      <h2 class="mb-4 fw-bold">Bienvenue dans le module de Gestion du Personnel de l'A.J.C.A</h2>
+      <p class="lead">
+        Utilisez le menu à gauche pour accéder aux fonctionnalités telles que la gestion des employés, des opérations et des absences.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mb-5  bg-warning-subtle min-vh-100 "> <!-- ✅ OUVERT -->
+
+  <div class="container-fluid"> <!-- ✅ OUVERT -->
+
+    <div class="bg-yellow-300 min-h-screen"> <!-- ✅ OUVERT -->
+
+      <div class="container-fluid mx-auto mt-5"> <!-- ✅ OUVERT -->
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <!-- Carte Accueil -->
+          <div class="col">
+            <a href="{% url 'home' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-home fa-3x mb-3"></i>
+                <h5 class="card-title">Accueil</h5>
+                <p class="card-text">Accédez à la page d'accueil.</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Carte Structures -->
+          <div class="col">
+            <a href="{% url 'structure:liste' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-folder-open fa-3x mb-3"></i>
+                <h5 class="card-title">Structures</h5>
+                <p class="card-text">Gérer les structures.</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Carte Unités -->
+          <div class="col">
+            <a href="{% url 'unite:liste' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-building fa-3x mb-3"></i>
+                <h5 class="card-title">Unités</h5>
+                <p class="card-text">Gérer les unités de l'organisation.</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Carte Fonctions -->
+          <div class="col">
+            <a href="{% url 'fonction:liste' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-users-cog fa-3x mb-3"></i>
+                <h5 class="card-title">Fonctions</h5>
+                <p class="card-text">Gérer les fonctions des employés.</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Carte Unités organisationnelles -->
+          <div class="col">
+            <a href="{% url 'organisation_unite:liste' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h5 class="card-title">Unités Organisationnelles</h5>
+                <p class="card-text">Gérer les unités organisationnelles.</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Carte Employés -->
+          <div class="col">
+            <a href="{% url 'employe:employe_list' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-user-tie fa-3x mb-3"></i>
+                <h5 class="card-title">Employés</h5>
+                <p class="card-text">Gérer les informations des employés.</p>
+              </div>
+            </a>
+          </div>
+
+
+          <!-- Carte Impression -->
+          <div class="col">
+            <a href="{% url 'structure:imprimer' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+              <div class="card-body text-center">
+                <i class="fas fa-print fa-3x mb-3"></i>
+                <h5 class="card-title">Imprimer un état vide</h5>
+                <p class="card-text">Gérer les modèles d'état</p>
+              </div>
+            </a>
+          </div>
+<!-- Carte Dashboard -->
+<div class="col">
+  <a href="{% url 'myadmin:dashboard' %}" class="card h-100 text-decoration-none text-dark hover-bg-primary hover-text-white">
+    <div class="card-body text-center">
+      <i class="fas fa-chart-pie fa-3x mb-3"></i>
+      <h5 class="card-title">Dashboard</h5>
+      <p class="card-text">Visualiser les statistiques globales et les données clés</p>
+    </div>
+  </a>
+</div>
+
+
+
+        </div> <!-- ✅ FIN .row -->
+
+      </div> <!-- ✅ FIN .container-fluid mx-auto mt-5 -->
+
+    </div> <!-- ✅ FIN .bg-yellow-300 -->
+
+  </div> <!-- ✅ FIN .container-fluid -->
+
+</div> <!-- ✅ FIN .container-fluid mb-5 -->
+
+  <script src="{% static 'js/chart.min.js' %}"></script>
+
+  <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['A', 'B', 'C'],
+        datasets: [{
+          label: 'Exemple',
+          data: [12, 19, 3],
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}Accueil Gestion des Adhérents{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid bg-warning-subtle min-vh-100 p-0">
+
+<div class="container-fluid py-5">
+  
+  <!-- Section de bienvenue -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-10 text-center">
+      <i class="fas fa-id-card fa-4x text-primary mb-3"></i>
+      <h2 class="mb-4 fw-bold">Bienvenue dans le module de Gestion des Adhérents</h2>
+      <p class="lead">
+        Utilisez les cartes ci-dessous pour accéder rapidement aux fonctionnalités comme la gestion des adhérents, des tuteurs, du suivi, des cotisations et des prises en charge.
+      </p>
+    </div>
+  </div>
+
+  <!-- Cartes de navigation -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    {% comment %} Carte Adhérents {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'adherent:adherent_list' %}">
+        <div class="card-body">
+          <i class="fas fa-id-card fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Adhérents</h5>
+          <p class="card-text">Gérer les informations des adhérents.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Tuteurs {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'tuteur:tuteur_list' %}">
+        <div class="card-body">
+          <i class="fas fa-user-tie fa-3x mb-3 text-success"></i>
+          <h5 class="card-title">Tuteurs</h5>
+          <p class="card-text">Gérer les informations des tuteurs.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'tuteur:tuteur_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'tuteur:tuteur_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'tuteur:tuteur_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'tuteur:tuteur_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Suivi des Tuteurs {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'suivi_tuteur:suivi_list' %}">
+        <div class="card-body">
+          <i class="fas fa-tasks fa-3x mb-3 text-warning"></i>
+          <h5 class="card-title">Suivi des Tuteurs</h5>
+          <p class="card-text">Assurez le suivi des tuteurs et de leurs missions.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'suivi_tuteur:suivi_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'suivi_tuteur:suivi_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'suivi_tuteur:suivi_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'suivi_tuteur:suivi_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Cotisations {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'cotisation:cotisation_list' %}">
+        <div class="card-body">
+          <i class="fas fa-coins fa-3x mb-3 text-danger"></i>
+          <h5 class="card-title">Cotisations</h5>
+          <p class="card-text">Gérez les paiements et les cotisations des adhérents.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'cotisation:cotisation_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'cotisation:cotisation_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'cotisation:cotisation_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'cotisation:cotisation_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Carte Prises en charge {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'prise_en_charge:list' %}">
+        <div class="card-body">
+          <i class="fas fa-hand-holding-heart fa-3x mb-3 text-secondary"></i>
+          <h5 class="card-title">Prises en charge</h5>
+          <p class="card-text">Gérer les prises en charge des adhérents.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'prise_en_charge:list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'prise_en_charge:create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'prise_en_charge:print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+        <a href="{% url 'Gestion_adherent:statistique_adherents' %}" 
+        class="card h-100 text-decoration-none text-dark 
+                hover-bg-primary hover-text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-bar fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title fw-bold">Statistiques</h5>
+                <p class="card-text">
+                    Consulter les statistiques des adhérents et suivis.
+                </p>
+            </div>
+        </a>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- JS de navigation -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card-hover').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.dropdown-toggle') || e.target.closest('.dropdown-menu')) return;
+        const href = card.getAttribute('data-href');
+        if (href) window.location.href = href;
+      });
+    });
+  });
+</script>
+{% endblock %}

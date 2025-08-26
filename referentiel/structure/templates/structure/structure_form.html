@@ -1,0 +1,155 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}Ajouter une structure{% else %}Modifier la structure{% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-plus-circle text-primary me-2"></i> Ajouter une structure
+          {% else %}
+            <i class="fas fa-edit text-warning me-2"></i> Modifier la structure
+          {% endif %}
+        </h5>
+        <a href="{% url 'structure:liste' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+          {{ form.non_field_errors }}
+
+          <div class="row g-3">
+            <!-- Colonne 1 -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                {{ form.raison_sociale.label_tag }}
+                {{ form.raison_sociale }}
+                {{ form.raison_sociale.errors }}
+              </div>
+
+            <div class="mb-3">
+              {{ form.date_creation.label_tag }}
+              <input type="datetime-local" name="{{ form.date_creation.name }}" class="form-control"
+                    value="{% if form.date_creation.value %}{{ form.date_creation.value|date:'Y-m-d\\TH:i' }}{% endif %}">
+              {{ form.date_creation.errors }}
+            </div>
+
+
+              <div class="mb-3">
+                {{ form.adresse.label_tag }}
+                {{ form.adresse }}
+                {{ form.adresse.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.pays_residence.label_tag }}
+                {{ form.pays_residence }}
+                {{ form.pays_residence.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.devise_pays.label_tag }}
+                {{ form.devise_pays }}
+                {{ form.devise_pays.errors }}
+              </div>
+            </div>
+
+            <!-- Colonne 2 -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                {{ form.direction_tutelle.label_tag }}
+                {{ form.direction_tutelle }}
+                {{ form.direction_tutelle.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.structure_sous_tutelle.label_tag }}
+                {{ form.structure_sous_tutelle }}
+                {{ form.structure_sous_tutelle.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.telephone.label_tag }}
+                {{ form.telephone }}
+                {{ form.telephone.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.matricule.label_tag }}
+                {{ form.matricule }}
+                {{ form.matricule.errors }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.logo_structure.label_tag }}
+                {{ form.logo_structure }}
+                {{ form.logo_structure.errors }}
+                {% if form.instance.logo_structure %}
+                  <div class="mt-2">
+                    <img src="{{ form.instance.logo_structure.url }}" alt="Logo" class="img-thumbnail" style="max-width:150px;">
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.drapeau_pays.label_tag }}
+                {{ form.drapeau_pays }}
+                {{ form.drapeau_pays.errors }}
+                {% if form.instance.drapeau_pays %}
+                  <div class="mt-2">
+                    <img src="{{ form.instance.drapeau_pays.url }}" alt="Drapeau" class="img-thumbnail" style="max-width:150px;">
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.lieu_residence.label_tag }}
+                {{ form.lieu_residence }}
+                {{ form.lieu_residence.errors }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'structure:liste' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

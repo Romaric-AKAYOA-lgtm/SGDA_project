@@ -1,0 +1,137 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}Ajouter un tuteur{% else %}Modifier le tuteur{% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="tuteurModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-user-plus text-primary me-2"></i> Ajouter un tuteur
+          {% else %}
+            <i class="fas fa-user-edit text-warning me-2"></i> Modifier le tuteur
+          {% endif %}
+        </h5>
+        <a href="{% url 'tuteur:tuteur_list' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <!-- Onglets -->
+          <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="tab" href="#perso" role="tab" aria-selected="true">Informations personnelles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#contact" role="tab" aria-selected="false">Coordonnées</a>
+            </li>
+          </ul>
+
+          <!-- Contenu des onglets -->
+          <div class="tab-content">
+            <!-- Infos personnelles -->
+            <div class="tab-pane fade show active" id="perso" role="tabpanel">
+              {% for field in form %}
+                {% if field.name in champs_personnels %}
+                  <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <!-- Coordonnées -->
+            <div class="tab-pane fade" id="contact" role="tabpanel">
+              {% for field in form %}
+                {% if field.name in champs_contact %}
+                  <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'tuteur:tuteur_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary me-2">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark me-2">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    // Initialiser Select2
+    $('.select2, .form-select').select2({
+      placeholder: "Sélectionner...",
+      allowClear: true,
+      width: '100%'
+    });
+
+    // Marquer les champs invalides
+    $('ul.errorlist').each(function () {
+      const errorBlock = $(this);
+      const input = errorBlock.next('input, select, textarea');
+
+      if (input.length) {
+        input.addClass('is-invalid');
+      }
+
+      errorBlock.closest('.mb-3').addClass('border border-danger rounded p-2');
+    });
+
+    // Scroll automatique vers la première erreur
+    const firstError = $('ul.errorlist').first();
+    if (firstError.length) {
+      $('html, body').animate({
+        scrollTop: firstError.offset().top - 100
+      }, 600);
+    }
+  });
+</script>
+{% endblock %}

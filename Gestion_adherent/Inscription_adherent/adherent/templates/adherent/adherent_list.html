@@ -1,0 +1,119 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+{% block titre %}Liste des Adhérents{% endblock %}
+
+{% block contenue %}
+<div class="bg-info-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-user-graduate"></i> Liste des Adhérents
+    </h1>
+
+    <!-- Barre d'action : bouton gauche, recherche droite -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+      
+      <!-- Bouton Ajouter -->
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'adherent:adherent_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+        <a href="{% url 'adherent:adherent_print_list' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+      </div>
+
+      <!-- Formulaire de recherche -->
+      <form class="d-flex" method="GET" action="{% url 'adherent:adherent_list' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher un adhérent..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> 
+        </button>
+      </form>
+    </div>
+
+    <!-- Tableau avec bord arrondi -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle text-center">
+        <thead class="table-warning text-uppercase">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"><i class="fas fa-user-tag"></i> Nom complet</th>
+            <th scope="col"><i class="fas fa-envelope"></i> Email</th>
+            <th scope="col"><i class="fas fa-phone-alt"></i> Téléphone</th>
+            <th scope="col"><i class="fas fa-male"></i> Père</th>
+            <th scope="col"><i class="fas fa-female"></i> Mère</th>
+            <th scope="col"><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for adherent in adherents %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ adherent.first_name }} {{ adherent.last_name }}</td>
+            <td>
+              <a href="mailto:{{ adherent.email }}" class="text-decoration-none">
+                <i class="fas fa-envelope text-primary me-1"></i> {{ adherent.email }}
+              </a>
+            </td>
+            <td>
+              <a href="tel:{{ adherent.telephone }}" class="me-2 text-decoration-none">
+                <i class="fas fa-phone-alt text-success"></i> {{ adherent.telephone }}
+              </a>
+              <a href="https://wa.me/{{ adherent.telephone|cut:" " }}" target="_blank" class="text-decoration-none">
+                <i class="fab fa-whatsapp text-success"></i>
+              </a>
+            </td>
+            <td>{{ adherent.pere.first_name }} {{ adherent.pere.last_name }}</td>
+            <td>{{ adherent.mere.first_name }} {{ adherent.mere.last_name }}</td>
+            <td class="text-center">
+
+              <!-- Bouton Modifier -->
+              <a href="{% url 'adherent:adherent_update' adherent.id %}" class="btn btn-primary fw-semibold shadow-sm text-white me-2 my-2 btn-sm">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+
+              <!-- Bouton Imprimer avec dropdown -->
+              <div class="btn-group my-2">
+                <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-print"></i> Imprimer
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item dropdown-print" href="{% url 'adherent:adherent_print_detail' adherent.id %}" target="_blank">
+                      <i class="fas fa-file-pdf me-1 text-primary"></i> Imprimer un adhérent
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item dropdown-print" href="{% url 'adherent:adherent_print_list_operation' adherent.id %}" target="_blank" onclick="setTimeout(() => location.reload(), 2000);">
+                      <i class="fas fa-print me-1 text-success"></i> Imprimer toutes les informations
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Bouton Archiver -->
+              <a href="{% url 'adherent:adherent_archive' adherent.id %}" class="btn btn-primary fw-semibold shadow-sm text-white my-2 btn-sm"
+                onclick="return confirm('Voulez-vous vraiment archiver cet adhérent ?');">
+                <i class="fas fa-archive"></i> Archiver
+              </a>
+
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">Aucun adhérent trouvé.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

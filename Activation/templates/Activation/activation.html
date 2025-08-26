@@ -1,0 +1,52 @@
+{% extends 'template_base.html' %}
+
+{% block contenue %}
+
+<!-- Modal Activation requise -->
+<div class="modal fade" id="modalActivation" tabindex="-1" aria-labelledby="modalActivationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Largeur augmentée -->
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="modalActivationLabel">Activation requise</h5>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p class="text-danger fw-bold">Votre accès est expiré. Veuillez entrer une clé d'activation.</p>
+                    
+                    <!-- Affichage des messages d'erreur -->
+                    {% if error %}
+                        <p class="text-danger fw-bold">{{ error }}</p>
+                    {% endif %}
+                    
+                    <!-- Formulaire d'activation avec Bootstrap -->
+                    <div class="mb-3">
+                        <label for="id_key" class="form-label">Clé d'activation</label>
+                        <input type="text" name="key" class="form-control" id="id_key" placeholder="Entrez la clé" required>
+                        <!-- Vous pouvez également gérer la validation avec l'attribut required ou via JavaScript -->
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Activer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Le fond semi-transparent derrière la modale -->
+<div id="modalBackdrop" class="modal-backdrop fade show"></div>
+
+<!-- Script pour afficher le modal automatiquement -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var myModal = new bootstrap.Modal(document.getElementById("modalActivation"), {
+            backdrop: 'static',  // Ne permet pas de fermer en cliquant à l'extérieur du modal
+            keyboard: false       // Empêche la fermeture avec la touche ESC
+        });
+        myModal.show();
+    });
+</script>
+
+{% endblock %}

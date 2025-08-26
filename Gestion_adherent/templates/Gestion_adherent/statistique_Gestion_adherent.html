@@ -1,0 +1,282 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}
+<h1 class="text-center mb-5 display-4 text-primary fw-bold">
+    <i class="fas fa-chart-bar me-2"></i> Statistiques Gestion Adhérents
+</h1>
+{% endblock %}
+
+{% block contenue %}
+<div class="container-fluid  my-5">
+    <div class="row text-center mb-4">
+        <div class="col-12">
+            <div class="mb-3">
+                <i class="fas fa-users fa-7x text-primary"></i>
+            </div>
+            <h1 class="mb-3 display-4 text-primary fw-bold">Statistiques Complètes</h1>
+            <p class="lead text-secondary">
+                Retrouvez toutes les informations sur les adhérents, tuteurs, suivis et cotisations.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cartes statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-user fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Adhérents</h5>
+                    <p class="card-text">Total : {{ adherent_stats.count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-user-tie fa-3x mb-3 text-success"></i>
+                    <h5 class="card-title fw-bold">Tuteurs</h5>
+                    <p class="card-text">Total : {{ tuteur_stats.count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-hand-holding fa-3x mb-3 text-warning"></i>
+                    <h5 class="card-title fw-bold">Suivis</h5>
+                    <p class="card-text">Total : {{ suivi_stats.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-coins fa-3x mb-3 text-danger"></i>
+                    <h5 class="card-title fw-bold">Cotisations</h5>
+                    <p class="card-text">Total : {{ cotisation_stats.total|default:"0" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-notes-medical fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Prises en charge</h5>
+                    <p class="card-text">Total : {{ prise_en_charge_stats.count|default:"0" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 mb-3">
+            <!-- Table Adhérents -->
+            <div class="row mb-5 justify-content-center">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">Liste des Adhérents</h3>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Prénom</th>
+                                        <th>Nom</th>
+                                        <th>Père</th>
+                                        <th>Mère</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for a in adherent_stats.all %}
+                                    <tr>
+                                        <td>{{ a.id }}</td>
+                                        <td>{{ a.first_name }}</td>
+                                        <td>{{ a.last_name }}</td>
+                                        <td>{{ a.pere.first_name }} {{ a.pere.last_name_name  }}</td>
+                                        <td>{{ a.mere.first_name }} {{ a.mere.last_name_name  }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <!-- Table Tuteurs -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h3 class="mb-0">Liste des Tuteurs</h3>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Prénom</th>
+                                        <th>Nom</th>
+                                        <th>Nombre d'enfants (Père)</th>
+                                        <th>Nombre d'enfants (Mère)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for t in tuteur_stats.all %}
+                                    <tr>
+                                        <td>{{ t.id }}</td>
+                                        <td>{{ t.first_name }}</td>
+                                        <td>{{ t.last_name }}</td>
+                                        <td>{{ t.enfants_pere.count }}</td>
+                                        <td>{{ t.enfants_mere.count }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 mb-3">
+            <!-- Table Suivis -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h3 class="mb-0">Liste des Suivis Tuteur-Adhérent</h3>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Adhérent</th>
+                                        <th>Tuteur</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for s in suivi_stats.all %}
+                                    <tr>
+                                        <td>{{ s.id }}</td>
+                                        <td>{{ s.adherent.first_name }} {{ s.adherent.last_name }}</td>
+                                        <td>{{ s.tuteur.first_name }} {{ s.tuteur.last_name }}</td>
+                                        <td>{{ s.statut }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <!-- Table Cotisations -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h3 class="mb-0">Liste des Cotisations</h3>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Adhérent</th>
+                                        <th>Montant</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for c in cotisation_stats.all %}
+                                    <tr>
+                                        <td>{{ c.id }}</td>
+                                        <td>{{ c.adherent.first_name }} {{ c.adherent.last_name }}</td>
+                                        <td>{{ c.montant }}</td>
+                                        <td>{{ c.date_cotisation }}</td>
+                                        <td>{{ c.statut }}</td>
+                                        <td>{{ c.type_cotisation }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Liste des Prises en charge</h3>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Objet</th>
+                            <th>Description</th>
+                            <th>Date Création</th>
+                            <th>Nom Médecin</th>
+                            <th>Fonction Médecin</th>
+                            <th>Spécialité Médecin</th>
+                            <th>Adhérent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in prise_en_charge_stats.all %}
+                        <tr>
+                            <td>{{ p.id }}</td>
+                            <td>{{ p.objet }}</td>
+                            <td>{{ p.description }}</td>
+                            <td>{{ p.date_creation }}</td>
+                            <td>{{ p.nom_complet_medecin|default:"-" }}</td>
+                            <td>{{ p.fonction_medecin|default:"-" }}</td>
+                            <td>{{ p.specialite_medecin|default:"-" }}</td>
+                            <td>{{ p.adherent.first_name }} {{ p.adherent.last_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+{% block titre %}Liste des Employés{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-users"></i> Liste des Employés
+    </h1>
+
+    <!-- Barre d'action : bouton gauche, recherche droite -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
+      
+      <!-- Bouton Ajouter -->
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'employe:employe_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+        <a href="{% url 'employe:employe_print_list' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+      </div>
+
+      <!-- Formulaire de recherche -->
+      <form class="d-flex" method="GET" action="{% url 'employe:employe_list' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher un employé..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> 
+        </button>
+      </form>
+    </div>
+
+    <!-- Tableau avec bord arrondi -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"><i class="fas fa-user"></i> Matricule</th>
+            <th scope="col"><i class="fas fa-user-tag"></i> Nom</th>
+            <th scope="col"><i class="fas fa-envelope"></i> Email</th>
+            <th scope="col"><i class="fas fa-phone-alt"></i> Téléphone</th>
+            <th scope="col"><i class="fas fa-sitemap"></i> Statut</th>
+            <th scope="col"><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for employe in employes %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ employe.matricule }}</td>
+            <td>{{ employe.employe }}</td>
+            <td>
+              <a href="mailto:{{ employe.email }}" class="text-decoration-none">
+                <i class="fas fa-envelope text-primary me-1"></i> {{ employe.email }}
+              </a>
+            </td>
+            <td>
+              <a href="tel:{{ employe.telephone }}" class="me-2 text-decoration-none">
+                <i class="fas fa-phone-alt text-success"></i> {{ employe.telephone }}
+              </a>
+              <a href="https://wa.me/{{ employe.telephone|cut:" " }}" target="_blank" class="text-decoration-none">
+                <i class="fab fa-whatsapp text-success"></i>
+              </a>
+            </td>
+            <td>{{ employe.statut }}</td>
+            <td class="text-center">
+
+              <!-- Bouton Modifier -->
+              <a href="{% url 'employe:employe_update' employe.id %}" class="btn btn-primary fw-semibold shadow-sm text-white me-2 my-2 btn-sm">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+
+              <!-- Bouton Imprimer avec dropdown -->
+              <div class="btn-group my-2">
+                <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-print"></i> Imprimer
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item dropdown-print" href="{% url 'employe:employe_print_detail' employe.id %}" target="_blank">
+                      <i class="fas fa-file-pdf me-1 text-primary"></i> Imprimer un employé
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item dropdown-print" href="{% url 'employe:employe_print_list_operatrion' employe.id %}" target="_blank" onclick="setTimeout(() => location.reload(), 2000);">
+                      <i class="fas fa-print me-1 text-success"></i> Imprimer toutes les informations
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Bouton Archiver -->
+              <a href="{% url 'employe:employe_archive' employe.id %}" class="btn btn-primary fw-semibold shadow-sm text-white my-2 btn-sm"
+                onclick="return confirm('Voulez-vous vraiment archiver cet employé ?');">
+                <i class="fas fa-archive"></i> Archiver
+              </a>
+
+              <!-- Bouton Créer un compte -->
+              <a href="{% url 'compte:register' employe.id %}" class="btn btn-primary fw-semibold shadow-sm my-2 btn-sm">
+                <i class="fas fa-user-plus me-1"></i> Créer un compte
+              </a>
+
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">Aucun employé trouvé.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

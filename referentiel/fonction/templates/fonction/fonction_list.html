@@ -1,0 +1,88 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}
+  Liste des Fonctions
+{% endblock %}
+
+{% block contenue %}
+<!-- ✅ Section principale avec fond clair -->
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+
+    <!-- ✅ Titre principal centré -->
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-list"></i> Liste des Fonctions
+    </h1>
+
+    <!-- ✅ Barre d'action : bouton à gauche, champ recherche à droite -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+
+      <!-- 🔘 Bouton Ajouter -->
+      <a href="{% url 'fonction:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm">
+        <i class="fas fa-plus"></i> Ajouter
+      </a>
+
+      <!-- 🔍 Formulaire de recherche -->
+      <form class="d-flex" method="GET" action="{% url 'fonction:liste' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher une fonction..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <!-- On garde ici un style différent : pas btn-primary -->
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+      </form>
+    </div>
+
+    <!-- ✅ Tableau responsive avec style personnalisé -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"><i class="fas fa-tag"></i> Désignation</th>
+            <th scope="col"><i class="fas fa-sitemap"></i> Fonction parente</th>
+            <th scope="col"><i class="fas fa-building"></i> Structure</th>
+            <th scope="col"><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fonction in fonctions %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ fonction.designation }}</td>
+            <td>
+              {% if fonction.fonction_parent %}
+                {{ fonction.fonction_parent.designation }}
+              {% else %}
+                <span class="text-muted fst-italic">Aucune</span>
+              {% endif %}
+            </td>
+            <td>{{ fonction.structure }}</td>
+
+            <!-- 🔧 Bouton Modifier (utilise btn-primary maintenant) -->
+            <td class="text-center">
+              <a href="{% url 'fonction:modifier' fonction.id %}" class="btn btn-primary btn-sm fw-bold me-2 my-2">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <!-- 🛈 Message si aucune donnée -->
+          <tr>
+            <td colspan="5" class="text-center py-4 text-muted">Aucune fonction trouvée.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends "Gestion_personnel/templates_Gestion_personnel.html" %}
+{% load static %}
+
+{% block titre %}
+  {% if mode == 'ajouter' %}
+    Ajouter une absence
+  {% else %}
+    Modifier l'absence
+  {% endif %}
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="absenceModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          {% if mode == 'ajouter' %}
+            <i class="fas fa-calendar-plus text-primary me-2"></i> Ajouter une absence
+          {% else %}
+            <i class="fas fa-calendar-edit text-warning me-2"></i> Modifier l'absence
+          {% endif %}
+        </h5>
+        <a href="{% url 'absence:liste' %}" class="btn-close" aria-label="Fermer"></a>
+      </div>
+
+      <!-- Formulaire -->
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="modal-body bg-white">
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.numero_note.label_tag }}
+              {{ form.numero_note }}
+              {{ form.numero_note.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.numero_fiche.label_tag }}
+              {{ form.numero_fiche }}
+              {{ form.numero_fiche.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.type_absence.label_tag }}
+              {{ form.type_absence }}
+              {{ form.type_absence.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.statut.label_tag }}
+              {{ form.statut }}
+              {{ form.statut.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.date_debut.label_tag }}
+              {{ form.date_debut }}
+              {{ form.date_debut.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.duree.label_tag }}
+              {{ form.duree }}
+              {{ form.duree.errors }}
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-6 mb-3">
+              {{ form.date_retour_effective.label_tag }}
+              {{ form.date_retour_effective }}
+              {{ form.date_retour_effective.errors }}
+            </div>
+          <div class="col-md-6 mb-3">
+            {{ form.lieu.label_tag }}
+            {{ form.lieu }}
+            {{ form.lieu.errors }}
+          </div>
+          </div>
+
+
+
+          <div class="mb-3">
+            {{ form.motif.label_tag }}
+            {{ form.motif }}
+            {{ form.motif.errors }}
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {{ form.id_absence_operation_employe.label_tag }}
+              {{ form.id_absence_operation_employe }}
+              {{ form.id_absence_operation_employe.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              {{ form.id_absence_operation_employe_respensable.label_tag }}
+              {{ form.id_absence_operation_employe_respensable }}
+              {{ form.id_absence_operation_employe_respensable.errors }}
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              {{ form.id_absence_operation_employe_enregistre.label_tag }}
+              {{ form.id_absence_operation_employe_enregistre }}
+              {{ form.id_absence_operation_employe_enregistre.errors }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Pied de formulaire -->
+        <div class="modal-footer bg-light justify-content-between">
+          <a href="{% url 'absence:liste' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+          <div>
+            {% if mode == 'ajouter' %}
+              <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                <i class="fas fa-check"></i> Enregistrer
+              </button>
+              <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary  me-2">
+                <i class="fas fa-plus"></i> Enregistrer et nouveau
+              </button>
+            {% else %}
+              <button type="submit" name="action" value="save" class="btn btn-warning text-dark me-2">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    // Initialiser Select2
+    $('.select2').select2({
+      placeholder: "Sélectionner une valeur",
+      allowClear: true,
+      width: '100%'
+    });
+
+    function updateStatutOptions(type) {
+      const statutField = $('#id_statut');
+      const options = {
+        conge_annuel: [
+          { value: 'annule', text: 'Annulé' },
+          { value: 'confirme', text: 'Confirmé' }
+        ],
+        absence_imprevue: [
+          { value: 'en_cours', text: 'En cours' },
+          { value: 'termine', text: 'Terminé' }
+        ]
+      };
+
+      // Réinitialiser le champ statut
+      statutField.empty();
+
+      if (options[type]) {
+        options[type].forEach(opt => {
+          statutField.append(`<option value="${opt.value}">${opt.text}</option>`);
+        });
+
+        // Si une valeur précédente est stockée
+        const previous = statutField.data('selected');
+        if (previous && options[type].some(opt => opt.value === previous)) {
+          statutField.val(previous);
+        }
+      }
+    }
+
+    // Fonction pour activer/désactiver les champs selon le type d'absence
+    function toggleFieldsByType(type) {
+      // Exemple : si type = 'conge_annuel', désactiver certains champs, sinon activer tous
+      if (type === 'conge_annuel') {
+        // Désactiver tous les inputs/selects/textarea sauf type_absence et statut
+        $('form').find('input, select, textarea').each(function () {
+          const id = $(this).attr('id');
+          if (id !== 'id_type_absence' && id !== 'id_statut') {
+            if ($(this).hasClass('select2-hidden-accessible')) {
+              // pour Select2
+              $(this).prop('disabled', true).trigger('change');
+            } else if ($(this).is(':checkbox') || $(this).is(':radio')) {
+              $(this).prop('disabled', true);
+            } else {
+              $(this).prop('readonly', true);
+            }
+          } else {
+            if ($(this).hasClass('select2-hidden-accessible')) {
+              $(this).prop('disabled', false).trigger('change');
+            } else {
+              $(this).prop('readonly', false).prop('disabled', false);
+            }
+          }
+        });
+      } else {
+        // Activer tous les champs
+        $('form').find('input, select, textarea').each(function () {
+          if ($(this).hasClass('select2-hidden-accessible')) {
+            $(this).prop('disabled', false).trigger('change');
+          } else if ($(this).is(':checkbox') || $(this).is(':radio')) {
+            $(this).prop('disabled', false);
+          } else {
+            $(this).prop('readonly', false).prop('disabled', false);
+          }
+        });
+      }
+    }
+
+    // Mise à jour à la sélection du type d'absence
+    $('#id_type_absence').change(function () {
+      const type = $(this).val();
+      updateStatutOptions(type);
+      toggleFieldsByType(type);
+    });
+
+    // Initialiser au chargement si une valeur existe
+    const currentType = $('#id_type_absence').val();
+    if (currentType) {
+      updateStatutOptions(currentType);
+      toggleFieldsByType(currentType);
+    }
+
+    // Forcer les champs opérations à être requis
+    $('#id_id_absence_operation_employe').attr('required', true);
+    $('#id_id_absence_operation_employe_respensable').attr('required', true);
+    $('#id_id_absence_operation_employe_enregistre').attr('required', true);
+  });
+</script>
+{% endblock %}

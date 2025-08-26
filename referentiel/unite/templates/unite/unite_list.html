@@ -1,0 +1,76 @@
+{% extends "referentiel/template_referentiel.html" %}
+{% load static %}
+
+{% block titre %}Liste des Unités{% endblock %}
+
+{% block contenue %}
+<div class="bg-warning-subtle min-vh-100 py-4 px-3">
+  <div class="container-fluid">
+    <h1 class="text-center fw-bold display-4 mb-4">
+      <i class="fas fa-list"></i> Liste des Unités
+    </h1>
+
+    <!-- ✅ Barre d'action : bouton gauche, recherche droite -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+      <!-- ✅ Bouton Ajouter => btn-primary -->
+      <a href="{% url 'unite:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm">
+        <i class="fas fa-plus"></i> Ajouter 
+      </a>
+
+      <!-- ❌ On garde le bouton de recherche avec btn-outline-secondary -->
+      <form class="d-flex" method="GET" action="{% url 'unite:liste' %}">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="q"
+          placeholder="Rechercher une unité..."
+          aria-label="Recherche"
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+      </form>
+    </div>
+
+    <!-- ✅ Tableau avec bord arrondi -->
+    <div class="table-responsive bg-white shadow-sm p-3 bord-arrondi-50">
+      <table class="table table-hover align-middle">
+        <thead class="table-warning text-uppercase text-center">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"><i class="fas fa-tag"></i> Désignation</th>
+            <th scope="col"><i class="fas fa-sitemap"></i> Unité parente</th>
+            <th scope="col"><i class="fas fa-tools"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for unite in unites %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ unite.designation }}</td>
+            <td>
+              {% if unite.unite_parent %}
+                {{ unite.unite_parent.designation }}
+              {% else %}
+                <span class="text-muted fst-italic">Aucune</span>
+              {% endif %}
+            </td>
+            <td class="text-center">
+              <!-- ✅ Modifier devient btn-primary -->
+              <a href="{% url 'unite:modifier' unite.id %}" class="btn btn-sm btn-primary text-white fw-bold me-2 my-2">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center py-4 text-muted">Aucune unité trouvée.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

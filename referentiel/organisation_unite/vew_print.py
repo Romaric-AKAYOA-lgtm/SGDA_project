@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -37,6 +38,7 @@ def organisation_unite_print(request):
         leading=22,
     )
     title = Paragraph("Liste des Organisations d'Unités", title_style)
+    elements.append(Spacer(1, 20))
     elements.append(title)
     elements.append(Spacer(1, 20))
 
@@ -127,4 +129,105 @@ def organisation_unite_print(request):
     # Générer le PDF
     doc.build(elements, onFirstPage=on_page, onLaterPages=on_page)
 
+    return response
+
+def organisation_print_hierarchique(request):
+    # Récupérer toutes les organisations
+    organisations = OrganisationUnite.objects.all()
+
+    # PDF setup
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="organigramme_services.pdf"'
+
+    c = canvas.Canvas(response, pagesize=landscape(A4))
+    width, height = landscape(A4)
+
+    box_width = 120
+    box_height = 30
+    x_margin = 50
+    y_margin = 50
+
+    # Ajouter le titre
+    titre = "Organigramme des services"
+    c.setFont("Helvetica-Bold", 16)
+    c.setFillColor(colors.darkblue)
+    c.drawCentredString(width / 2, height - 30, titre)
+    y_start = height - 60  # décaler le dessin des boîtes sous le titre
+
+    # Construire la hiérarchie parent -> enfants
+    hierarchy = {}
+    for org in organisations:
+        parent_id = org.organisation_unite_parent_id if org.organisation_unite_parent else None
+        hierarchy.setdefault(parent_id, []).append(org)
+
+    # Fonction récursive pour calculer la largeur totale de chaque sous-arbre
+    def compute_width(org):
+        enfants = hierarchy.get(org.id, [])
+        if not enfants:
+            return 1
+        return sum([compute_width(e) for e in enfants])
+
+    # Fonction pour dessiner une ligne collée aux boîtes
+    def draw_arrow(c, x_start, y_start, x_end, y_end):
+        c.setStrokeColor(colors.black)
+        c.setLineWidth(1)
+        c.line(x_start, y_start, x_end, y_end)
+
+    # Style de texte avec retour à la ligne
+    style = ParagraphStyle(
+        'box_style',
+        fontName='Helvetica',
+        fontSize=10,
+        leading=12,  # hauteur d'une ligne
+        alignment=1  # centré horizontalement
+    )
+
+    # Fonction récursive pour dessiner les boîtes et les lignes
+    def draw_tree(org, x_center, y_top):
+        p = Paragraph(org.designation, style)
+        text_width, text_height = p.wrap(box_width, 1000)
+
+        current_box_height = max(box_height, text_height + 4)
+
+        # Dessiner la boîte
+        c.setFillColor(colors.lightblue)
+        c.rect(x_center - box_width/2, y_top - current_box_height, box_width, current_box_height, fill=1)
+
+        # Dessiner le texte centré
+        p.drawOn(c, x_center - box_width/2, y_top - text_height - (current_box_height - text_height)/2)
+
+        positions[org.id] = (x_center, y_top - current_box_height)
+
+        enfants = hierarchy.get(org.id, [])
+        if not enfants:
+            return
+
+        total_width = sum([compute_width(e) for e in enfants])
+        spacing = box_width + 40
+        start_x = x_center - (total_width/2)*spacing + spacing/2
+
+        for e in enfants:
+            child_width = compute_width(e)
+            child_x = start_x + (child_width - 1)/2 * spacing
+            child_y = y_top - current_box_height - 60
+            draw_tree(e, child_x, child_y)
+            draw_arrow(c, x_center, y_top - current_box_height + 1, child_x, child_y)
+            start_x += child_width * spacing
+
+    # Dessiner les racines
+    positions = {}
+    racines = hierarchy.get(None, [])
+    if racines:
+        total_width = sum([compute_width(r) for r in racines])
+        spacing = box_width + 40
+        start_x = x_margin + (width - 2*x_margin - total_width*spacing)/2 + spacing/2
+
+        for r in racines:
+            root_width = compute_width(r)
+            x_center = start_x + (root_width - 1)/2 * spacing
+            draw_tree(r, x_center, y_start)
+            start_x += root_width * spacing
+
+    c.showPage()
+    c.save()
     return response

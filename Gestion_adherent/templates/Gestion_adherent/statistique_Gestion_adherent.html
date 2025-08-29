@@ -256,6 +256,7 @@
                             <th>Fonction Médecin</th>
                             <th>Spécialité Médecin</th>
                             <th>Adhérent</th>
+                            <th>Médéin clinqiue</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -268,7 +269,8 @@
                             <td>{{ p.nom_complet_medecin|default:"-" }}</td>
                             <td>{{ p.fonction_medecin|default:"-" }}</td>
                             <td>{{ p.specialite_medecin|default:"-" }}</td>
-                            <td>{{ p.adherent.first_name }} {{ p.adherent.last_name }}</td>
+                            <td>{{ p.adherent }}</td>
+                            <td>{{ p.operation_medecin }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -18,6 +18,9 @@
         <a href="{% url 'cotisation:cotisation_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
           <i class="fas fa-plus"></i> Ajouter
         </a>
+         <a href="{% url 'cotisation:cotisation_print_list' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
       </div>
 
       <form class="d-flex" method="GET" action="{% url 'cotisation:cotisation_list' %}">
@@ -65,6 +68,9 @@
               <a href="{% url 'cotisation:cotisation_archive' cotisation.id %}" class="btn btn-primary btn-sm my-1"
                  onclick="return confirm('Voulez-vous vraiment archiver cette cotisation ?');">
                 <i class="fas fa-archive"></i> Archiver
+              </a>
+              <a href="{% url 'cotisation:cotisation_print_detail' cotisation.id  %}"class="btn btn-primary btn-sm my-1">
+                <i class="fas fa-print"></i> Imprimer
               </a>
             </td>
           </tr>

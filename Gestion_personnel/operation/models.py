@@ -19,7 +19,7 @@ class Operation(models.Model):
     ]
 
     TYPE_CHOICES = [
-        ('recrutement', 'Recrutement'),
+        ('affectation', 'Affectation'),
         ('mutation', 'Mutation'),
     ]
 

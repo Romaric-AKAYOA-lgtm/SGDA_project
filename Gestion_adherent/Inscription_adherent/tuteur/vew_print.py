@@ -7,6 +7,7 @@ from reportlab.platypus import (
     SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image,
     Frame, PageTemplate, PageBreak
 )
+from django.db import models
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfgen import canvas
@@ -15,9 +16,7 @@ from PyPDF2 import PdfMerger, PdfReader
 from io import BytesIO
 import os
 
-from Gestion_personnel.absence.vew_print import generer_pdf_absences_employe as generer_pdf_absences_tuteur
-from Gestion_personnel.operation.models import Operation
-from Gestion_personnel.operation.vew_print import generer_pdf_operations_employe as generer_pdf_operations_tuteur
+from Gestion_adherent.Inscription_adherent.adherent.models import Adherent
 from Gestion_personnel.operation.views import generer_pied_structure_pdf
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
@@ -98,7 +97,7 @@ def tuteur_print_detail(request, pk):
 # ---------------------- Impression liste des tuteurs ----------------------
 def tuteur_print_list(request):
     tuteurs = Tuteur.objects.filter(statut=Tuteur.STATUT_ACTIF).order_by('last_name')
-    structure = Structure.objects.first()
+    structure = Structure.objects.first()  # peut être None
     MAX_ROWS_PER_PAGE = 15
 
     styles = getSampleStyleSheet()
@@ -122,13 +121,14 @@ def tuteur_print_list(request):
     for i, start in enumerate(range(0, len(all_rows), MAX_ROWS_PER_PAGE)):
         chunk = all_rows[start:start + MAX_ROWS_PER_PAGE]
         data = [[Paragraph(h, header_style) for h in headers]] + chunk
-        table = Table(data, colWidths=[100, 100, 40, 100, 120], repeatRows=1)
+        table = Table(data, colWidths=[100, 100, 60, 120, 120], repeatRows=1)
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
             ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
         ]))
 
         if i == 0:
+            elements.append(Spacer(1, 100))
             elements.append(Paragraph("<u>Liste des Tuteurs</u>", title_style))
             elements.append(Spacer(1, 20))
 
@@ -152,7 +152,7 @@ def tuteur_print_list(request):
         def save(self):
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                if i == 0:
+                if i == 0 and structure:  # Vérifie que structure existe
                     generer_entete_structure_pdf(self, structure)
                 if i == len(self._saved_page_states) - 1:
                     generer_pied_structure_pdf(self)
@@ -166,28 +166,37 @@ def tuteur_print_list(request):
     return response
 
 
+
 # ---------------------- Impression fiche + opérations ----------------------
 def tuteur_print_list_operation(request, pk):
     tuteur = get_object_or_404(Tuteur, pk=pk)
     structure = Structure.objects.first()
 
-    # Portrait fiche
+    # Portrait fiche principale du tuteur
     buffer_portrait = tuteur_print_detail(request, pk).content
     buffer_portrait_io = BytesIO(buffer_portrait)
 
-    # Paysage opérations + absences
-    buffer_landscape = BytesIO()
-    doc_landscape = SimpleDocTemplate(buffer_landscape, pagesize=landscape(A4), leftMargin=30, rightMargin=30, topMargin=80, bottomMargin=80)
+    # PDF adhérents + opérations en mode PORTRAIT
+    buffer_portrait_ops = BytesIO()
+    doc_portrait_ops = SimpleDocTemplate(
+        buffer_portrait_ops,
+        pagesize=A4,  # ✅ On force le portrait partout
+        leftMargin=30,
+        rightMargin=30,
+        topMargin=80,
+        bottomMargin=80
+    )
 
-    ops_elements = generer_pdf_operations_tuteur(tuteur)
-    abs_elements = generer_pdf_absences_tuteur(tuteur)
+    # Récupération des éléments des adhérents liés au tuteur
+    adherent_elements = generer_pdf_adhérents_tuteur(tuteur)
 
-    if not isinstance(ops_elements, list) or not isinstance(abs_elements, list):
+    if not isinstance(adherent_elements, list):
         raise TypeError("Les fonctions doivent retourner une liste de Flowables")
 
-    elements = ops_elements + abs_elements
+    elements = adherent_elements
     elements.append(Spacer(1, 30))
 
+    # En-tête et pied de page
     def en_tete_page(pdf_canvas, doc):
         if structure:
             generer_entete_structure_pdf(pdf_canvas, structure)
@@ -195,19 +204,88 @@ def tuteur_print_list_operation(request, pk):
     def pied_de_page(pdf_canvas, doc):
         generer_pied_structure_pdf(pdf_canvas)
 
-    doc_landscape.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)), onLaterPages=lambda c, d: pied_de_page(c, d))
+    # Construction du PDF portrait pour les adhérents + opérations
+    doc_portrait_ops.build(
+        elements,
+        onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
+        onLaterPages=lambda c, d: pied_de_page(c, d)
+    )
 
-    buffer_landscape.seek(0)
+    buffer_portrait_ops.seek(0)
 
-    # Fusion
+    # Fusion finale des deux parties
     final_output = BytesIO()
     merger = PdfMerger()
     merger.append(PdfReader(buffer_portrait_io))
-    merger.append(PdfReader(buffer_landscape))
+    merger.append(PdfReader(buffer_portrait_ops))
     merger.write(final_output)
     merger.close()
     final_output.seek(0)
 
+    # Réponse HTTP avec le PDF final
     response = HttpResponse(final_output.getvalue(), content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="operation_tuteur_{tuteur.id}.pdf"'
     return response
+
+
+# ---------------------- Impression fiche + opérations ----------------------
+def generer_pdf_adhérents_tuteur(tuteur):
+    # Récupérer tous les adhérents pour ce tuteur (père ou mère)
+    adherents = Adherent.objects.filter(models.Q(pere=tuteur) | models.Q(mere=tuteur))
+
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(name='Title', parent=styles['Title'], fontName='Times-Bold', fontSize=16)
+    cell_style = ParagraphStyle(name='Cell', fontName='Times-Roman', fontSize=10)
+
+    elements = []
+
+    # ✅ Si aucun adhérent -> on retourne une liste vide
+    if not adherents.exists():
+        return elements  # <--- Changement ici, plus de message PDF inutile
+
+    # Titre
+    elements.append(Paragraph(
+        f"Liste des adhérents pour le tuteur : {tuteur.last_name} {tuteur.first_name}",
+        title_style
+    ))
+    elements.append(Spacer(1, 12))
+
+    # Préparer l'en-tête du tableau
+    data = [[
+        "Nom",
+        "Prénom",
+        "Date de naissance",
+        "Lieu de naissance",
+        "Sexe",
+        "Téléphone",
+        "Adresse",
+        "Profession"
+    ]]
+
+    # Ajouter les lignes du tableau
+    for a in adherents:
+        data.append([
+            a.last_name or "",
+            a.first_name or "",
+            a.date_naissance.strftime("%d/%m/%Y") if a.date_naissance else "",
+            a.lieu_naissance or "",
+            a.sexe or "",
+            a.telephone or "",
+            a.adresse or "",
+            a.profession or ""
+        ])
+
+    # Création du tableau
+    table = Table(data, repeatRows=1, colWidths=[80] * 8)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+    ]))
+
+    elements.append(table)
+    return elements

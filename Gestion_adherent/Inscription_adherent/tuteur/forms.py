@@ -10,7 +10,10 @@ class TuteurForm(PersonneForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_naissance': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'date_naissance': forms.DateInput(
+                attrs={'type': 'date', 'class': 'form-control'},
+                format='%Y-%m-%d'
+            ),
             'lieu_naissance': forms.TextInput(attrs={'class': 'form-control'}),
             'sexe': forms.Select(attrs={'class': 'form-select'}),
             'telephone': forms.TextInput(attrs={'class': 'form-control'}),
@@ -25,7 +28,19 @@ class TuteurForm(PersonneForm):
             'statut_user': forms.HiddenInput(),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        date_naissance = cleaned_data.get('date_naissance')
+        today = date.today()
+        # Validation date de naissance
+        if date_naissance and date_naissance > today:
+            self.add_error('date_naissance', "La date de naissance ne peut pas être dans le futur.")
+
+        return cleaned_data
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if self.instance and self.instance.date_naissance:
+           self.fields['date_naissance'].initial = self.instance.date_naissance.strftime('%Y-%m-%d')
         if self.instance and not self.instance.statut_user:
             self.instance.statut_user = "tuteur"

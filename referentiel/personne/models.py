@@ -23,9 +23,9 @@ class Personne(AbstractUser):
         ('veuf', 'Veuf/Veuve'),
         ('non_renseigne', 'Non renseigné'),
     ]
-
+        
     # Informations personnelles
-    matricule = models.CharField(max_length=7, unique=True)
+    matricule = models.CharField(max_length=7, unique=True, blank=True,null=True)
     date_naissance = models.DateField(null=True, blank=True)
     lieu_naissance = models.CharField(max_length=30, blank=True, null=True)
     sexe = models.CharField(max_length=1, choices=SEXE_CHOICES, blank=True, null=True)

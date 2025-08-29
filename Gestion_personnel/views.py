@@ -13,10 +13,16 @@ def Gestion_personnel_view(request):
 
 
 def statistic_personnel_view(request):
+    today = timezone.now()
+    current_month = today.month
+    current_year = today.year
     # ---------------------------
     # Employés
     # ---------------------------
-    employes = Employe.objects.all()
+    employes = Employe.objects.filter(
+        date_creation__year=current_year,
+        date_creation__month=current_month
+    ).order_by('-date_creation')
     employes=employes.order_by('-date_creation')
     employes_actifs = employes.filter(statut="actif")
 
@@ -39,7 +45,10 @@ def statistic_personnel_view(request):
     # ---------------------------
     # Opérations
     # ---------------------------
-    operations = Operation.objects.all()
+    operations = Operation.objects.filter(
+        date_debut__year=current_year,
+        date_debut__month=current_month
+    ).order_by('-date_debut')
     operations_recentes = operations.order_by('-date_creation')[:5]
 
     operations_stats = {
@@ -47,7 +56,7 @@ def statistic_personnel_view(request):
         'operations_recentes': operations_recentes,
         'operations_confirmees': operations.filter(statut='confirme'),
         'operations_annulees': operations.filter(statut='annule'),
-        'operations_recrutement': operations.filter(type_operation='recrutement'),
+        'operations_recrutement': operations.filter(type_operation='affectation'),
         'operations_mutation': operations.filter(type_operation='mutation'),
         'operations_date_debut': operations.filter(date_debut__gte=timezone.now()),
         'operations_date_fin': operations.filter(date_fin__lte=timezone.now()),
@@ -61,7 +70,10 @@ def statistic_personnel_view(request):
     # ---------------------------
     # Absences
     # ---------------------------
-    absences = Absence.objects.all()
+    absences = Absence.objects.filter(
+        date_creation__year=current_year,
+        date_creation__month=current_month
+    ).order_by('-date_creation')
     absences_recentes = absences.order_by('-date_creation')[:5]
 
     absences_stats = {
@@ -98,7 +110,6 @@ def statistic_personnel_view(request):
         'total_confirmees_absences': absences.filter(statut='confirme').count(),
         'total_recentes_absences': absences_recentes.count(),
     }
-
 
     # ---------------------------
     # Fusion de tous les contextes

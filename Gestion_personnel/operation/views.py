@@ -10,7 +10,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import simpleSplit
 
-from Gestion_personnel.operation.vew_print import generer_pied_structure_pdf
+from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
 
@@ -165,15 +165,19 @@ def generer_paragraphe_operation(id_operation):
     fonction = operation.id_fonction.designation
     unite = getattr(operation.id_organisation_unite, 'nom', str(operation.id_organisation_unite))
     date_debut = operation.date_debut.strftime("%d/%m/%Y")
-
-    if operation.type_operation == 'recrutement':
+    type_operation=operation.type_operation
+    if type_operation=="affectation":
+        valeur_type="affecté (e)"
+    else:
+        valeur_type="muté (e)"
+    if operation.type_operation == 'affectation':
         return (
-            f"Par la présente, {employe.first_name} {employe.last_name} est recruté(e) en qualité de "
+            f"Par la présente, {employe.first_name} {employe.last_name} est {valeur_type} en qualité de "
             f"{fonction} au sein de l’unité {unite}, à compter du {date_debut}."
         )
     elif operation.type_operation == 'mutation':
         return (
-            f"{employe.first_name} {employe.last_name}, précédemment en fonction, est muté(e) en qualité de "
+            f"{employe.first_name} {employe.last_name}, précédemment en fonction, est {valeur_type} en qualité de "
             f"{fonction} dans l’unité {unite}, à compter du {date_debut}."
         )
     return "Type d'opération non reconnu."
@@ -199,7 +203,11 @@ def generer_pdf_operation(request, id_operation, type_doc=None):
     fonction = operation.id_fonction.designation
     unite = getattr(operation.id_organisation_unite, 'nom', str(operation.id_organisation_unite))
     date_debut = operation.date_debut.strftime("%d/%m/%Y")
-
+    type_operation=operation.type_operation
+    if type_operation=="affectation":
+        valeur_type="affecté (e)"
+    else:
+        valeur_type="muté (e)"
     # ✅ Paragraphe personnalisé selon type_doc
     if type_doc == 'certificat':
         paragraphe = (
@@ -228,14 +236,14 @@ def generer_pdf_operation(request, id_operation, type_doc=None):
         )
     else:
         # fallback classique
-        if operation.type_operation == 'recrutement':
+        if operation.type_operation == 'affectation':
             paragraphe = (
-                f"Par la présente, {employe.first_name} {employe.last_name} est recruté(e) en qualité de "
+                f"Par la présente, {employe.first_name} {employe.last_name} est {valeur_type} en qualité de "
                 f"{fonction} au sein de l’unité {unite}, à compter du {date_debut}."
             )
         elif operation.type_operation == 'mutation':
             paragraphe = (
-                f"{employe.first_name} {employe.last_name}, précédemment en fonction, est muté(e) en qualité de "
+                f"{employe.first_name} {employe.last_name}, précédemment en fonction, est {valeur_type} en qualité de "
                 f"{fonction} dans l’unité {unite}, à compter du {date_debut}."
             )
         else:

@@ -26,4 +26,4 @@ urlpatterns = [
     path('print/<int:pk>/', views.suivi_print_detail, name='suivi_print_detail'),
     path('print-list/', views.suivi_print_list, name='suivi_print_list'),
 ]
- 
+  

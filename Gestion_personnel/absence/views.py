@@ -182,8 +182,6 @@ def absence_search(request):
     })
 
 
-def imprimer_toutes_les_absences(request):
-    return HttpResponse("Impression de toutes les absences (fonction en cours de développement)")
 
 # ✅ Génération PDF utilitaire
 def render_to_pdf(template_src, context_dict):

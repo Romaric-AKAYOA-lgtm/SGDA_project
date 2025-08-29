@@ -40,14 +40,17 @@
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="tab" href="#contact" role="tab" aria-selected="false">Coordonnées</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#professionnel" role="tab" aria-selected="false">Informations professionnelles</a>
+            </li>
           </ul>
 
           <!-- Contenu des onglets -->
           <div class="tab-content">
-            <!-- Infos personnelles -->
+            {% comment %} Infos personnelles {% endcomment %}
             <div class="tab-pane fade show active" id="perso" role="tabpanel">
               {% for field in form %}
-                {% if field.name in champs_personnels %}
+                {% if champs_personnels and field.name in champs_personnels %}
                   <div class="mb-3">
                     {{ field.label_tag }}
                     {{ field }}
@@ -59,10 +62,25 @@
               {% endfor %}
             </div>
 
-            <!-- Coordonnées -->
+            {% comment %} Coordonnées {% endcomment %}
             <div class="tab-pane fade" id="contact" role="tabpanel">
               {% for field in form %}
-                {% if field.name in champs_contact %}
+                {% if champs_contact and field.name in champs_contact %}
+                  <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            {% comment %} Infos professionnelles {% endcomment %}
+            <div class="tab-pane fade" id="professionnel" role="tabpanel">
+              {% for field in form %}
+                {% if champs_professionnels and field.name in champs_professionnels %}
                   <div class="mb-3">
                     {{ field.label_tag }}
                     {{ field }}
@@ -106,8 +124,8 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    // Initialiser Select2
-    $('.select2, .form-select').select2({
+    // Initialiser Select2 pour tous les select
+    $('select').select2({
       placeholder: "Sélectionner...",
       allowClear: true,
       width: '100%'
@@ -117,20 +135,14 @@
     $('ul.errorlist').each(function () {
       const errorBlock = $(this);
       const input = errorBlock.next('input, select, textarea');
-
-      if (input.length) {
-        input.addClass('is-invalid');
-      }
-
+      if (input.length) input.addClass('is-invalid');
       errorBlock.closest('.mb-3').addClass('border border-danger rounded p-2');
     });
 
     // Scroll automatique vers la première erreur
     const firstError = $('ul.errorlist').first();
     if (firstError.length) {
-      $('html, body').animate({
-        scrollTop: firstError.offset().top - 100
-      }, 600);
+      $('html, body').animate({ scrollTop: firstError.offset().top - 100 }, 600);
     }
   });
 </script>

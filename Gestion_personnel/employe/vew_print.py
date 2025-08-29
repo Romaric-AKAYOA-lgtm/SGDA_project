@@ -21,8 +21,7 @@ import os
 
 # Importations des fonctions personnalisées
 from Gestion_personnel.absence.vew_print import generer_pdf_absences_employe
-from Gestion_personnel.operation.models import Operation
-from Gestion_personnel.operation.vew_print import generer_pdf_operations_employe
+from Gestion_personnel.operation.vew_print1 import generer_pdf_operations_employe
 from Gestion_personnel.operation.views import generer_pied_structure_pdf
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
@@ -350,7 +349,7 @@ def employe_print_list_operation(request, pk):
     ops_elements = generer_pdf_operations_employe(employe)
     abs_elements = generer_pdf_absences_employe(employe)
 
-    if not isinstance(ops_elements, list)  or not isinstance(abs_elements, list):
+    if not isinstance(ops_elements, list) or not isinstance(abs_elements, list):
         raise TypeError("Les fonctions doivent retourner une liste de Flowables")
 
     elements = ops_elements  + abs_elements

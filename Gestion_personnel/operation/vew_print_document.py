@@ -3,7 +3,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import simpleSplit
 from reportlab.platypus import SimpleDocTemplate
-from Gestion_personnel.operation.vew_print import generer_pied_structure_pdf
+from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from reportlab.pdfgen import canvas as rcanvas
 from referentiel.organisation_unite.models import OrganisationUnite
 from referentiel.structure.models import Structure
@@ -46,7 +46,7 @@ def generer_document_pdf(request, id_operation, type_doc, titre_pdf):
     p = canvas.Canvas(response, pagesize=A4)
     width, height = A4
     x = 50
-    y = generer_entete_structure_pdf(p, structure,operation.numero_note )
+    y = generer_entete_structure_pdf(p, structure,operation.numero_fiche )
     y -= 25
 
     # Titre centré et souligné
@@ -128,11 +128,15 @@ def generer_paragraphe_operation(id_operation, type_doc=None):
     heure_debut = operation.date_debut.strftime("%H:%M")
     date_creation = operation.date_creation.strftime("%d/%m/%Y") if operation.date_creation else "non précisée"
     date_fin = operation.date_fin.strftime("%d/%m/%Y") if operation.date_fin else 'non précisée'
-
+    type_operation=operation.type_operation
+    if type_operation=="affectation":
+        valeur_type="affecté (e)"
+    else:
+        valeur_type="muté (e)"
     texte = (
         f"La {organisation.designation} de {organisation.structure.raison_sociale}, soussignée, atteste que "
         f"Monsieur/Madame {employe.first_name} {employe.last_name},<br/><br/> Grade : {employe.grade}, Échelon : {employe.echelle},"
-        f"Catégorie : {employe.categorie}, Matricule solde : {employe.matricule}, recruté(e)  ou muté (e) à {organisation.structure.raison_sociale}"
+        f"Catégorie : {employe.categorie}, Matricule solde : {employe.matricule}, {valeur_type} à {organisation.structure.raison_sociale}"
         f"par la note de service n° {operation.numero_note} du {date_creation}, "
     )
 

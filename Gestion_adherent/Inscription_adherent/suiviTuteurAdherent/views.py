@@ -2,8 +2,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
+
+from referentiel.structure.models import Structure
+from referentiel.structure.vew_impression import generer_entete_structure_pdf
 from .models import SuiviTuteurAdherent
 from .forms import SuiviTuteurAdherentForm
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
 
 
 # Liste des suivis Tuteur-Adhérent
@@ -119,16 +127,151 @@ def suivi_archive_group(request):
 
 # Impression / export PDF (exemple simple)
 def suivi_print_detail(request, pk):
-    suivi = get_object_or_404(SuiviTuteurAdherent, pk=pk)
-    # Ici tu peux générer un PDF ou rendre un template prêt pour impression
-    return render(request, 'suiviTuteurAdherent/suivi_print_detail.html', {
-        'suivi': suivi,
-    })
+    # Récupérer le suivi
+    # Essayer de récupérer un suivi précis
+    suivi = SuiviTuteurAdherent.objects.filter(pk=pk).first()
+
+    if suivi:
+        suivis = [suivi]  # liste pour uniformité
+    else:
+        # Si aucun suivi avec ce PK, considérer pk comme id_adherent
+        suivis = SuiviTuteurAdherent.objects.filter(adherent_id=pk)
+        if not suivis.exists():
+            return HttpResponse("Aucun suivi trouvé pour cet adhérent ou ce suivi.", status=404)
+
+    # Préparer la réponse PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="suivi_tuteur_adherent_{suivi.id}.pdf"'
+
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
+
+    elements = []
+    styles = getSampleStyleSheet()
+
+    title_style = ParagraphStyle(
+        name='TitleTimes',
+        parent=styles['Title'],
+        fontName='Times-Bold',
+        fontSize=16,
+        leading=20,
+    )
+
+    cell_style = ParagraphStyle(
+        name='CellStyleTimes',
+        fontName='Times-Roman',
+        fontSize=12,
+        leading=14,
+    )
+
+    elements.append(Paragraph(f"Suivi Tuteur-Adhérent : {suivi.adherent.last_name} {suivi.adherent.first_name}", title_style))
+    elements.append(Spacer(1, 20))
+
+    # Préparer les données pour le tableau
+    data = [
+        [Paragraph("Champ", title_style), Paragraph("Valeur", title_style)],
+        [Paragraph("Adhérent", cell_style), Paragraph(f"{suivi.adherent.last_name} {suivi.adherent.first_name}", cell_style)],
+        [Paragraph("Tuteur", cell_style), Paragraph(f"{suivi.tuteur.last_name} {suivi.tuteur.first_name}", cell_style)],
+        [Paragraph("Statut", cell_style), Paragraph(suivi.get_statut_display(), cell_style)],
+        [Paragraph("Date création", cell_style), Paragraph(suivi.date_creation.strftime('%d/%m/%Y %H:%M'), cell_style)],
+    ]
+
+    table = Table(data, colWidths=[150, 300])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+
+    # Générer le PDF
+    doc.build(elements)
+    return response
 
 
-# Impression / export PDF liste
+
 def suivi_print_list(request):
-    suivis = SuiviTuteurAdherent.objects.all().order_by('-date_creation')
-    return render(request, 'suiviTuteurAdherent/suivi_print_list.html', {
-        'suivis': suivis,
-    })
+    suivis = SuiviTuteurAdherent.objects.select_related('adherent', 'tuteur').order_by('-date_creation')
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="suivi_tuteur_adherent.pdf"'
+    structure = Structure.objects.first()
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
+
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # Titre
+    title_style = ParagraphStyle(
+        name='TitleTimes',
+        parent=styles['Title'],
+        fontName='Times-Bold',
+        fontSize=18,
+        leading=22,
+    )
+    elements.append(Spacer(1, 250))
+    elements.append(Paragraph("Liste des Suivis Tuteur-Adhérent", title_style))
+    elements.append(Spacer(1, 20))
+
+    # Style pour le contenu des cellules
+    cell_style = ParagraphStyle(
+        name='CellStyleTimes',
+        fontName='Times-Roman',
+        fontSize=12,
+        leading=14,
+    )
+
+    # Données du tableau
+    data = [
+        [
+            Paragraph("Adhérent", title_style),
+            Paragraph("Tuteur", title_style),
+            Paragraph("Statut", title_style),
+            Paragraph("Date création", title_style)
+        ]
+    ]
+
+    for suivi in suivis:
+        data.append([
+            Paragraph(f"{suivi.adherent.last_name} {suivi.adherent.first_name}", cell_style),
+            Paragraph(f"{suivi.tuteur.last_name} {suivi.tuteur.first_name}", cell_style),
+            Paragraph(suivi.get_statut_display(), cell_style),
+            Paragraph(suivi.date_creation.strftime('%d/%m/%Y %H:%M'), cell_style),
+        ])
+
+    table = Table(data, colWidths=[150, 150, 60, 120], splitByRow=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+         ("FONTSIZE", (0, 0), (-1, 0), 10),
+    ]))
+    elements.append(table)
+
+    # Fonction en-tête et pied de page (si nécessaire)
+    def en_tete_page(pdf_canvas, doc):
+        if structure:
+            generer_entete_structure_pdf(pdf_canvas, structure)
+
+    def pied_de_page(pdf_canvas, doc):
+        pass  # à compléter si tu as un pied de page spécifique
+
+    doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
+              onLaterPages=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
+
+    return response

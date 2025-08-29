@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
 
 # settings.py
 
@@ -29,7 +30,13 @@ SESSION_COOKIE_SECURE = False
 # Pour sécuriser aussi le cookie CSRF
 CSRF_COOKIE_SECURE = False 
 ALLOWED_HOSTS = []
-
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.1.12',   # pour le serveur local
+    'localhost',    # pour le développement local
+    'romaric.com',  # domaine principal
+    'www.romaric.com'  # sous-domaine
+]
 AUTH_USER_MODEL = 'personne.Personne'
 # Application definition
 
@@ -108,6 +115,8 @@ WSGI_APPLICATION = 'SGDA_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+''' 
+# Base de données SQLite
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,6 +124,22 @@ DATABASES = {
     }
 }
 
+'''
+load_dotenv()  # charge les variables depuis .env
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

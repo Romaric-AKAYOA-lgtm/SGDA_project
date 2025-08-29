@@ -16,6 +16,9 @@
         <a href="{% url 'cotisation:cotisation_create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
           <i class="fas fa-plus"></i> Ajouter
         </a>
+         <a href="{% url 'cotisation:cotisation_print_list' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
       </div>
 
       <form class="d-flex" method="GET" action="{% url 'cotisation:cotisation_search' %}">
@@ -43,6 +46,7 @@
             <th>Montant</th>
             <th>Date</th>
             <th>Statut</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -54,10 +58,23 @@
             <td>{{ cotisation.montant }}</td>
             <td>{{ cotisation.date_cotisation|date:"d/m/Y" }}</td>
             <td>{{ cotisation.statut }}</td>
+                        <td class="text-center">
+              <a href="{% url 'cotisation:cotisation_update' cotisation.id %}" class="btn btn-primary btn-sm me-2 my-1">
+                <i class="fas fa-edit"></i> Modifier
+              </a>
+              <a href="{% url 'cotisation:cotisation_archive' cotisation.id %}" class="btn btn-primary btn-sm my-1"
+                 onclick="return confirm('Voulez-vous vraiment archiver cette cotisation ?');">
+                <i class="fas fa-archive"></i> Archiver
+              </a>
+                            
+              <a href="{% url 'cotisation:cotisation_print_detail' cotisation.id  %}"class="btn btn-primary btn-sm my-1">
+                <i class="fas fa-print"></i> Imprimer
+              </a>
+            </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6" class="text-center py-4 text-muted">Aucune cotisation trouvée pour "{{ query }}".</td>
+            <td colspan="9" class="text-center py-4 text-muted">Aucune cotisation trouvée pour "{{ query }}".</td>
           </tr>
           {% endfor %}
         </tbody>

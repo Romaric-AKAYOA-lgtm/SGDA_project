@@ -97,6 +97,6 @@ class PersonneForm(UserCreationForm):
             age = today.year - date_naissance.year - (
                 (today.month, today.day) < (date_naissance.month, date_naissance.day)
             )
-            if age < 0:
+            if age < 0 or age>150:
                 raise forms.ValidationError("La personne doit avoir au moins 18 ans.")
         return date_naissance

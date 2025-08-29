@@ -43,6 +43,9 @@
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="tab" href="#parents" role="tab" aria-selected="false">Parents</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#professionnel" role="tab" aria-selected="false">Professionnel</a>
+            </li>
           </ul>
 
           <!-- Contenu des onglets -->
@@ -90,6 +93,23 @@
             <div class="tab-pane fade" id="parents" role="tabpanel">
               {% for field in form %}
                 {% if field.name == 'pere' or field.name == 'mere' %}
+                  <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ field.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <!-- Professionnel -->
+            <div class="tab-pane fade" id="professionnel" role="tabpanel">
+              {% for field in form %}
+                {% if champs_professionnels and field.name in champs_professionnels %}
                   <div class="mb-3">
                     {{ field.label_tag }}
                     {{ field }}

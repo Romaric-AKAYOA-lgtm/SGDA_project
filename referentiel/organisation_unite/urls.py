@@ -9,4 +9,5 @@ urlpatterns = [
     path('modifier/<int:pk>/', views.organisation_unite_update, name='modifier'),
     path('rechercher/', views.organisation_unite_search, name='rechercher'),
     path('imprimer/', vew_print.organisation_unite_print, name='imprimer'),
+    path('imprimer_organisation_hierarchique/', vew_print.organisation_print_hierarchique, name='imprimer_organisation_hierarchique'),
 ]

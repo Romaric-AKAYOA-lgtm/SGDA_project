@@ -5,39 +5,28 @@ from referentiel.organisation_unite.models import OrganisationUnite
 # Récupère la structure existante (id=1)
 structure = Structure.objects.get(pk=1)
 
-# Récupère les unités existantes par ID
-direction = Unite.objects.get(pk=1)   # Direction Générale
-service   = Unite.objects.get(pk=2)   # Service Informatique
-division  = Unite.objects.get(pk=3)   # Division Réseaux
-section   = Unite.objects.get(pk=4)   # Section Support
+# Liste des unités avec désignations plus courtes
+unites_hierarchie = [
+    ("Direction Générale", 1),
+    ("Service Informatique", 2),
+    ("Division Réseaux", 3),
+    ("Section Support", 4)
+]
 
-# Organisation racine
-org_direction = OrganisationUnite.objects.create(
-    designation="Organisation Direction Générale",
-    unite=direction,
-    structure=structure
-)
+parent_org = None
+for nom, unite_id in unites_hierarchie:
+    unite = Unite.objects.get(pk=unite_id)
+    designation = f"Organisation {nom}"
 
-# Organisation enfant (Service)
-org_service = OrganisationUnite.objects.create(
-    designation="Organisation Service Informatique",
-    organisation_unite_parent=org_direction,
-    unite=service,
-    structure=structure
-)
+    # ⚠️ Respecte le max_length du modèle (30)
+    designation = designation[:30]
 
-# Organisation enfant (Division)
-org_division = OrganisationUnite.objects.create(
-    designation="Organisation Division Réseaux",
-    organisation_unite_parent=org_service,
-    unite=division,
-    structure=structure
-)
+    org = OrganisationUnite.objects.create(
+        designation=designation,
+        organisation_unite_parent=parent_org,
+        unite=unite,
+        structure=structure
+    )
+    parent_org = org  # le suivant sera enfant de celui-ci
 
-# Organisation enfant (Section)
-org_section = OrganisationUnite.objects.create(
-    designation="Organisation Section Support",
-    organisation_unite_parent=org_division,
-    unite=section,
-    structure=structure
-)
+print("✅ Hiérarchie organisationnelle créée avec succès !")

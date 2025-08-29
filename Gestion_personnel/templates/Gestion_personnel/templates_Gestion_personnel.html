@@ -62,11 +62,11 @@
         <!-- Gestion du Personnel -->
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#personnelSubmenuMobile" role="button"
-             aria-expanded="{% if request.resolver_match.namespace in 'employe absence operation ' %}true{% else %}false{% endif %}"
+             aria-expanded="{% if request.resolver_match.namespace in 'employe absence operation affecter' %}true{% else %}false{% endif %}"
              aria-controls="personnelSubmenuMobile">
             <i class="fas fa-users me-1"></i> Personnel <i class="fas fa-caret-down ms-1"></i>
           </a>
-          <div class="collapse {% if request.resolver_match.namespace in 'employe absence operation ' %}show{% endif %}" id="personnelSubmenuMobile">
+          <div class="collapse {% if request.resolver_match.namespace in 'employe absence operation affecter' %}show{% endif %}" id="personnelSubmenuMobile">
             <ul class="nav flex-column ms-3">
 
               <!-- Employés -->
@@ -85,6 +85,21 @@
                   </ul>
                 </div>
               </li>
+              <!-- Opérations -->
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#operationSubmenuMobile" role="button"
+                   aria-expanded="{% if request.resolver_match.namespace == 'operation' %}true{% else %}false{% endif %}"
+                   aria-controls="operationSubmenuMobile">
+                  <i class="fas fa-briefcase me-1"></i> Opérations <i class="fas fa-caret-down ms-1"></i>
+                </a>
+                <div class="collapse {% if request.resolver_match.namespace == 'operation' %}show{% endif %}" id="operationSubmenuMobile">
+                  <ul class="nav flex-column ms-3">
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'operation:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'operation:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'operation:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+                  </ul>
+                </div>
+              </li>
 
               <!-- Absences -->
               <li class="nav-item">
@@ -99,22 +114,6 @@
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'absence:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'absence:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'imprimer' %}active{% endif %}" href="{% url 'absence:imprimer' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
-                  </ul>
-                </div>
-              </li>
-
-              <!-- Opérations -->
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#operationSubmenuMobile" role="button"
-                   aria-expanded="{% if request.resolver_match.namespace == 'operation' %}true{% else %}false{% endif %}"
-                   aria-controls="operationSubmenuMobile">
-                  <i class="fas fa-briefcase me-1"></i> Opérations <i class="fas fa-caret-down ms-1"></i>
-                </a>
-                <div class="collapse {% if request.resolver_match.namespace == 'operation' %}show{% endif %}" id="operationSubmenuMobile">
-                  <ul class="nav flex-column ms-3">
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'operation:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'operation:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'operation:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
                   </ul>
                 </div>
               </li>
@@ -153,11 +152,11 @@
       <!-- Gestion du Personnel -->
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#personnelSubmenu" role="button"
-           aria-expanded="{% if request.resolver_match.namespace in 'employe absence operation ' %}true{% else %}false{% endif %}"
+           aria-expanded="{% if request.resolver_match.namespace in 'employe absence operation affecter' %}true{% else %}false{% endif %}"
            aria-controls="personnelSubmenu">
           <i class="fas fa-users me-1"></i>Personnel <i class="fas fa-caret-down ms-1"></i>
         </a>
-        <div class="collapse {% if request.resolver_match.namespace in 'employe absence operation ' %}show{% endif %}" id="personnelSubmenu">
+        <div class="collapse {% if request.resolver_match.namespace in 'employe absence operation affecter' %}show{% endif %}" id="personnelSubmenu">
           <ul class="nav flex-column ms-3">
 
             <!-- Employés -->
@@ -176,6 +175,21 @@
                 </ul>
               </div>
             </li>
+              <!-- Opérations -->
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#operationSubmenuMobile" role="button"
+                   aria-expanded="{% if request.resolver_match.namespace == 'operation' %}true{% else %}false{% endif %}"
+                   aria-controls="operationSubmenuMobile">
+                  <i class="fas fa-briefcase me-1"></i> Opérations <i class="fas fa-caret-down ms-1"></i>
+                </a>
+                <div class="collapse {% if request.resolver_match.namespace == 'operation' %}show{% endif %}" id="operationSubmenuMobile">
+                  <ul class="nav flex-column ms-3">
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'operation:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'operation:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+                    <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'operation:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+                  </ul>
+                </div>
+              </li>
 
             <!-- Absences -->
             <li class="nav-item">
@@ -193,26 +207,10 @@
                 </ul>
               </div>
             </li>
-
-            <!-- Opérations -->
-            <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="#operationSubmenu" role="button"
-                 aria-expanded="{% if request.resolver_match.namespace == 'operation' %}true{% else %}false{% endif %}"
-                 aria-controls="operationSubmenu">
-                <i class="fas fa-briefcase me-1"></i> Opérations <i class="fas fa-caret-down ms-1"></i>
-              </a>
-              <div class="collapse {% if request.resolver_match.namespace == 'operation' %}show{% endif %}" id="operationSubmenu">
-                <ul class="nav flex-column ms-3">
-                  <li><a class="nav-link {% if request.resolver_match.url_name == 'liste' %}active{% endif %}" href="{% url 'operation:liste' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
-                  <li><a class="nav-link {% if request.resolver_match.url_name == 'ajouter' %}active{% endif %}" href="{% url 'operation:ajouter' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
-                  <li><a class="nav-link {% if request.resolver_match.url_name == 'rechercher' %}active{% endif %}" href="{% url 'operation:rechercher' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
-                </ul>
-              </div>
-            </li>
           </ul>
         </div>
       </li>
-      <!-- Accueil -->
+              <!-- Accueil -->
       <li class="nav-item">
         <a class="nav-link {% if request.resolver_match.url_name == 'statistique_personnel' %}active{% endif %}" 
           href="{% url 'Gestion_personnel:statistique_personnel' %}">

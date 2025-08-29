@@ -12,13 +12,29 @@
 
     <!-- Barre d'action : bouton gauche (Ajouter + Imprimer), recherche droite -->
     <div class="d-flex justify-content-between align-items-center my-4 px-3">
-      <div>
-        <a href="{% url 'organisation_unite:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm my-2">
-          <i class="fas fa-plus"></i> Ajouter
+      <div class="d-flex gap-2 align-items-center">
+          <!-- 🔘 Bouton Ajouter -->
+        <a href="{% url 'organisation_unite:ajouter' %}" class="btn btn-primary fw-semibold shadow-sm py-1 px-2">
+          <i class="fas fa-plus me-1"></i> Ajouter
         </a>
-        <a href="{% url 'organisation_unite:imprimer' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm my-2">
-          <i class="fas fa-print"></i> Imprimer
-        </a>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary fw-semibold shadow-sm btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-tasks me-2"></i> Imprimer
+          </button>
+          <ul class="dropdown-menu shadow">
+            <li>
+              <a href="{% url 'organisation_unite:imprimer' %}" target="_blank" class="dropdown-item">
+                <i class="fas fa-print me-2"></i> Imprimer
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'organisation_unite:imprimer_organisation_hierarchique' %}" target="_blank">
+                <i class="fas fa-sitemap me-2"></i> Imprimer structure hiérarchique des services
+              </a>
+            </li>
+          </ul>
+        </div>
+
       </div>
       <form class="d-flex" method="GET" action="{% url 'organisation_unite:rechercher' %}">
         <input
@@ -30,7 +46,7 @@
           value="{{ query }}"
         >
         <button class="btn btn-outline-secondary" type="submit">
-          <i class="fas fa-search"></i> Rechercher
+          <i class="fas fa-search"></i> 
         </button>
       </form>
     </div>

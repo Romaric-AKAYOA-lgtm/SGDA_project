@@ -27,12 +27,11 @@ class OperationForm(forms.ModelForm):
         queryset=Employe.objects.none(),
         widget=forms.Select(attrs={
             'class': 'form-select select2',
-            'disabled': 'disabled'  # Utilisation correcte de disabled
+             'disabled': 'disabled'
         }),
         label="Employé enregistreur",
         required=False
     )
-
 
     class Meta:
         model = Operation
@@ -47,7 +46,7 @@ class OperationForm(forms.ModelForm):
             'date_fin': forms.DateTimeInput(attrs={
                 'class': 'form-control',
                 'type': 'datetime-local',
-                'readonly': True
+                #'readonly': True
             }),
             'type_operation': forms.Select(attrs={'class': 'form-select select2'}),
             'statut': forms.Select(attrs={'class': 'form-select select2'}),
@@ -55,7 +54,6 @@ class OperationForm(forms.ModelForm):
             'id_fonction': forms.Select(attrs={'class': 'form-select select2'}),
         }
 
-        # ✅ Ici tu renommes les labels
         labels = {
             'numero_note': "Numéro de la note",
             'numero_fiche': "Numéro de la fiche",
@@ -72,7 +70,7 @@ class OperationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         today = timezone.now().date()
 
-        # 1️⃣ Employés actifs
+        # 1️⃣ Liste des employés actifs
         self.fields['id_employe'].queryset = Employe.objects.filter(statut='actif')
 
         # 2️⃣ Définir le responsable : dernière mutation confirmée
@@ -99,7 +97,7 @@ class OperationForm(forms.ModelForm):
                 self.fields['id_employe_enregistre'].queryset = Employe.objects.filter(pk=self._employe_connecte.pk)
                 self.fields['id_employe_enregistre'].initial = self._employe_connecte.pk
 
-        # 4️⃣ Initialisation des champs date si modification
+        # 4️⃣ Initialiser les champs de date lors de la modification
         if not self.data:
             for field_name in ['date_debut', 'date_fin']:
                 value = getattr(self.instance, field_name, None)
@@ -123,33 +121,45 @@ class OperationForm(forms.ModelForm):
         if date_debut and date_debut.date() < timezone.now().date():
             self.add_error('date_debut', "La date de début ne peut pas être antérieure à aujourd'hui.")
 
-        #  ✅ Vérification : mutation => recrutement obligatoire
+        # ✅ Vérifier qu'une mutation est précédée d'une affectation confirmée
         type_operation = data.get('type_operation')
         employe = data.get('id_employe')
 
-        if type_operation and employe and type_operation.lower() == 'mutation':
-            recrutement_existe = Operation.objects.filter(
+        if type_operation == 'mutation' and employe:
+            affectation_existe = Operation.objects.filter(
                 id_employe=employe,
-                type_operation__iexact='recrutement',
+                type_operation='affectation',
                 statut='confirme'
             ).exists()
 
-            if not recrutement_existe:
+            if not affectation_existe:
                 self.add_error(
                     'id_employe',
-                    "Impossible d'effectuer une mutation : cet employé n'a pas d'opération de recrutement confirmée."
+                    "Impossible d'effectuer une mutation : cet employé n'a pas encore d'affectation confirmée."
                 )
 
         return data
 
-
     def save(self, commit=True):
         instance = super().save(commit=False)
-        # Forcer l'enregistreur
         instance.id_employe_enregistre = self._employe_connecte
-        # Calculer la date de fin automatiquement si elle n'est pas renseignée
+
+        # ✅ Mettre à jour la date_fin de l'ancienne opération
+        if instance.statut == 'confirme' and instance.type_operation in ['mutation', 'affectation']:
+            ancienne_op = Operation.objects.filter(
+                id_employe=instance.id_employe,
+                type_operation=instance.type_operation,
+                statut='confirme'
+            ).exclude(pk=instance.pk).order_by('-date_debut').first()
+
+            if ancienne_op:
+                ancienne_op.date_fin = instance.date_debut - timedelta(days=1)
+                ancienne_op.save()
+
+        # ✅ Calculer la date de fin si elle n'est pas renseignée
         if not instance.date_fin and instance.date_debut:
             instance.date_fin = instance.date_debut + timedelta(days=1)
+
         if commit:
             instance.save()
         return instance

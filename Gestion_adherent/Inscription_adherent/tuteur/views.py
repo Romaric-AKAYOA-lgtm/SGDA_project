@@ -72,15 +72,12 @@ def tuteur_create(request):
     if request.method == 'POST':
         form = TuteurForm(request.POST, request.FILES)
         if form.is_valid():
-            matricule = form.cleaned_data.get('matricule')
-            if Tuteur.objects.filter(matricule=matricule).exists():
-                form.add_error('matricule', 'Un tuteur avec ce matricule existe déjà.')
-            else:
-                form.save()
-                messages.success(request, "Tuteur enregistré avec succès.")
-                if request.POST.get("action") == "save_and_new":
-                    return redirect('tuteur:tuteur_create')
-                return redirect('tuteur:tuteur_list')
+            # On supprime la vérification du matricule
+            form.save()
+            messages.success(request, "Tuteur enregistré avec succès.")
+            if request.POST.get("action") == "save_and_new":
+                return redirect('tuteur:tuteur_create')
+            return redirect('tuteur:tuteur_list')
         else:
             messages.error(request, "Merci de corriger les erreurs dans le formulaire.")
     else:

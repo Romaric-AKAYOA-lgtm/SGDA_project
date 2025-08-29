@@ -39,20 +39,23 @@ def adherent_list(request):
 
 
 # Définition des champs
+
 def get_champs_adherent():
+    # Onglet informations personnelles
     champs_personnels = [
         'first_name', 'last_name', 'date_naissance', 'lieu_naissance',
         'sexe', 'image'
     ]
+    # Onglet coordonnées
     champs_contact = [
         'telephone', 'email', 'adresse'
     ]
+    # Onglet parents
     champs_parents = ['pere', 'mere']
-    champs_professionnels = [
-        'matricule', 'statut'
-    ]
-    return champs_personnels, champs_contact, champs_parents, champs_professionnels
+    # Onglet professionnels
+    champs_professionnels = ['matricule', 'statut']
 
+    return champs_personnels, champs_contact, champs_parents, champs_professionnels
 
 # Création d’un adhérent
 def adherent_create(request):
@@ -74,17 +77,14 @@ def adherent_create(request):
             messages.error(request, "Merci de corriger les erreurs dans le formulaire.")
     else:
         form = AdherentForm()
-        # Limiter les choix père/mère aux tuteurs valides
-        age_limite = timezone.now().date() - timedelta(days=18*365)
-        form.fields['pere'].queryset = Tuteur.objects.filter(sexe='M', date_naissance__lte=age_limite)
-        form.fields['mere'].queryset = Tuteur.objects.filter(sexe='F', date_naissance__lte=age_limite)
 
     return render(request, 'adherent/adherent_form.html', {
         'form': form,
         'mode': 'ajouter',
         'champs_personnels': champs_personnels,
         'champs_contact': champs_contact,
-        'champs_parents': champs_parents
+        'champs_parents': champs_parents,
+        'champs_professionnels': champs_professionnels,
     })
 
 
@@ -103,10 +103,6 @@ def adherent_update(request, pk):
             messages.error(request, "Merci de corriger les erreurs dans le formulaire.")
     else:
         form = AdherentForm(instance=adherent)
-        # Limiter les choix père/mère aux tuteurs valides
-        age_limite = timezone.now().date() - timedelta(days=18*365)
-        form.fields['pere'].queryset = Tuteur.objects.filter(sexe='M', date_naissance__lte=age_limite)
-        form.fields['mere'].queryset = Tuteur.objects.filter(sexe='F', date_naissance__lte=age_limite)
 
     return render(request, 'adherent/adherent_form.html', {
         'form': form,
@@ -114,7 +110,8 @@ def adherent_update(request, pk):
         'adherent': adherent,
         'champs_personnels': champs_personnels,
         'champs_contact': champs_contact,
-        'champs_parents': champs_parents
+        'champs_parents': champs_parents,
+        'champs_professionnels': champs_professionnels,
     })
 
 

@@ -1,0 +1,49 @@
+mysql -u root -p
+
+-- 1️⃣ Créer l'utilisateur
+CREATE USER 'admin1'@'localhost' IDENTIFIED BY 'ecole2002@@';
+
+-- 2️⃣ Donner les privilèges sélectifs sur la base
+GRANT SELECT, INSERT, UPDATE, ALTER, DELETE, INDEX, CREATE, REFERENCES
+ON SGDA_project_db.* TO 'admin1'@'localhost';
+
+-- 3️⃣ Appliquer les changements
+FLUSH PRIVILEGES;
+
+
+
+
+
+
+
+DJANGO_IP=127.0.1.11
+DJANGO_PORT=8001
+
+#Configuration de connexion 
+DB_NAME=SGDA_project_db
+DB_USER=admin1'@'localhost
+DB_PASSWORD=ecole2002@@
+DB_HOST=127.0.0.1
+DB_PORT=3306
+
+-- 3️⃣ commande pour la création du dossier env
+python -m venv venv
+venv\Scripts\activate
+python --version
+
+
+
+
+python manage.py test referentiel.unite
+python manage.py test referentiel.fonction
+python manage.py test referentiel.organisation_unite
+python manage.py test Gestion_personnel.employe
+python manage.py test Gestion_personnel.operation
+python manage.py test Gestion_personnel.absence
+python manage.py test Gestion_personnel.affecter
+
+python manage.py test Gestion_adherent.Inscription_adherent.tuteur
+python manage.py test Gestion_adherent.Inscription_adherent.adherent
+python manage.py test Gestion_adherent.Inscription_adherent.suiviTuteurAdherent
+python manage.py test Gestion_adherent.Prise_en_charge_adherent
+python manage.py test Gestion_adherent.Cotisation_adherent

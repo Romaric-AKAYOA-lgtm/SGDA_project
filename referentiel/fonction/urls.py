@@ -9,5 +9,5 @@ urlpatterns = [
     path('modifier/<int:pk>/', views.fonction_update, name='modifier'),
     path('rechercher/', views.fonction_search, name='rechercher'),
     path('imprimer/', vew_print.fonction_print, name='imprimer'),
+    path('imprimer_hierarchique /', vew_print.fonction_print_hierarchique, name='imprimer_hierarchique_fonction'),
 ]
-

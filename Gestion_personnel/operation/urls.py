@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, vew_print_document, vew_print
+from . import vew_print1, views, vew_print_document
 
 app_name = 'operation'  # ← ceci est important !
 

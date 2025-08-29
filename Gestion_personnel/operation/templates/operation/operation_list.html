@@ -67,7 +67,8 @@
             <th>#</th>
             <th><i class="fas fa-file-alt"></i> Fiche</th>
             <th><i class="fas fa-user"></i> Employé</th>
-            <th><i class="fas fa-sitemap"></i> Unité</th>
+            <th><i class="fas fa-random"></i> Type</th>
+            <th><i class="fas fa-sitemap"></i> Service</th>
             <th><i class="fas fa-briefcase"></i> Fonction</th>
             <th><i class="fas fa-calendar-alt"></i> Début</th>
             <th><i class="fas fa-calendar-times"></i> Fin</th>
@@ -81,6 +82,7 @@
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ operation.numero_fiche }}</td>
             <td>{{ operation.id_employe.last_name }} {{ operation.id_employe.first_name }}</td>
+            <td>{{ operation.get_type_operation_display }}</td>
             <td>{{ operation.id_organisation_unite }}</td>
             <td>{{ operation.id_fonction }}</td>
             <td>{{ operation.date_debut|date:"d/m/Y" }}</td>
@@ -138,7 +140,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="9" class="text-center py-4 text-muted">Aucune opération trouvée.</td>
+            <td colspan="10" class="text-center py-4 text-muted">Aucune opération trouvée.</td>
           </tr>
           {% endfor %}
         </tbody>

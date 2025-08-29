@@ -25,4 +25,4 @@ urlpatterns = [
     # Impression
     path('print-list/', views.cotisation_print_list, name='cotisation_print_list'),
     path('print-detail/<int:pk>/', views.cotisation_print_detail, name='cotisation_print_detail'),
-]
+] 

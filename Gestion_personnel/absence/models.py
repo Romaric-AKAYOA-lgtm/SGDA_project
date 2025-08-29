@@ -5,12 +5,14 @@ from datetime import timedelta
 from Gestion_personnel.operation.models import Operation
 from django.utils import timezone
 
+
 class AbsenceManager(models.Manager):
     def recentes(self):
         now = timezone.now()
         return self.get_queryset().filter(
             models.Q(date_retour_effective__isnull=True) | models.Q(date_retour_effective__gte=now)
         )
+
 
 class Absence(models.Model):
     TYPE_ABSENCE_CHOICES = [
@@ -30,7 +32,7 @@ class Absence(models.Model):
     statut = models.CharField(max_length=10, choices=STATUT_CHOICES)
     date_debut = models.DateTimeField()
     duree = models.IntegerField(help_text="Durée de l'absence en jours")
-    date_retour = models.DateTimeField(editable=False)  # ✅ Devient calculé, non modifiable manuellement
+    date_retour = models.DateTimeField(editable=False)  # ✅ Calculé automatiquement
     date_retour_effective = models.DateTimeField(null=True, blank=True)
     lieu = models.CharField(max_length=50)
     motif = models.CharField(max_length=255, null=True, blank=True)
@@ -68,14 +70,12 @@ class Absence(models.Model):
            not self.id_absence_operation_employe_respensable_id or \
            not self.id_absence_operation_employe_enregistre_id:
             return
-        """   
-        # Vérifie que les trois opérations ne soient pas identiques
-        if self.id_absence_operation_employe == self.id_absence_operation_employe_respensable \
-           or self.id_absence_operation_employe == self.id_absence_operation_employe_enregistre \
-           or self.id_absence_operation_employe_respensable == self.id_absence_operation_employe_enregistre:
-            raise ValidationError(_("Les opérations liées à l'absence doivent être différentes."))
-        """
-        # Contrôle spécifique pour congé annuel
+
+        # ✅ Vérifie que la date de retour effective ne peut pas être avant la date de début
+        if self.date_retour_effective and self.date_retour_effective < self.date_debut:
+            raise ValidationError(_("La date de retour effective doit être postérieure à la date de début."))
+
+        # ✅ Contrôle spécifique pour congé annuel
         if self.type_absence == 'conge_annuel':
             if self.duree != 30:
                 raise ValidationError(_("La durée du congé annuel doit être exactement de 30 jours."))

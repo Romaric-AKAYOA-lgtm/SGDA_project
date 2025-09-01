@@ -6,7 +6,7 @@ from reportlab.platypus import (
     SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer,
     PageBreak
 )
-
+from reportlab.pdfgen import canvas
 from PyPDF2 import PdfMerger, PdfReader
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -134,16 +134,30 @@ def adherent_print_detail(request, pk):
     # === Pied de page ===
     elements.append(Paragraph("<i>Document généré automatiquement par le système AJCA</i>", styles["Normal"]))
 
-    # === Gestion des entêtes ===
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Canvas personnalisé
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        pass
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # Entête uniquement sur la première page
+                if i == 0 and structure:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
     # Génération finale du PDF
-    doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
+    doc.build(elements, canvasmaker=CustomCanvas)
+   #doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
@@ -154,7 +168,7 @@ def adherent_print_detail(request, pk):
 def adherent_print_list(request):
     adherents = Adherent.objects.filter(statut=Adherent.STATUT_ACTIF).order_by('-date_creation')
     structure = Structure.objects.first()
-    MAX_ROWS_PER_PAGE = 15
+    MAX_ROWS_PER_PAGE = 20
 
     # Styles globaux
     styles = getSampleStyleSheet()
@@ -230,12 +244,27 @@ def adherent_print_list(request):
     # Génération du PDF
     final_buffer = BytesIO()
 
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Canvas personnalisé
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
+
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # Entête uniquement sur la première page
+                if i == 0 and structure:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
 
     doc = SimpleDocTemplate(
         final_buffer,
@@ -247,11 +276,7 @@ def adherent_print_list(request):
     )
 
     # ✅ Construction du document avec entête + pied de page
-    doc.build(
-        elements,
-        onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
-        onLaterPages=lambda c, d: pied_de_page(c, d)
-    )
+    doc.build(elements, canvasmaker=CustomCanvas)
 
     # Réponse PDF
     response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
@@ -308,19 +333,32 @@ def adherent_print_list_operation(request, pk):
             bottomMargin=80
         )
 
-        def en_tete_page(pdf_canvas, doc):
-            if structure:
-                generer_entete_structure_pdf(pdf_canvas, structure)
+    # Canvas personnalisé
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-        def pied_de_page(pdf_canvas, doc):
-            pass
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
-        doc_all.build(
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # Entête uniquement sur la première page
+                if i == 0 and structure:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
+
+    doc_all.build(
             all_elements,
-            onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
-            onLaterPages=lambda c, d: pied_de_page(c, d)
-        )
-        buffer_all.seek(0)
+          canvasmaker=CustomCanvas)
+    buffer_all.seek(0)
 
     # === Fusion des PDF ===
     final_output = BytesIO()
@@ -370,18 +408,32 @@ def adherent_print_detail(request, pk):
     ]))
     elements.append(table)
     elements.append(Spacer(1, 12))
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Canvas personnalisé
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
-    
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # Entête uniquement sur la première page
+                if i == 0 and structure:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
+
     # Génération PDF
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=50, leftMargin=50, rightMargin=50, bottomMargin=50)
-    doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)), onLaterPages=lambda c, d: pied_de_page(c, d))
+    doc.build(elements,  canvasmaker=CustomCanvas)
     buffer.seek(0)
 
     response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
@@ -419,14 +471,28 @@ def adherent_print_detail_print(request, pk):
     ]))
     elements.append(table)
     elements.append(Spacer(1, 12))
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
-    doc_landscape.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)), onLaterPages=lambda c, d: pied_de_page(c, d))
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # Entête uniquement sur la première page
+                if i == 0 and structure:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
+
+    doc_landscape.build(elements,  canvasmaker=CustomCanvas)
 
     return elements
 

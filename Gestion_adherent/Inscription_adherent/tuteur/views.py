@@ -139,7 +139,9 @@ def tuteur_search(request):
         ).order_by('-date_creation')
     else:
         tuteurs = Tuteur.objects.all().order_by('-date_creation')
-
+    paginator = Paginator(tuteurs, 10)
+    page_number = request.GET.get('page')
+    tuteurs = paginator.get_page(page_number)
     return render(request, 'tuteur/tuteur_search.html', {
         'tuteurs': tuteurs,
         'query': query,

@@ -38446,3 +38446,509 @@ AttributeError: type object 'Tuteur' has no attribute 'bjects'
 2025-08-29 03:21:36,576 - INFO - autoreload - Watching for file changes with StatReloader
 2025-08-29 03:21:44,886 - INFO - basehttp - "GET /Gestion_adherent/statistique_adherent/ HTTP/1.1" 200 24940
 2025-08-29 03:21:44,977 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-29 17:09:42,048 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-29 17:10:27,845 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-29 17:10:34,928 - INFO - basehttp - "GET / HTTP/1.1" 200 18774
+2025-08-29 17:10:35,313 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-29 17:10:35,313 - WARNING - basehttp - "GET /static/js/chart.min.js HTTP/1.1" 404 1805
+2025-08-29 17:10:35,316 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 1841
+2025-08-29 17:10:35,771 - WARNING - log - Not Found: /favicon.ico
+2025-08-29 17:10:35,771 - WARNING - basehttp - "GET /favicon.ico HTTP/1.1" 404 4785
+2025-08-29 17:10:43,822 - INFO - basehttp - "GET /myadmin/dashboard/ HTTP/1.1" 200 53281
+2025-08-29 17:10:43,907 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 1841
+2025-08-29 17:10:43,911 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-29 17:11:01,226 - INFO - basehttp - "GET / HTTP/1.1" 200 18774
+2025-08-29 17:11:01,306 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-29 17:11:01,317 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 1841
+2025-08-29 17:11:01,320 - WARNING - basehttp - "GET /static/js/chart.min.js HTTP/1.1" 404 1805
+2025-08-30 14:47:56,046 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:48:03,644 - INFO - basehttp - "GET / HTTP/1.1" 200 18774
+2025-08-30 14:48:03,778 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 14:48:03,784 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 1841
+2025-08-30 14:48:03,792 - WARNING - basehttp - "GET /static/js/chart.min.js HTTP/1.1" 404 1805
+2025-08-30 14:48:03,896 - INFO - basehttp - "GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 200 623
+2025-08-30 14:48:03,931 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 200 74185
+2025-08-30 14:48:03,942 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 200 155845
+2025-08-30 14:48:03,943 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 200 5928
+2025-08-30 14:48:04,073 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 200 78743
+2025-08-30 14:48:04,204 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 113108
+2025-08-30 14:48:04,219 - INFO - basehttp - "GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 200 2711
+2025-08-30 14:48:04,399 - WARNING - log - Not Found: /favicon.ico
+2025-08-30 14:48:04,399 - WARNING - basehttp - "GET /favicon.ico HTTP/1.1" 404 4785
+2025-08-30 14:48:12,688 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 14:48:12,748 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 14:48:12,885 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-brands-400.woff2 HTTP/1.1" 200 101088
+2025-08-30 14:48:18,328 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:50:39,380 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:50:41,121 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:50:48,051 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 14:50:48,113 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 14:51:24,689 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:51:26,509 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:51:34,016 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 14:51:34,088 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 14:52:35,110 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:52:43,120 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:52:58,743 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 14:53:05,254 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 14:54:21,467 - ERROR - log - Internal Server Error: /adherent/imprimer-liste/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 165, in apply
+    getattr(doc,arn)(*args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1298, in handle_pageBegin
+    self._handle_pageBegin()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 621, in handle_pageBegin
+    self.pageTemplate.onPage(self.canv,self)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 264, in <lambda>
+    # Réponse PDF
+NameError: name 'en_tete_page' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 262, in adherent_print_list
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1322, in build
+    BaseDocTemplate.build(self,flowables, canvasmaker=canvasmaker)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1080, in build
+    self.clean_hanging()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 592, in clean_hanging
+    self.handle_flowable(self._hanging)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 926, in handle_flowable
+    f.apply(self)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 172, in apply
+    annotateException("\nhandle_%s args=%s"%(action,ascii(args)))
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\lib\utils.py", line 1176, in annotateException
+    rl_reraise(t,t(sep.join((_ for _ in (msg,str(v),postMsg) if _))),b)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\lib\utils.py", line 138, in rl_reraise
+    raise v.with_traceback(b)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 165, in apply
+    getattr(doc,arn)(*args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1298, in handle_pageBegin
+    self._handle_pageBegin()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 621, in handle_pageBegin
+    self.pageTemplate.onPage(self.canv,self)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 264, in <lambda>
+    # Réponse PDF
+NameError: 
+handle_pageBegin args=() name 'en_tete_page' is not defined
+2025-08-30 14:54:21,503 - ERROR - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 500 174213
+2025-08-30 14:55:07,216 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:55:10,111 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:55:21,856 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 90667
+2025-08-30 14:55:24,950 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:55:27,463 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:55:41,287 - ERROR - log - Internal Server Error: /adherent/imprimer-liste/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 232, in adherent_print_list
+    class CustomCanvas(canvas.Canvas):
+NameError: name 'canvas' is not defined
+2025-08-30 14:55:41,303 - ERROR - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 500 100540
+2025-08-30 14:55:53,390 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:55:55,590 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:56:19,174 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:57:28,410 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:57:37,930 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:57:54,381 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:58:21,866 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:58:25,845 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:58:39,828 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:59:01,366 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:59:04,154 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:59:17,320 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:59:34,023 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 14:59:36,627 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 14:59:49,108 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 14:59:53,289 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 99027
+2025-08-30 15:01:22,631 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:01:25,904 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:01:40,604 - ERROR - log - Internal Server Error: /adherent/imprimer-liste/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 165, in apply
+    getattr(doc,arn)(*args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1298, in handle_pageBegin
+    self._handle_pageBegin()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 621, in handle_pageBegin
+    self.pageTemplate.onPage(self.canv,self)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 281, in <lambda>
+    onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
+NameError: name 'en_tete_page' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 279, in adherent_print_list
+    doc.build(
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1322, in build
+    BaseDocTemplate.build(self,flowables, canvasmaker=canvasmaker)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1080, in build
+    self.clean_hanging()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 592, in clean_hanging
+    self.handle_flowable(self._hanging)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 926, in handle_flowable
+    f.apply(self)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 172, in apply
+    annotateException("\nhandle_%s args=%s"%(action,ascii(args)))
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\lib\utils.py", line 1176, in annotateException
+    rl_reraise(t,t(sep.join((_ for _ in (msg,str(v),postMsg) if _))),b)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\lib\utils.py", line 138, in rl_reraise
+    raise v.with_traceback(b)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 165, in apply
+    getattr(doc,arn)(*args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 1298, in handle_pageBegin
+    self._handle_pageBegin()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\reportlab\platypus\doctemplate.py", line 621, in handle_pageBegin
+    self.pageTemplate.onPage(self.canv,self)
+  File "D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py", line 281, in <lambda>
+    onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
+NameError: 
+handle_pageBegin args=() name 'en_tete_page' is not defined
+2025-08-30 15:01:40,623 - ERROR - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 500 176785
+2025-08-30 15:01:50,193 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:01:52,467 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:02:04,276 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 90667
+2025-08-30 15:02:06,873 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 90667
+2025-08-30 15:04:30,261 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:04:32,864 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:04:45,118 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 70104
+2025-08-30 15:05:23,850 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:05:26,142 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:05:40,067 - INFO - basehttp - - Broken pipe from ('127.0.0.1', 55277)
+2025-08-30 15:05:40,276 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:08:00,905 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:08:02,648 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:08:13,014 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:08:39,829 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:08:42,062 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:08:52,170 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:08:55,896 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:09:10,151 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:09:11,534 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:09:14,269 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:09:25,019 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:09:43,480 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:09:45,195 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:09:52,443 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:09:54,784 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:10:05,015 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:10:09,255 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:10:11,583 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:10:38,083 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:10:40,035 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:10:51,040 - INFO - basehttp - "GET /adherent/imprimer-liste/ HTTP/1.1" 200 76974
+2025-08-30 15:10:54,928 - INFO - basehttp - "GET /adherent/imprimer/3999/ HTTP/1.1" 200 2875
+2025-08-30 15:11:01,285 - INFO - basehttp - "GET /adherent/imprimer-operation/3999/ HTTP/1.1" 200 2644
+2025-08-30 15:11:04,387 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:11:04,445 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:12:07,767 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:12:09,742 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:12:18,570 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:12:19,313 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:12:42,370 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:12:44,179 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:12:52,683 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:12:52,784 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:12:59,816 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:13:02,450 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:13:10,943 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:13:11,005 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:13:16,600 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:13:18,801 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:13:28,186 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:13:28,348 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:13:45,888 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:13:48,246 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:13:54,731 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:13:56,897 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:14:05,840 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:14:05,970 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:14:13,768 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:14:15,918 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:14:24,206 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:14:24,380 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:14:31,686 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:14:33,670 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:14:41,663 - INFO - basehttp - "GET /adherent/imprimer-operation/3999/ HTTP/1.1" 200 2653
+2025-08-30 15:14:42,265 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:14:42,436 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:15:51,259 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\vew_print.py changed, reloading.
+2025-08-30 15:15:53,194 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:16:01,705 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:16:01,791 - INFO - basehttp - "GET /adherent/imprimer-operation/3999/ HTTP/1.1" 200 2653
+2025-08-30 15:16:02,322 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:16:09,268 - INFO - basehttp - "GET /adherent/imprimer-operation/3999/ HTTP/1.1" 200 2653
+2025-08-30 15:16:11,231 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:16:11,278 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:16:23,063 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:16:26,322 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:16:35,057 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:16:35,274 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:16:37,625 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:16:40,009 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:16:48,127 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:16:48,199 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:16:56,648 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:16:59,096 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:17:07,421 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:17:07,501 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:17:33,271 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:17:35,859 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:17:44,761 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:17:44,861 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:18:17,285 - INFO - basehttp - "GET /adherent/archiver/3990/ HTTP/1.1" 302 0
+2025-08-30 15:18:17,457 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:18:17,677 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:18:19,957 - INFO - basehttp - "GET /adherent/?q=Prenom991 HTTP/1.1" 200 18075
+2025-08-30 15:18:20,047 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:18:29,854 - INFO - basehttp - "GET /adherent/rechercher/ HTTP/1.1" 200 2560383
+2025-08-30 15:18:29,961 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:19:12,760 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:19:12,850 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:19:20,162 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:19:20,262 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:19:25,398 - INFO - basehttp - "GET /tuteur/imprimer-liste/ HTTP/1.1" 200 100478
+2025-08-30 15:20:09,104 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:20:11,826 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:20:20,396 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:20:20,516 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:20:37,218 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:20:40,082 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:20:48,113 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:20:48,232 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:20:54,842 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:20:57,614 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:21:05,607 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:21:08,374 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:21:16,730 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:21:16,812 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:21:44,321 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:21:46,686 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:21:55,251 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:21:55,744 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:21:56,002 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\vew_print.py changed, reloading.
+2025-08-30 15:21:58,331 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:22:06,679 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:22:06,746 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:22:37,757 - INFO - basehttp - "GET /tuteur/imprimer/3845/ HTTP/1.1" 200 2960
+2025-08-30 15:22:59,500 - INFO - basehttp - "GET /tuteur/imprimer-operation/3845/ HTTP/1.1" 200 4128
+2025-08-30 15:23:02,150 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:23:02,289 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:23:22,328 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:23:22,414 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:23:27,982 - INFO - basehttp - "GET /suivi-tuteur-adherent/print-list/ HTTP/1.1" 200 81261
+2025-08-30 15:24:27,963 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:24:30,259 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:24:38,889 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:24:39,061 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:24:53,384 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:24:55,133 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:25:03,127 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:25:03,238 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:25:12,518 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:25:15,163 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:25:23,888 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:25:24,050 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:25:39,200 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:25:41,499 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:25:53,500 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:25:53,718 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:25:53,754 - INFO - basehttp - "GET /suivi-tuteur-adherent/print-list/ HTTP/1.1" 200 62816
+2025-08-30 15:26:45,784 - INFO - basehttp - "GET /suivi-tuteur-adherent/print-list/ HTTP/1.1" 200 62816
+2025-08-30 15:27:15,458 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:27:15,548 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:27:23,664 - INFO - basehttp - "GET /cotisation/print-list/ HTTP/1.1" 200 76409
+2025-08-30 15:30:43,999 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Cotisation_adherent\views.py changed, reloading.
+2025-08-30 15:30:46,794 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:30:54,982 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:30:55,095 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:31:01,976 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Cotisation_adherent\views.py changed, reloading.
+2025-08-30 15:31:03,992 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:31:11,845 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:31:11,909 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:31:40,613 - INFO - basehttp - - Broken pipe from ('127.0.0.1', 55768)
+2025-08-30 15:31:43,516 - INFO - basehttp - "GET /cotisation/print-list/ HTTP/1.1" 200 75613
+2025-08-30 15:32:10,592 - INFO - basehttp - "GET /cotisation/print-detail/2365/ HTTP/1.1" 200 2833
+2025-08-30 15:32:26,529 - INFO - basehttp - "GET /cotisation/print-detail/2357/ HTTP/1.1" 200 2834
+2025-08-30 15:32:37,571 - INFO - basehttp - "GET /cotisation/search/ HTTP/1.1" 200 932657
+2025-08-30 15:32:37,709 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:32:49,697 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:32:49,791 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:32:51,325 - INFO - basehttp - "GET /cotisation/create/ HTTP/1.1" 200 69030
+2025-08-30 15:32:51,406 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:33:54,474 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Cotisation_adherent\views.py changed, reloading.
+2025-08-30 15:33:56,448 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:34:03,767 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Cotisation_adherent\views.py changed, reloading.
+2025-08-30 15:34:05,737 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:34:15,365 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:34:15,467 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:34:58,850 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\views.py changed, reloading.
+2025-08-30 15:35:01,437 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:35:10,868 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:35:11,502 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\views.py changed, reloading.
+2025-08-30 15:35:15,214 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:35:23,851 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\views.py changed, reloading.
+2025-08-30 15:35:26,934 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:35:35,274 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:35:35,426 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:35:40,889 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\views.py changed, reloading.
+2025-08-30 15:35:44,119 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:35:54,407 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:35:54,546 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\tuteur\views.py changed, reloading.
+2025-08-30 15:35:56,453 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:36:22,476 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:36:24,519 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:36:33,290 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\views.py changed, reloading.
+2025-08-30 15:36:36,889 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:36:45,677 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:36:46,150 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:37:16,342 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:37:20,263 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:37:31,170 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:37:31,268 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:37:31,771 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:37:34,886 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:37:50,016 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:37:52,919 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:38:02,379 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:38:02,659 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:38:02,910 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:38:05,401 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:38:14,063 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:38:14,152 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:14,911 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Prise_en_charge_adherent\views.py changed, reloading.
+2025-08-30 15:39:17,120 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:39:25,066 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:39:25,168 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:29,901 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:39:29,986 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:33,776 - INFO - basehttp - "GET /cotisation/search/ HTTP/1.1" 200 26608
+2025-08-30 15:39:33,859 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:38,392 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:39:38,497 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:46,131 - INFO - basehttp - "GET /tuteur/ HTTP/1.1" 200 41691
+2025-08-30 15:39:46,208 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:39:53,063 - INFO - basehttp - "GET /tuteur/rechercher/ HTTP/1.1" 200 43903
+2025-08-30 15:39:53,146 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:42:54,021 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:42:56,095 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:43:06,096 - INFO - basehttp - "GET /tuteur/rechercher/ HTTP/1.1" 200 43903
+2025-08-30 15:43:06,202 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:43:46,441 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:43:48,899 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:43:58,306 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:44:01,438 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:44:11,330 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:44:13,163 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:44:21,952 - INFO - basehttp - "GET /tuteur/rechercher/ HTTP/1.1" 200 43903
+2025-08-30 15:44:22,599 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:44:27,853 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:44:30,273 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:44:37,878 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\suiviTuteurAdherent\forms.py changed, reloading.
+2025-08-30 15:50:12,850 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:50:25,064 - INFO - basehttp - "GET / HTTP/1.1" 200 18774
+2025-08-30 15:50:25,192 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 1841
+2025-08-30 15:50:25,195 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:50:25,204 - WARNING - basehttp - "GET /static/js/chart.min.js HTTP/1.1" 404 1805
+2025-08-30 15:50:29,963 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:50:30,030 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:50:36,158 - INFO - basehttp - "GET /cotisation/create/ HTTP/1.1" 200 69030
+2025-08-30 15:50:36,271 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:51:12,972 - INFO - basehttp - "GET /cotisation/ HTTP/1.1" 200 26232
+2025-08-30 15:51:13,059 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:51:16,566 - INFO - basehttp - "GET /suivi-tuteur-adherent/create/ HTTP/1.1" 200 118298
+2025-08-30 15:51:16,677 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:51:31,193 - INFO - basehttp - "GET /suivi-tuteur-adherent/ HTTP/1.1" 200 24429
+2025-08-30 15:51:31,271 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:51:55,264 - INFO - basehttp - "GET /adherent/nouveau/ HTTP/1.1" 200 75457
+2025-08-30 15:51:55,349 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:53:56,819 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\forms.py changed, reloading.
+2025-08-30 15:53:58,599 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:54:06,254 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_adherent\Inscription_adherent\adherent\forms.py changed, reloading.
+2025-08-30 15:54:08,456 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:54:16,450 - INFO - basehttp - "GET /adherent/nouveau/ HTTP/1.1" 200 75457
+2025-08-30 15:54:16,523 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:54:31,785 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42305
+2025-08-30 15:54:31,878 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:08,227 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 41211
+2025-08-30 15:55:08,437 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:12,547 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 41209
+2025-08-30 15:55:12,666 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:18,899 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42302
+2025-08-30 15:55:19,021 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:37,321 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 41351
+2025-08-30 15:55:37,406 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:41,416 - INFO - basehttp - "GET /adherent/ HTTP/1.1" 200 42444
+2025-08-30 15:55:41,967 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:55:47,205 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22959
+2025-08-30 15:55:47,280 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:10,647 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 21920
+2025-08-30 15:56:10,753 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:13,105 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 21918
+2025-08-30 15:56:13,238 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:19,972 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22958
+2025-08-30 15:56:20,060 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:22,528 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:56:22,638 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:34,599 - INFO - basehttp - "GET /Gestion_adherent/statistique_adherent/ HTTP/1.1" 200 25081
+2025-08-30 15:56:34,726 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:56:39,400 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:56:39,482 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:58:01,411 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\forms.py changed, reloading.
+2025-08-30 15:58:05,493 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:58:19,843 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 15:58:21,633 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:58:29,513 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:58:29,712 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:58:55,898 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 15:58:58,126 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:59:05,448 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 15:59:07,362 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:59:16,027 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:59:16,170 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:59:19,257 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 15:59:21,416 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:59:30,250 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:59:30,458 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 15:59:45,329 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 15:59:48,002 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 15:59:56,536 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 15:59:56,755 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 16:00:11,283 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:00:13,706 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:00:20,447 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:00:22,670 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:00:30,676 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:00:32,509 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:00:40,833 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:00:43,337 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:00:52,400 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 16:00:52,531 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 16:01:12,152 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:01:14,412 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:01:21,468 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:01:24,222 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:01:32,848 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 16:01:32,981 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 16:01:37,255 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:01:39,209 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:01:46,883 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:01:49,716 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:01:59,312 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:02:02,068 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:02:11,349 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 22963
+2025-08-30 16:02:12,551 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 1814
+2025-08-30 16:02:24,566 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 16:02:26,610 - INFO - autoreload - Watching for file changes with StatReloader
+2025-08-30 16:02:34,090 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\Gestion_personnel\employe\vew_print.py changed, reloading.
+2025-08-30 17:23:37,597 - INFO - autoreload - Watching for file changes with StatReloader

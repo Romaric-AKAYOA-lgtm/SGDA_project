@@ -129,7 +129,9 @@ def employe_search(request):
         ).order_by('-date_creation')  # Résultats triés si recherche
     else:
         employes = Employe.objects.all().order_by('-date_creation')  # Tous les employés, triés
-
+    paginator = Paginator(employes, 10)
+    page_number = request.GET.get('page')
+    employes  = paginator.get_page(page_number)
     return render(request, 'employe/employe_search.html', {
         'employes': employes,
         'query': query,

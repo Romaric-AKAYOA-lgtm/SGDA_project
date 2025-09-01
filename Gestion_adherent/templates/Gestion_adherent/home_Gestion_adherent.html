@@ -22,30 +22,6 @@
   <!-- Cartes de navigation -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-    {% comment %} Carte Adhérents {% endcomment %}
-    <div class="col">
-      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'adherent:adherent_list' %}">
-        <div class="card-body">
-          <i class="fas fa-id-card fa-3x mb-3 text-primary"></i>
-          <h5 class="card-title">Adhérents</h5>
-          <p class="card-text">Gérer les informations des adhérents.</p>
-        </div>
-        <div class="card-footer">
-          <div class="dropdown">
-            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              Voir plus
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'adherent:adherent_list' %}">Liste</a></li>
-              <li><a class="dropdown-item" href="{% url 'adherent:adherent_create' %}">Ajouter</a></li>
-              <li><a class="dropdown-item" href="{% url 'adherent:adherent_search' %}">Rechercher</a></li>
-              <li><a class="dropdown-item" href="{% url 'adherent:adherent_print_list' %}">Imprimer</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
     {% comment %} Carte Tuteurs {% endcomment %}
     <div class="col">
       <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'tuteur:tuteur_list' %}">
@@ -70,6 +46,30 @@
       </div>
     </div>
 
+    {% comment %} Carte Adhérents {% endcomment %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'adherent:adherent_list' %}">
+        <div class="card-body">
+          <i class="fas fa-id-card fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Adhérents</h5>
+          <p class="card-text">Gérer les informations des adhérents.</p>
+        </div>
+        <div class="card-footer">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Voir plus
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_list' %}">Liste</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_create' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_search' %}">Rechercher</a></li>
+              <li><a class="dropdown-item" href="{% url 'adherent:adherent_print_list' %}">Imprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     {% comment %} Carte Suivi des Tuteurs {% endcomment %}
     <div class="col">
       <div class="card h-100 text-center shadow-sm card-hover" data-href="{% url 'suivi_tuteur:suivi_list' %}">

@@ -82,14 +82,26 @@ def tuteur_print_detail(request, pk):
     ]))
     elements.append(table)
 
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
-    doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                if i == 0 and structure:  # Vérifie que structure existe
+                    generer_entete_structure_pdf(self, structure)
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
+
+    doc.build(elements, canvasmaker=CustomCanvas)
 
     return response
 
@@ -98,7 +110,7 @@ def tuteur_print_detail(request, pk):
 def tuteur_print_list(request):
     tuteurs = Tuteur.objects.filter(statut=Tuteur.STATUT_ACTIF).order_by('last_name')
     structure = Structure.objects.first()  # peut être None
-    MAX_ROWS_PER_PAGE = 15
+    MAX_ROWS_PER_PAGE = 20
 
     styles = getSampleStyleSheet()
     title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=20, alignment=1, spaceAfter=20)
@@ -196,21 +208,27 @@ def tuteur_print_list_operation(request, pk):
     elements = adherent_elements
     elements.append(Spacer(1, 30))
 
-    # En-tête et pied de page
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
+
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                if i == 0 and structure:  # Vérifie que structure existe
+                    generer_entete_structure_pdf(self, structure)
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
 
     # Construction du PDF portrait pour les adhérents + opérations
-    doc_portrait_ops.build(
-        elements,
-        onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
-        onLaterPages=lambda c, d: pied_de_page(c, d)
-    )
-
+    doc_portrait_ops.build(elements,canvasmaker=CustomCanvas)
     buffer_portrait_ops.seek(0)
 
     # Fusion finale des deux parties

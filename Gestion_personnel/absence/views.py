@@ -243,16 +243,10 @@ def generer_pdf_absence(request, id_absence):
 
     return response
 
-from django.shortcuts import get_object_or_404
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from reportlab.lib.utils import simpleSplit
-from django.http import HttpResponse
+
 def generer_paragraphe_absence_operation(id_absence, type_doc=None):
     absence = get_object_or_404(Absence, id=id_absence)
     operation =absence 
-
-
     organisation=operation.id_absence_operation_employe.id_fonction.structure.raison_sociale
     organisation_unit=operation.id_absence_operation_employe.id_organisation_unite.designation
     employe = operation.id_absence_operation_employe.id_employe
@@ -330,16 +324,6 @@ def generer_paragraphe_attestation_employeur(id_absence):
     return generer_paragraphe_absence_operation(id_absence, type_doc='employeur')
 def  generer_paragraphe_calendrier_conge():
       return generer_paragraphe_absence_operation( type_doc='calendrier')
-
-
-
-
-
-
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.utils import simpleSplit
-from django.http import HttpResponse
 
 def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titre_document):
     response = HttpResponse(content_type='application/pdf')
@@ -493,7 +477,9 @@ def imprimer_toutes_les_absences(request):
         "Calendrier des congés"
     )
 
+
 def generer_pdf_template_tableau(request, lignes_func, nom_fichier, titre_document, id_absence=None):
+    # --- Configuration de la réponse HTTP ---
     response = HttpResponse(content_type='application/pdf')
     filename = f'{nom_fichier}_{id_absence}.pdf' if id_absence else f'{nom_fichier}.pdf'
     response['Content-Disposition'] = f'inline; filename="{filename}"'
@@ -502,37 +488,69 @@ def generer_pdf_template_tableau(request, lignes_func, nom_fichier, titre_docume
     structure = Structure.objects.first()
     annee = datetime.now().year
 
-    # Frame pour le contenu (tout sauf en-tête et pied)
-    frame = Frame(40, 60, A4[0]-80, A4[1]-100, id='normal')  # marges ajustables
+    # --- Canvas personnalisé pour en-tête et pied ---
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
+
+        def save(self):
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+                # En-tête uniquement sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+                # Pied de page uniquement sur la dernière page
+                if i == len(self._saved_page_states) - 1:
+                    generer_pied_structure_pdf(self)
+                canvas.Canvas.showPage(self)
+            canvas.Canvas.save(self)
+
+    # --- Définir le cadre de contenu principal ---
+    frame = Frame(
+        40, 60,  # x, y
+        A4[0] - 80,  # largeur utile
+        A4[1] - 120,  # hauteur utile
+        id='normal'
+    )
+
+    # --- PageTemplate minimal pour BaseDocTemplate ---
     def on_page(canvas, doc):
-        page_num = canvas.getPageNumber()
-        # En-tête seulement sur la première page
-        if page_num == 1:
-            generer_entete_structure_pdf(canvas, structure)
-        # Pied de page uniquement sur la dernière page
-        if page_num == doc.page:
-            generer_pied_structure_pdf(canvas)
+        pass  # le canvas sera géré par CustomCanvas, donc ici rien à faire
 
     template = PageTemplate(id='main', frames=[frame], onPage=on_page)
-    doc = BaseDocTemplate(response, pagesize=A4, leftMargin=40, rightMargin=40,
-                          topMargin=60, bottomMargin=40, pageTemplates=[template])
+    doc = BaseDocTemplate(
+        response,
+        pagesize=A4,
+        leftMargin=40,
+        rightMargin=40,
+        topMargin=60,
+        bottomMargin=40,
+        pageTemplates=[template]
+    )
 
+    # --- Contenu du document ---
     elements = []
-    elements.append(Spacer(1,290))
+
+    # Titre principal
     titre_complet = f"{titre_document} annuel de l'année {annee}"
+    elements.append(Spacer(1, 250))
     elements.append(Paragraph(f"<b><font size=16>{titre_complet.upper()}</font></b>", styles['Title']))
     elements.append(Spacer(1, 20))
 
+    # Récupération des blocs de données
     blocs = lignes_func()
-
     col_widths = [80, 80, 100, 200]
 
     for service, lignes in blocs.items():
         elements.append(Paragraph(f"<b><font size=14>Service : {service}</font></b>", styles['Heading3']))
         elements.append(Spacer(1, 12))
 
-        table = Table(lignes, colWidths=col_widths, repeatRows=0)  # repeatRows=0 pour ne pas répéter l'en-tête
+        table = Table(lignes, colWidths=col_widths, repeatRows=1)
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
@@ -546,7 +564,8 @@ def generer_pdf_template_tableau(request, lignes_func, nom_fichier, titre_docume
         elements.append(table)
         elements.append(Spacer(1, 20))
 
-    doc.build(elements)
+    # --- Générer le PDF avec CustomCanvas ---
+    doc.build(elements, canvasmaker=CustomCanvas)
     return response
 
 

@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 from .models import PriseEnChargeAdherent
 from .forms import PriseEnChargeAdherentForm
 from django.shortcuts import get_object_or_404, render
 from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-
 from .models import PriseEnChargeAdherent
 # Liste des prises en charge
 def prise_en_charge_list(request):
@@ -21,18 +21,14 @@ def prise_en_charge_list(request):
             Q(nom_complet_medecin__icontains=query) |
             Q(fonction_medecin__icontains=query) |
             Q(specialite_medecin__icontains=query)
-        )
-    
+        ).order_by("-date_creation")
+    paginator = Paginator(prises, 10)
+    page_number = request.GET.get('page')
+    prises = paginator.get_page(page_number)
     return render(request, 'Prise_en_charge_adherent/prise_en_charge_list.html', {
         'prises': prises,
         'query': query
     })
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import PriseEnChargeAdherent
-from .forms import PriseEnChargeAdherentForm
-
 
 # ===============================
 #  Création
@@ -112,7 +108,6 @@ def prise_en_charge_print_detail(request, pk):
 
 
 # === Liste de prises en charge ===
-
 def prise_en_charge_print_list(request):
     prises = PriseEnChargeAdherent.objects.all().order_by('-date_creation')
 
@@ -128,6 +123,7 @@ def prise_en_charge_print_list(request):
     cell_style = ParagraphStyle(name='Cell', parent=styles['Normal'], fontName='Times-Roman', fontSize=12)
 
     elements = []
+    elements.append(Spacer(1, 20))
     elements.append(Paragraph("Liste des prises en charge", title_style))
     elements.append(Spacer(1, 20))
 
@@ -163,6 +159,7 @@ def prise_en_charge_print_detail(request, pk):
     cell_style = ParagraphStyle(name='Cell', parent=styles['Normal'], fontName='Times-Roman', fontSize=12)
 
     elements = []
+    elements.append(Spacer(1, 20))
     elements.append(Paragraph(f"Prise en charge : {prise.objet}", title_style))
     elements.append(Spacer(1, 20))
 
@@ -196,10 +193,6 @@ def prise_en_charge_print_detail(request, pk):
 
     return elements  # retourne une liste de Flowables pour utilisation dans un PDF
 
-from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib import colors
-from .models import PriseEnChargeAdherent
 
 def adherent_prises_en_charge_print_pdf(adherent):
     """
@@ -212,7 +205,7 @@ def adherent_prises_en_charge_print_pdf(adherent):
     if prises.exists():
         styles = getSampleStyleSheet()
         title_style = ParagraphStyle(name='Title', parent=styles['Title'], fontName='Times-Bold', fontSize=14)
-
+        elements.append(Spacer(1, 20))
         elements.append(Paragraph("Prises en charge de l'adhérent", title_style))
         elements.append(Spacer(1, 20))
 

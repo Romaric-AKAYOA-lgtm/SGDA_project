@@ -39,7 +39,7 @@ class EmployeForm(PersonneForm):
             'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
             'statut': forms.Select(attrs={'class': 'form-select'}),
             'statut_user': forms.TextInput(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'grade': forms.TextInput(attrs={'class': 'form-control'}),
             'echelle': forms.NumberInput(attrs={'class': 'form-control'}),
             'categorie': forms.TextInput(attrs={'class': 'form-control'}),

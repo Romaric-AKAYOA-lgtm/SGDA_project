@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ObjectDoesNotExist
+
 from .forms import LoginForm
 from .forms_register import RegisterForm
 
@@ -13,23 +14,32 @@ from Gestion_personnel.employe.models import Employe
 from Gestion_personnel.operation.models import Operation
 
 # compte/utils.p
-
 def get_employe_id_connecte(request):
+    """
+    Retourne l'ID de l'employé connecté si actif,
+    sinon None.
+    """
     if request.user.is_authenticated:
         try:
-            employe = Employe.objects.get(id=request.user.id)  # puisque user = employé
+            employe = Employe.objects.get(id=request.user.id)  # user = employé
+            if employe.statut != Employe.STATUT_ACTIF:
+                # L'employé n'est pas actif
+                return None
             return employe.id
         except Employe.DoesNotExist:
             return None
     return None
 
+
 def get_employe_connecte(user):
     """
     Retourne l'objet Employe lié à l'utilisateur connecté.
-    Lève une exception si aucun Employe n'est trouvé.
+    Lève une exception si aucun Employe n'est trouvé ou si l'employé n'est pas actif.
     """
     try:
         employe = Employe.objects.get(id=user.id)
+        if employe.statut != Employe.STATUT_ACTIF:
+            raise ObjectDoesNotExist("Cet employé n'est pas actif.")
         return employe
     except Employe.DoesNotExist:
         raise ObjectDoesNotExist("Aucun employé lié à cet utilisateur.")
@@ -38,7 +48,6 @@ def get_employe_connecte(user):
 @csrf_protect
 def login_view(request):
     if request.user.is_authenticated:
-        print(f"Utilisateur déjà connecté, id: {request.user.id}")
         return redirect('home')
 
     form = LoginForm(request.POST or None)
@@ -50,45 +59,46 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user:
-            login(request, user)
-            print(f"Nouvelle connexion, id_user: {user.id}")
-
-            # Redirection directe pour superutilisateur
-            if user.is_superuser:
-                print("Superutilisateur détecté")
-                return redirect('home')
-
-            now = timezone.now()
-
             try:
                 employe = Employe.objects.get(id=user.id)
+
+                # Vérifier si l'employé est actif
+                if employe.statut != Employe.STATUT_ACTIF:
+                    messages.error(request, "Votre compte employé n'est pas actif.")
+                    return redirect('compte:logout')
+
+                login(request, user)
+
+                # Superutilisateur
+                if user.is_superuser:
+                    return redirect('home')
+
+                now = timezone.now()
+
+                # Vérifier la dernière mutation active
                 derniere_mutation = (
-                    Operation.objects
-                    .filter(
+                    Operation.objects.filter(
                         Q(id_employe=employe),
                         Q(type_operation='mutation'),
                         Q(date_debut__lte=now),
                         Q(date_fin__isnull=True) | Q(date_fin__gte=now)
-                    )
-                    .order_by('-date_creation')
-                    .first()
+                    ).order_by('-date_creation').first()
                 )
 
-                if derniere_mutation:
-                    fonction = derniere_mutation.id_fonction.designation.lower()
-                    print(f"Fonction actuelle : {fonction}")
-
-                    if 'parti' in fonction:
-                        get_employe_connecte(derniere_mutation.id_employe)
-                        return redirect('Gestion_adherent:home_Gestion_adherent')
-                    elif 'personne' in fonction:
-                        get_employe_connecte(derniere_mutation.id_employe)
-                        return redirect('Gestion_personnel:home_Gestion_personnel')
-                    else:
-                        messages.error(request, "Votre fonction ne vous donne pas accès à un module.")
-                        return redirect('compte:logout')
-                else:
+                if not derniere_mutation:
                     messages.error(request, "Aucune mutation active trouvée.")
+                    return redirect('compte:logout')
+
+                fonction = derniere_mutation.id_fonction.designation.lower()
+
+                if 'parti' in fonction:
+                     get_employe_connecte(derniere_mutation.id_employe)
+                     return redirect('Gestion_visite:home_Gestion_visite')
+                elif 'personne' in fonction:
+                    get_employe_connecte(derniere_mutation.id_employe)
+                    return redirect('Gestion_personnel:home_Gestion_personnel')
+                else:
+                    messages.error(request, "Votre fonction ne vous donne pas accès à un module.")
                     return redirect('compte:logout')
 
             except Employe.DoesNotExist:
@@ -99,7 +109,6 @@ def login_view(request):
             error = "Identifiants incorrects."
 
     return render(request, 'compte/login.html', {'form': form, 'error': error})
-
 
 @csrf_protect
 def logout_view(request):

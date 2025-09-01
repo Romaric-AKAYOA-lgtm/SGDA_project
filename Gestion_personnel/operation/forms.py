@@ -71,7 +71,7 @@ class OperationForm(forms.ModelForm):
         today = timezone.now().date()
 
         # 1️⃣ Liste des employés actifs
-        self.fields['id_employe'].queryset = Employe.objects.filter(statut='actif')
+        self.fields['id_employe'].queryset = Employe.objects.filter(statut=Employe.STATUT_ACTIF)
 
         # 2️⃣ Définir le responsable : dernière mutation confirmée
         resp = Operation.objects.filter(

@@ -130,7 +130,9 @@ def adherent_search(request):
         ).order_by('-date_creation')
     else:
         adherents = Adherent.objects.all().order_by('-date_creation')
-
+    paginator = Paginator(adherents, 10)
+    page_number = request.GET.get('page')
+    adherents = paginator.get_page(page_number)
     return render(request, 'adherent/adherent_search.html', {
         'adherents': adherents,
         'query': query,

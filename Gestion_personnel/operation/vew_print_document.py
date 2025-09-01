@@ -8,6 +8,15 @@ from reportlab.pdfgen import canvas as rcanvas
 from referentiel.organisation_unite.models import OrganisationUnite
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
+from django.http import HttpResponse
+from django.utils.timezone import now
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.platypus import Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.lib import colors
+from io import BytesIO
 
 from .models import Operation
 
@@ -21,8 +30,6 @@ from reportlab.lib.enums import TA_JUSTIFY
 
 from .models import Operation
 from referentiel.structure.models import Structure
-
-
 
 def generer_document_pdf(request, id_operation, type_doc, titre_pdf):
     try:
@@ -169,17 +176,6 @@ def generer_paragraphe_operation(id_operation, type_doc=None):
         texte += "Type de document non reconnu."
 
     return texte
-
-from django.http import HttpResponse
-from django.utils.timezone import now
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_JUSTIFY
-from reportlab.platypus import Paragraph, Spacer, Table, TableStyle, PageBreak
-from reportlab.lib import colors
-from io import BytesIO
-
 
 
 def _build_operations_pdf(operations, titre_pdf, request):

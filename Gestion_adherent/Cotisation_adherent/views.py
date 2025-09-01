@@ -145,7 +145,9 @@ def cotisation_search(request):
         ).order_by('-date_cotisation')
     else:
         cotisations = Cotisation.objects.all().order_by('-date_cotisation')
-
+    paginator = Paginator(cotisations, 10)
+    page_number = request.GET.get('page')
+    cotisations = paginator.get_page(page_number)
     return render(request, 'Cotisation_adherent/cotisation_search.html', {
         'cotisations': cotisations,
         'query': query
@@ -187,9 +189,9 @@ def cotisation_print_list(request):
         ]))
 
         if i == 0:
-            elements.append(Spacer(1, 100))
+            elements.append(Spacer(1, 90))
             elements.append(Paragraph("<u>Liste des Cotisations</u>", title_style))
-            elements.append(Spacer(1, 20))
+            elements.append(Spacer(1, 15))
 
         elements.append(table)
 

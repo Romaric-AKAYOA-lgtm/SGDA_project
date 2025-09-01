@@ -48,8 +48,8 @@ class AdherentForm(PersonneForm):
         # Filtrer les tuteurs éligibles : au moins 18 ans
         today = date.today()
         age_limit = today.replace(year=today.year - 18)
-        self.fields['pere'].queryset = Tuteur.objects.filter(sexe='M', date_naissance__lte=age_limit)
-        self.fields['mere'].queryset = Tuteur.objects.filter(sexe='F', date_naissance__lte=age_limit)
+        self.fields['pere'].queryset = Tuteur.objects.filter(statut=Tuteur.STATUT_ACTIF, sexe='M', date_naissance__lte=age_limit)
+        self.fields['mere'].queryset = Tuteur.objects.filter(statut=Tuteur.STATUT_ACTIF, sexe='F', date_naissance__lte=age_limit)
 
     def clean(self):
         cleaned_data = super().clean()

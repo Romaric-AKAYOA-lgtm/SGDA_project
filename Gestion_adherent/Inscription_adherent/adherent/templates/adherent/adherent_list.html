@@ -20,6 +20,13 @@
         <a href="{% url 'adherent:adherent_print_list' %}" target="_blank" class="btn btn-primary fw-semibold shadow-sm btn-sm">
           <i class="fas fa-print"></i> Imprimer
         </a>
+
+        {% if adherents %}
+        <button type="submit" form="archive-form" class="btn btn-primary fw-semibold shadow-sm btn-sm"
+                onclick="return confirm('Voulez-vous vraiment archiver les adhérents sélectionnés ?');">
+          <i class="fas fa-archive"></i> Archiver les sélectionnés
+        </button>
+        {% endif %}
       </div>
 
       <!-- Formulaire de recherche -->

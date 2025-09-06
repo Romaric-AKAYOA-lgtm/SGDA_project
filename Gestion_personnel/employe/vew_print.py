@@ -18,11 +18,9 @@ from datetime import datetime
 from PyPDF2 import PdfMerger, PdfReader
 from io import BytesIO
 import os
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 
 # Importations des fonctions personnalisées
 from Gestion_personnel.absence.vew_print import generer_pdf_absences_employe
-from Gestion_personnel.operation.models import Operation
 from Gestion_personnel.operation.vew_print1 import generer_pdf_operations_employe
 from Gestion_personnel.operation.views import generer_pied_structure_pdf
 from referentiel.structure.models import Structure
@@ -103,32 +101,40 @@ def employe_print_detail(request, pk):
     ]))
     elements.append(table)
 
-    # --- Canvas personnalisé pour en-tête et pied ---
-    class CustomCanvas(canvas.Canvas):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self._saved_page_states = []
+    def en_tete_page(pdf_canvas, doc):
+        if structure:
+            generer_entete_structure_pdf(pdf_canvas, structure)
 
-        def showPage(self):
-            self._saved_page_states.append(dict(self.__dict__))
-            self._startPage()
+    def pied_de_page (canvas, doc):
+        generer_pied_structure_pdf(canvas)
 
-        def save(self):
-            for i, state in enumerate(self._saved_page_states):
-                self.__dict__.update(state)
-                # En-tête uniquement sur la première page
-                if i == 0:
-                    generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)  # <-- sans argument
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+    def on_page(pdf_canvas, doc):
+        en_tete_page(pdf_canvas, doc)
+        pied_de_page(pdf_canvas, doc)
 
-    doc.build(elements, canvasmaker=CustomCanvas)
+    doc.build(elements, onFirstPage=on_page, onLaterPages=on_page)
 
     return response
 
+
+from io import BytesIO
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, PageBreak
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+from io import BytesIO
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, PageBreak
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+from reportlab.pdfgen import canvas as rcanvas
+from io import BytesIO
 
 def employe_print_list(request):
     employes = Employe.objects.filter(statut=Employe.STATUT_ACTIF).order_by('matricule')
@@ -281,29 +287,13 @@ def build_employe_infos_pdf(employe, structure, styles):
         elements.append(Image(employe.image.path, width=150, height=150))
         elements.append(Spacer(1, 20))
 
-    # --- Canvas personnalisé pour en-tête et pied ---
-    class CustomCanvas(canvas.Canvas):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self._saved_page_states = []
+    # Fonction en-tête locale
+    def en_tete_page(pdf_canvas, doc):
+        if structure:
+            generer_entete_structure_pdf(pdf_canvas, structure)
 
-        def showPage(self):
-            self._saved_page_states.append(dict(self.__dict__))
-            self._startPage()
-
-        def save(self):
-            for i, state in enumerate(self._saved_page_states):
-                self.__dict__.update(state)
-                # En-tête uniquement sur la première page
-                if i == 0:
-                    generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)  # <-- sans argument
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
-
-    doc.build(elements, canvasmaker=CustomCanvas)
+    # Construire le document en passant la fonction d’en-tête sur la première page
+    doc.build(elements, onFirstPage=en_tete_page)
 
     buffer.seek(0)
     return buffer
@@ -334,28 +324,15 @@ def employe_print_list_operation(request, pk):
         bottomMargin=80   # on réserve la place du footer
     )
 
-    # --- Canvas personnalisé pour en-tête et pied ---
-    class CustomCanvas(canvas.Canvas):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self._saved_page_states = []
+    # En-tête uniquement sur la première page
+    def en_tete_page(pdf_canvas, doc):
+        if structure:
+            generer_entete_structure_pdf(pdf_canvas, structure)
 
-        def showPage(self):
-            self._saved_page_states.append(dict(self.__dict__))
-            self._startPage()
-
-        def save(self):
-            for i, state in enumerate(self._saved_page_states):
-                self.__dict__.update(state)
-                # En-tête uniquement sur la première page
-                if i == 0:
-                    generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)  # <-- sans argument
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
-
+    # Pied uniquement sur la dernière page
+    def pied_derniere_page(pdf_canvas, doc):
+        if doc.page == doc.pageCount:  # ✅ seulement sur la dernière page
+            generer_pied_structure_pdf(pdf_canvas)
 
     # Définir le gabarit de page
     frame = Frame(
@@ -372,14 +349,18 @@ def employe_print_list_operation(request, pk):
     ops_elements = generer_pdf_operations_employe(employe)
     abs_elements = generer_pdf_absences_employe(employe)
 
-    if not isinstance(ops_elements, list) or not isinstance(abs_elements, list):
+    if not isinstance(ops_elements, list)  or not isinstance(abs_elements, list):
         raise TypeError("Les fonctions doivent retourner une liste de Flowables")
 
     elements = ops_elements + abs_elements
     elements.append(Spacer(1, 30))  # petit espace
 
     # Construire le PDF
-    doc_landscape.build( elements,canvasmaker=CustomCanvas)
+    doc_landscape.build(
+        elements,
+        onFirstPage=lambda c, d: (en_tete_page(c, d), pied_derniere_page(c, d)),
+        onLaterPages=lambda c, d: pied_derniere_page(c, d)
+    )
 
     buffer_landscape.seek(0)
 

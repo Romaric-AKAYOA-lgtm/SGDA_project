@@ -32,7 +32,24 @@ class OperationForm(forms.ModelForm):
         label="Employé enregistreur",
         required=False
     )
-
+    date_debut = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local', 'class': 'form-control'},
+            format='%Y-%m-%dT%H:%M'
+        ),
+        input_formats=['%Y-%m-%dT%H:%M'],
+        label="Date de début",
+        required=False
+    )
+    date_fin = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local', 'class': 'form-control'},
+            format='%Y-%m-%dT%H:%M'
+        ),
+        input_formats=['%Y-%m-%dT%H:%M'],
+        label="Date de fin",
+        required=False
+    )
     class Meta:
         model = Operation
         exclude = []
@@ -93,9 +110,18 @@ class OperationForm(forms.ModelForm):
         if self.request and self.request.user.is_authenticated:
             emp_id = get_employe_id_connecte(self.request)
             if emp_id:
-                self._employe_connecte = get_object_or_404(Employe, pk=emp_id)
-                self.fields['id_employe_enregistre'].queryset = Employe.objects.filter(pk=self._employe_connecte.pk)
-                self.fields['id_employe_enregistre'].initial = self._employe_connecte.pk
+                print("lutilisateur connecté est:", emp_id)
+                try:
+                    self._employe_connecte = get_object_or_404(
+                        Employe,
+                        pk=emp_id,
+                        statut=Employe.STATUT_ACTIF  # Ou "ACTIF" si la constante n'existe pas
+                    )
+                    print("l utilisateur 2 connecté ", self._employe_connecte)
+                    self.fields['id_employe_enregistre'].queryset = Employe.objects.filter(pk=self._employe_connecte.pk)
+                    self.fields['id_employe_enregistre'].initial = self._employe_connecte.pk
+                except Employe.DoesNotExist:
+                    self._employe_connecte = None
 
         # 4️⃣ Initialiser les champs de date lors de la modification
         if not self.data:
@@ -105,7 +131,7 @@ class OperationForm(forms.ModelForm):
                     if timezone.is_aware(value):
                         value = timezone.localtime(value)
                     self.fields[field_name].initial = value.strftime('%Y-%m-%dT%H:%M')
-
+    
     def clean(self):
         data = super().clean()
 
@@ -116,10 +142,17 @@ class OperationForm(forms.ModelForm):
         # Forcer la valeur pour l'employé enregistreur
         data['id_employe_enregistre'] = self._employe_connecte
 
-        # Vérifier que la date de début n'est pas dans le passé
         date_debut = data.get('date_debut')
-        if date_debut and date_debut.date() < timezone.now().date():
-            self.add_error('date_debut', "La date de début ne peut pas être antérieure à aujourd'hui.")
+        date_fin = data.get('date_fin')
+        date_creation = data.get('date_creation')
+
+        # Vérifier que la date de début n'est pas avant la date de création
+        if date_debut and date_creation and date_debut.date() < date_creation.date():
+            self.add_error('date_debut', "La date de début ne peut pas être antérieure à la date de création.")
+
+        # Vérifier que la date de fin n'est pas avant la date de début
+        if date_debut and date_fin and date_fin < date_debut:
+            self.add_error('date_fin', "La date de fin ne peut pas être antérieure à la date de début.")
 
         # ✅ Vérifier qu'une mutation est précédée d'une affectation confirmée
         type_operation = data.get('type_operation')
@@ -139,27 +172,3 @@ class OperationForm(forms.ModelForm):
                 )
 
         return data
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.id_employe_enregistre = self._employe_connecte
-
-        # ✅ Mettre à jour la date_fin de l'ancienne opération
-        if instance.statut == 'confirme' and instance.type_operation in ['mutation', 'affectation']:
-            ancienne_op = Operation.objects.filter(
-                id_employe=instance.id_employe,
-                type_operation=instance.type_operation,
-                statut='confirme'
-            ).exclude(pk=instance.pk).order_by('-date_debut').first()
-
-            if ancienne_op:
-                ancienne_op.date_fin = instance.date_debut - timedelta(days=1)
-                ancienne_op.save()
-
-        # ✅ Calculer la date de fin si elle n'est pas renseignée
-        if not instance.date_fin and instance.date_debut:
-            instance.date_fin = instance.date_debut + timedelta(days=1)
-
-        if commit:
-            instance.save()
-        return instance

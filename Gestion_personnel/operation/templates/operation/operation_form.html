@@ -27,6 +27,13 @@
         {% csrf_token %}
         <div class="modal-body bg-white">
           {{ form.non_field_errors }}
+          {% if messages %}
+              <div class="alert alert-danger" style="margin-bottom: 15px;">
+                  {% for message in messages %}
+                      <div>{{ message }}</div>
+                  {% endfor %}
+              </div>
+          {% endif %}
 
           <div class="row">
             <div class="col-md-6 mb-3">

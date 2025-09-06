@@ -210,8 +210,6 @@ def generer_paragraphe_absence(id_absence):
     )
 
 def generer_pdf_absence(request, id_absence):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="absence_{id_absence}.pdf"'
 
     p = canvas.Canvas(response, pagesize=A4)
     width, height = A4
@@ -235,18 +233,23 @@ def generer_pdf_absence(request, id_absence):
         y -= 20
 
     absence = get_object_or_404(Absence, id=id_absence)
-    operation_resp = absence.id_absence_operation_employe_respensable.id
+    absence_emp_nom = absence.id_absence_operation_employe.id_employe.last_name
+    absence_emp_prenom = absence.id_absence_operation_employe.id_employe.first_name
+    absence_emp_fullname = f"{absence_emp_nom}_{absence_emp_prenom}"
     generer_pied_structure_pdf(p)
 
     p.showPage()
     p.save()
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="absence_{absence_emp_fullname}.pdf"'
 
     return response
-
 
 def generer_paragraphe_absence_operation(id_absence, type_doc=None):
     absence = get_object_or_404(Absence, id=id_absence)
     operation =absence 
+
+
     organisation=operation.id_absence_operation_employe.id_fonction.structure.raison_sociale
     organisation_unit=operation.id_absence_operation_employe.id_organisation_unite.designation
     employe = operation.id_absence_operation_employe.id_employe
@@ -273,8 +276,8 @@ def generer_paragraphe_absence_operation(id_absence, type_doc=None):
         texte += (
             f"Grade : {employe.grade}, Échelon : {employe.echelle}, Catégorie : {employe.categorie}, "
             f"Matricule solde : {employe.matricule}, en service à l'{organisation}, "
-            f"de retour de congé, autorisé par l'attestation ou note de service n° {operation.numero_note} "
-            f"du {date_creation}."
+            f"de retour de congé, autorisé par l'attestation ou note de service n° {operation.numero_note}  "
+            f" du {date_creation}."
             f" a repris service le {date_fin} à {heure_retour_effective}.\n\n"
             f"En foi de quoi, le présent certificat lui est délivré pour servir et valoir ce que de droit."
         )
@@ -296,7 +299,7 @@ def generer_paragraphe_absence_operation(id_absence, type_doc=None):
 
     elif type_doc == 'cessation':
         texte += (
-           f"Matricule : {employe.matricule}, Grade : {employe.grade}, Fonction : {fonction},  en service à l'{organisation}, bénéficie d'un cogé administratif de  {dure} mois  au titre de l'année  {annee_debut}, accordé par l'autorisation /note de service n° {operation.numero_note}"
+           f"Matricule : {employe.matricule}, Grade : {employe.grade}, Fonction : {fonction},  en service à l'{organisation}, bénéficie d'un cogé administratif de  {dure} mois  au titre de l'année  {annee_debut}, accordé par l'autorisation /note de service n° {operation.numero_note} "
             f"du {date_creation}, a effectiviement cessé le travail le {date_debut} à {heure_debut} heures précises.. L'intéressé (e) reprendra ses activités, le  {date_fin_pr} à  {heure_fin_pr} \n\n"
             f"En foi de quoi, la présente autorisation lui est délivrée pour servir et valoir ce que de droit."
         )
@@ -326,8 +329,10 @@ def  generer_paragraphe_calendrier_conge():
       return generer_paragraphe_absence_operation( type_doc='calendrier')
 
 def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titre_document):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="{nom_fichier}_{id_absence}.pdf"'
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.utils import simpleSplit
+    from django.http import HttpResponse
+    from django.shortcuts import get_object_or_404
 
     width, height = A4
     marge_gauche = 50
@@ -336,9 +341,17 @@ def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titr
     marge_bas = 100
     largeur_texte = width - marge_gauche - marge_droite
 
-    p = canvas.Canvas(response, pagesize=A4)
     absence = get_object_or_404(Absence, id=id_absence)
+    absence_emp_nom = absence.id_absence_operation_employe.id_employe.last_name
+    absence_emp_prenom = absence.id_absence_operation_employe.id_employe.first_name
+    absence_emp_fullname = f"{absence_emp_nom} {absence_emp_prenom}"
     structure = Structure.objects.first()
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="{nom_fichier}_{absence_emp_fullname}.pdf"'
+    p = canvas.Canvas(response, pagesize=A4)
+
+    y = height - marge_haut  # initialisation de y
 
     def dessiner_entete_titre():
         nonlocal y
@@ -357,21 +370,14 @@ def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titr
         generer_pied_structure_pdf(p)  # ta fonction pied personnalisée
 
     def drawJustifiedLine(text, x, y, max_width):
-        """
-        Dessine une ligne de texte justifiée à la position (x, y),
-        en étirant les espaces pour remplir max_width.
-        """
         mots = text.split()
         if len(mots) == 1:
-            # Pas besoin de justification, un seul mot
             p.drawString(x, y, text)
             return
-
         largeur_texte = sum([p.stringWidth(mot, "Times-Roman", 14) for mot in mots])
         espace_total = max_width - largeur_texte
         nb_espaces = len(mots) - 1
         espace_par_espace = espace_total / nb_espaces if nb_espaces > 0 else 0
-
         current_x = x
         for i, mot in enumerate(mots):
             p.drawString(current_x, y, mot)
@@ -388,7 +394,6 @@ def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titr
     leading = int(14 * 1.5)  # interligne 1.5
 
     paragraphes = paragraphe.split('\n\n')
-
     for parag in paragraphes:
         lines = simpleSplit(parag, "Times-Roman", 14, largeur_texte)
         for i, line in enumerate(lines):
@@ -398,13 +403,11 @@ def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titr
                 dessiner_entete_titre()
                 p.setFont("Times-Roman", 14)
 
-            # Justification sauf pour la dernière ligne du paragraphe (à gauche)
             if i == len(lines) - 1:
                 p.drawString(marge_gauche, y, line)
             else:
                 drawJustifiedLine(line, marge_gauche, y, largeur_texte)
             y -= leading
-
         y -= leading  # espace entre paragraphes
 
     dessiner_pied()
@@ -441,7 +444,6 @@ def certificat_reprise_service(request, id_absence):
     )
 
 def attestation_cessation_service(request, id_absence):
-    print("id employe passé ", id_absence)
     return generer_pdf_template(
         request,
         id_absence,
@@ -626,13 +628,16 @@ def generer_pdf_conges_annuels(request):
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "w") as zip_file:
         for conge in conges_annuels:
+            absence_emp_nom = conge.id_absence_operation_employe.id_employe.last_name
+            absence_emp_prenom = conge.id_absence_operation_employe.id_employe.first_name
+            absence_emp_fullname = f"{absence_emp_nom}_{absence_emp_prenom}"
             # Générer le PDF pour ce congé
             pdf_response = attestation_cessation_service(request, conge.id)
             # Lire le contenu PDF en bytes
             pdf_bytes = pdf_response.content
             
             # Nommer chaque PDF avec le matricule ou l'ID
-            nom_pdf = f"attestation_conge_{conge.id}.pdf"
+            nom_pdf = f"attestation_conge_{absence_emp_fullname}.pdf"
             
             # Ajouter au ZIP
             zip_file.writestr(nom_pdf, pdf_bytes)

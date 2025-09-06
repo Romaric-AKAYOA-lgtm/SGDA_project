@@ -129,7 +129,23 @@ margin: 40px;
 
 .card:hover {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Augmentation de l'ombre portée lors du survol */
+  color: white !important;
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+
+.hover-bg-primary {
+    transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
+}
+
+.hover-bg-primary:hover {
+    background-color: #0d6efd !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+
 .button{
         background-color: #001f3f !important;
   color: white !important;
@@ -140,14 +156,23 @@ margin: 40px;
 }
   .card-hover {
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  }
+    transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
 
-  .card-hover:hover {
-    background-color: #0d6efd !important;
-    color: white !important;
-    box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.5);
   }
+  .card-hover:hover{
+     transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
+    background-color: #001f3f !important;
+      color: white !important; /* Texte blanc */
+      /*transform: scale(1.05);  Légère augmentation de la taille lors du survol */
+     /*  transition: all 0.3s ease-in-out; Transition fluide pour le fond, la couleur et la taille */
+    }
+
+  .card-body:hover {
+      background-color: #001f3f !important;
+  color: white !important; /* Texte blanc */
+  /*transform: scale(1.05);  Légère augmentation de la taille lors du survol */
+  transition: all 0.3s ease-in-out; /* Transition fluide pour le fond, la couleur et la taille */
+}
 
   .card-hover:hover .card-title,
   .card-hover:hover .card-text,

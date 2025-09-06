@@ -60,6 +60,11 @@ def login_view(request):
 
         if user:
             try:
+                login(request, user)
+
+                # Superutilisateur
+                if user.is_superuser:
+                    return redirect('home')
                 employe = Employe.objects.get(id=user.id)
 
                 # Vérifier si l'employé est actif
@@ -67,11 +72,7 @@ def login_view(request):
                     messages.error(request, "Votre compte employé n'est pas actif.")
                     return redirect('compte:logout')
 
-                login(request, user)
 
-                # Superutilisateur
-                if user.is_superuser:
-                    return redirect('home')
 
                 now = timezone.now()
 

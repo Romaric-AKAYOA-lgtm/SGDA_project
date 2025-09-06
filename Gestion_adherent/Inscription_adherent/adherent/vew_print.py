@@ -6,12 +6,14 @@ from reportlab.platypus import (
     SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer,
     PageBreak
 )
+from reportlab.platypus import ListFlowable, ListItem, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfgen import canvas
 from PyPDF2 import PdfMerger, PdfReader
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from io import BytesIO
-
+from datetime import date
 
 from Gestion_adherent.Cotisation_adherent.models import Cotisation
 from Gestion_adherent.Inscription_adherent.suiviTuteurAdherent.models import SuiviTuteurAdherent
@@ -167,6 +169,33 @@ def adherent_print_detail(request, pk):
 # ---------------------- Impression liste des adhérents ----------------------
 def adherent_print_list(request):
     adherents = Adherent.objects.filter(statut=Adherent.STATUT_ACTIF).order_by('-date_creation')
+    adherent_count=adherents.count()
+
+    # Tous les adhérents
+    total_adherents = Adherent.objects.count()
+
+    # Actifs
+    total_actifs = Adherent.objects.filter(statut=Adherent.STATUT_ACTIF).count()
+
+    # Inactifs
+    total_inactifs = Adherent.objects.filter(statut=Adherent.STATUT_INACTIF).count()
+
+    # Calcul de l’âge (année courante - année de naissance)
+    today = date.today()
+
+    def age(naissance):
+        return today.year - naissance.year - ((today.month, today.day) < (naissance.month, naissance.day))
+
+    # Adhérents par tranches d’âge
+    adherents = Adherent.objects.all()
+
+    age_0_6 = sum(1 for a in adherents if a.date_naissance and 0 <= age(a.date_naissance) <= 6)
+    age_7_12 = sum(1 for a in adherents if a.date_naissance and 7 <= age(a.date_naissance) <= 12)
+    age_13_19 = sum(1 for a in adherents if a.date_naissance and 13 <= age(a.date_naissance) <= 19)
+    age_20_30 = sum(1 for a in adherents if a.date_naissance and 20 <= age(a.date_naissance) <= 30)
+    age_30_60 = sum(1 for a in adherents if a.date_naissance and 30 <= age(a.date_naissance) <= 60)
+    age_60_plus = sum(1 for a in adherents if a.date_naissance and age(a.date_naissance) > 60)
+
     structure = Structure.objects.first()
     MAX_ROWS_PER_PAGE = 20
 
@@ -230,9 +259,33 @@ def adherent_print_list(request):
 
         # Ajout du titre uniquement sur la première page
         if i == 0:
-            elements.append(Spacer(1, 130))
+            elements.append(Spacer(1, 120))
             elements.append(Paragraph("<u>Liste des Adhérents</u>", title_style))
             elements.append(Spacer(1, 15))
+            styles = getSampleStyleSheet()
+            bullet_style = styles["Normal"]
+            bullet_style.alignment = 0  # 0 = left
+
+            # Créer la liste à puces
+            adherents_list = ListFlowable(
+                [
+                    ListItem(Paragraph(f"Nombre total des Adhérents : {total_adherents}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents actifs : {total_actifs}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents inactifs : {total_inactifs}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 0 à 6 ans : {age_0_6}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 7 à 12 ans : {age_7_12}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 13 à 19 ans : {age_13_19}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 20 à 30 ans : {age_20_30}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 30 à 60 ans : {age_30_60}", bullet_style)),
+                    ListItem(Paragraph(f"Nombre total des Adhérents de 60 ans et plus : {age_60_plus}", bullet_style)),
+                ],
+                bulletType='bullet',  # style de puce standard
+                start='disc'        # forme de la puce (disc, circle, square…)
+            )
+
+            # Ajouter dans ton PDF
+            elements.append(adherents_list)
+            elements.append(Spacer(1, 20))
 
         # Ajout du tableau
         elements.append(table)

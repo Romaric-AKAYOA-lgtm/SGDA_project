@@ -82,7 +82,8 @@ MIDDLEWARE = [
     
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # DOIT venir après SessionMiddleware
     'compte.middleware.LoginRequiredMiddleware',  # Middleware perso pour exiger login
-
+    # Middleware sauvegarde
+    'compte.backup_middleware.BackupMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'Activation.activation_middleware.ActivationMiddleware',  # à activer si nécessaire

@@ -25,7 +25,7 @@ class Personne(AbstractUser):
     ]
         
     # Informations personnelles
-    matricule = models.CharField(max_length=7, unique=True, blank=True,null=True)
+    matricule = models.CharField(max_length=7, unique=True, null=True, blank=True)
     date_naissance = models.DateField(null=True, blank=True)
     lieu_naissance = models.CharField(max_length=30, blank=True, null=True)
     sexe = models.CharField(max_length=1, choices=SEXE_CHOICES, blank=True, null=True)

@@ -3,7 +3,7 @@ from .models import Adherent
 from referentiel.personne.forms import PersonneForm
 from Gestion_adherent.Inscription_adherent.tuteur.models import Tuteur
 from datetime import date
-from django.core.exceptions import ValidationError
+
 
 class AdherentForm(PersonneForm):
     pere = forms.ModelChoiceField(

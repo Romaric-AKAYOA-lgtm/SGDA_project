@@ -21,6 +21,15 @@ def generate_unique_username(first_name, last_name, year):
     return username
 
 class EmployeForm(PersonneForm):
+    date_naissanc = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local', 'class': 'form-control'},
+            format='%Y-%m-%dT%H:%M'
+        ),
+        input_formats=['%Y-%m-%dT%H:%M'],
+        label="Date de début",
+        required=False
+    )
     class Meta(PersonneForm.Meta):
         model = Employe
         fields = PersonneForm.Meta.fields + ['grade', 'echelle', 'categorie']
@@ -31,7 +40,6 @@ class EmployeForm(PersonneForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'matricule': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_naissance': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'lieu_naissance': forms.TextInput(attrs={'class': 'form-control'}),
             'sexe': forms.Select(attrs={'class': 'form-select'}),
             'telephone': forms.TextInput(attrs={'class': 'form-control'}),

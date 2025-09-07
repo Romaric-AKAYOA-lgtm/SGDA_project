@@ -104,11 +104,15 @@ margin: 40px;
 
 
 /* Effet de survol sur les cartes */
+/* Classe dédiée pour hover sur card-body */
+.hover-bg-primary {
+    transition: all 0.3s ease-in-out; /* Transition fluide pour toutes les propriétés */
+}
+
 .hover-bg-primary:hover {
-  background-color: #007bff !important; /* Fond bleu primaire de Bootstrap */
-  color: white !important; /* Texte blanc */
-  transform: scale(1.05); /* Légère augmentation de la taille lors du survol */
-  transition: all 0.3s ease-in-out; /* Transition fluide pour le fond, la couleur et la taille */
+    background-color: #001f3f !important; /* Bleu foncé au survol */
+    color: white !important;               /* Texte blanc */
+    transform: scale(1.05);                /* Légère augmentation de la taille */
 }
 
 .hover-bg-primary .card-body {
@@ -129,7 +133,6 @@ margin: 40px;
 
 .card:hover {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Augmentation de l'ombre portée lors du survol */
-  color: white !important;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -141,10 +144,21 @@ margin: 40px;
 
 .hover-bg-primary:hover {
     background-color: #0d6efd !important;
+    background-color: #001f3f !important; /* bleu foncé au survol */
     color: white !important;
     cursor: pointer;
 }
+.col-md-4 .card-body {
+    transition: all 0.3s ease-in-out; /* fond, texte et transform */
+}
 
+/* Effet hover directement sur la card-body */
+.col-md-4 .card-body:hover {
+    background-color: #001f3f !important; /* bleu foncé au survol */
+    color: white !important;               /* texte blanc */
+    transform: scale(1.05);                /* légère augmentation de taille */
+    cursor: pointer;                       /* optionnel, change le curseur */
+}
 
 .button{
         background-color: #001f3f !important;
@@ -166,13 +180,15 @@ margin: 40px;
       /*transform: scale(1.05);  Légère augmentation de la taille lors du survol */
      /*  transition: all 0.3s ease-in-out; Transition fluide pour le fond, la couleur et la taille */
     }
+/* 1. Fond de la carte qui change au survol */
+/* Transition fluide sur la card-body */
 
-  .card-body:hover {
-      background-color: #001f3f !important;
-  color: white !important; /* Texte blanc */
-  /*transform: scale(1.05);  Légère augmentation de la taille lors du survol */
-  transition: all 0.3s ease-in-out; /* Transition fluide pour le fond, la couleur et la taille */
+
+/* 2. Texte du tbody qui devient blanc au survol */
+.card-body table tbody {
+    transition: color 0.3s ease-in-out; /* effet fluide pour le texte */
 }
+
 
   .card-hover:hover .card-title,
   .card-hover:hover .card-text,

@@ -94,7 +94,7 @@ def login_view(request):
 
                 if 'parti' in fonction:
                      get_employe_connecte(derniere_mutation.id_employe)
-                     return redirect('Gestion_visite:home_Gestion_visite')
+                     return redirect('Gestion_adherent:home_Gestion_adherent')
                 elif 'personne' in fonction:
                     get_employe_connecte(derniere_mutation.id_employe)
                     return redirect('Gestion_personnel:home_Gestion_personnel')

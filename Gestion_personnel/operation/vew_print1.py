@@ -93,8 +93,8 @@ def generer_pdf_operations_employe(employe):
                 Paragraph(op.get_type_operation_display(), cell_style),
                 Paragraph(str(op.id_organisation_unite or ""), cell_style),
                 Paragraph(str(op.id_fonction or ""), cell_style),
-                Paragraph(str(op.id_employe_respensable or ""), cell_style),
-                Paragraph(str(op.id_employe_enregitre or ""), cell_style),
+                Paragraph(str(op.id_employe_responsable  or ""), cell_style),
+                Paragraph(str(op.id_employe_enregistre or ""), cell_style),
             ])
 
         table = Table(data, repeatRows=1, colWidths=[70] * 10)

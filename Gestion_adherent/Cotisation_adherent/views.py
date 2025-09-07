@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models import Sum
+from django.utils.timezone import now
+from django.db.models import Sum
 from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
 from .models import Cotisation
@@ -158,48 +161,69 @@ def cotisation_search(request):
 # Liste des cotisations en PDF
 # -----------------------------------------
 def cotisation_print_list(request):
-    cotisations = Cotisation.objects.all().order_by('-date_cotisation')
+    current_year = now().year
+
+    cotisations = Cotisation.objects.filter(date_cotisation__year=current_year).order_by('-date_cotisation')
+
+    # Nombre total de cotisations
+    cotisation_total = cotisations.count()
+
+    # Somme totale des montants
+    # Somme totale des montants
+    total_montant = cotisations.aggregate(total=Sum('montant'))['total'] or 0
+
+    # Convertir en chaîne avec unité
+    cotisation_montant_total = f"{total_montant} FCFA"
     structure = Structure.objects.first()  # peut être None
-    MAX_ROWS_PER_PAGE = 20
 
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=20, alignment=1, spaceAfter=20)
-    header_style = ParagraphStyle('Header', fontName='Times-Bold', fontSize=10, alignment=1)
-    cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=9)
+    title_style = ParagraphStyle(
+        'Title', parent=styles['Title'], fontName='Times-Bold',
+        fontSize=20, alignment=1, spaceAfter=20
+    )
+    header_style = ParagraphStyle(
+        'Header', fontName='Times-Bold', fontSize=10, alignment=1
+    )
+    cell_style = ParagraphStyle(
+        'Cell', fontName='Times-Roman', fontSize=9
+    )
 
-    headers = ["Adhérent", "Montant", "Date cotisation", "Statut"]
+    headers = ["Adhérent","Téléphone", "Montant", "Date cotisation", "Statut"]
 
-    all_rows = []
+    # Préparer toutes les lignes du tableau
+    all_rows = [] 
     for cot in cotisations:
         all_rows.append([
             Paragraph(f"{cot.adherent.last_name} {cot.adherent.first_name}", cell_style),
-            Paragraph(str(cot.montant)+" FCFA" if cot.montant else '', cell_style),
+            Paragraph(f"{cot.adherent.telephone}", cell_style),
+            Paragraph(f"{cot.montant} FCFA" if cot.montant else '', cell_style),
             Paragraph(cot.date_cotisation.strftime('%d/%m/%Y') if cot.date_cotisation else '', cell_style),
             Paragraph(cot.statut or '', cell_style),
         ])
 
-    elements = [Spacer(1, 30)]
-    for i, start in enumerate(range(0, len(all_rows), MAX_ROWS_PER_PAGE)):
-        chunk = all_rows[start:start + MAX_ROWS_PER_PAGE]
-        data = [[Paragraph(h, header_style) for h in headers]] + chunk
-        table = Table(data, colWidths=[150, 80, 100, 120], repeatRows=1)
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
-        ]))
+    elements = [Spacer(1, 100)]
+    elements.append(Spacer(1, 150))
+    elements.append(Paragraph(f"<u>Liste des Cotisations de l\'année  {current_year}</u>", title_style))
+    elements.append(Spacer(1, 10))
 
-        if i == 0:
-            elements.append(Spacer(1, 90))
-            elements.append(Paragraph("<u>Liste des Cotisations</u>", title_style))
-            elements.append(Spacer(1, 15))
-
-        elements.append(table)
-
-        if start + MAX_ROWS_PER_PAGE < len(all_rows):
-            elements.append(PageBreak())
-
+    # Création du tableau complet sans pagination
+    data = [[Paragraph(h, header_style) for h in headers]] + all_rows 
+    table = Table(data, colWidths=[150,80, 80, 60, 50], repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+    ]))
+    elements.append(table)
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph(f"Nombre total de cotisation : {cotisation_total}", cell_style))
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph(f"Montant total de cotisation : {cotisation_montant_total}", cell_style))
+    elements.append(Spacer(1, 10))
+    # Génération PDF
     final_buffer = BytesIO()
-    doc = SimpleDocTemplate(final_buffer, pagesize=A4, topMargin=180, leftMargin=50, rightMargin=50, bottomMargin=80)
+
 
     class CustomCanvas(canvas.Canvas):
         def __init__(self, *args, **kwargs):
@@ -219,11 +243,18 @@ def cotisation_print_list(request):
                     generer_pied_structure_pdf(self)
                 canvas.Canvas.showPage(self)
             canvas.Canvas.save(self)
-
-    doc.build(elements, canvasmaker=CustomCanvas)
-
     response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="liste_cotisations.pdf"'
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
+    doc.build(elements, canvasmaker=CustomCanvas)
+
     return response
 
 
@@ -282,16 +313,19 @@ def cotisation_print_detail(request, pk):
     # Créer le tableau
     # Largeur totale A4 ≈ 595, marges gauche/droite 50 => largeur utile ≈ 495
     # Largeur utile pour A4 = 595 - (marges gauche+droite)
+    # Créer le tableau
     table = Table(
         data,
-        colWidths=[180, 120, 120, 120, 120],  # Colonnes plus larges
+        colWidths=[180, 120, 120, 120],  # 4 colonnes correspondant aux champs
         splitByRow=1
     )
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centrer le contenu dans les colonnes
     ]))
+
 
     elements.append(table)
 

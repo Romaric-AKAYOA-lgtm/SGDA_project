@@ -49,7 +49,7 @@ class Personne(AbstractUser):
 
     def __str__(self):
         return f"{self.username or 'Sans identifiant'} ({self.matricule})"
-
+    
     def clean(self):
         """Valide les champs personnalisés avant la sauvegarde"""
         if self.date_naissance:

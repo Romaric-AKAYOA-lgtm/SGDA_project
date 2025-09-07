@@ -168,132 +168,111 @@ def adherent_print_detail(request, pk):
 
 # ---------------------- Impression liste des adhérents ----------------------
 def adherent_print_list(request):
+    # Récupérer les adhérents actifs
     adherents = Adherent.objects.filter(statut=Adherent.STATUT_ACTIF).order_by('-date_creation')
-    adherent_count=adherents.count()
 
-    # Tous les adhérents
+    # Statistiques globales
     total_adherents = Adherent.objects.count()
-
-    # Actifs
     total_actifs = Adherent.objects.filter(statut=Adherent.STATUT_ACTIF).count()
-
-    # Inactifs
     total_inactifs = Adherent.objects.filter(statut=Adherent.STATUT_INACTIF).count()
 
-    # Calcul de l’âge (année courante - année de naissance)
     today = date.today()
 
     def age(naissance):
         return today.year - naissance.year - ((today.month, today.day) < (naissance.month, naissance.day))
 
-    # Adhérents par tranches d’âge
-    adherents = Adherent.objects.all()
-
-    age_0_6 = sum(1 for a in adherents if a.date_naissance and 0 <= age(a.date_naissance) <= 6)
-    age_7_12 = sum(1 for a in adherents if a.date_naissance and 7 <= age(a.date_naissance) <= 12)
-    age_13_19 = sum(1 for a in adherents if a.date_naissance and 13 <= age(a.date_naissance) <= 19)
-    age_20_30 = sum(1 for a in adherents if a.date_naissance and 20 <= age(a.date_naissance) <= 30)
-    age_30_60 = sum(1 for a in adherents if a.date_naissance and 30 <= age(a.date_naissance) <= 60)
-    age_60_plus = sum(1 for a in adherents if a.date_naissance and age(a.date_naissance) > 60)
+    # Comptage par tranche d’âge
+    all_adherents = Adherent.objects.all()
+    age_0_6 = sum(1 for a in all_adherents if a.date_naissance and 0 <= age(a.date_naissance) <= 6)
+    age_7_12 = sum(1 for a in all_adherents if a.date_naissance and 7 <= age(a.date_naissance) <= 12)
+    age_13_19 = sum(1 for a in all_adherents if a.date_naissance and 13 <= age(a.date_naissance) <= 19)
+    age_20_30 = sum(1 for a in all_adherents if a.date_naissance and 20 <= age(a.date_naissance) <= 30)
+    age_30_60 = sum(1 for a in all_adherents if a.date_naissance and 30 <= age(a.date_naissance) <= 60)
+    age_60_plus = sum(1 for a in all_adherents if a.date_naissance and age(a.date_naissance) > 60)
 
     structure = Structure.objects.first()
-    MAX_ROWS_PER_PAGE = 20
 
-    # Styles globaux
+    # Styles PDF
     styles = getSampleStyleSheet()
     title_style = ParagraphStyle(
-        'Title',
-        parent=styles['Title'],
-        fontName='Times-Bold',
-        fontSize=18,
-        alignment=1,  # Centré
-        spaceAfter=20
+        'Title', parent=styles['Title'], fontName='Times-Bold', fontSize=18,
+        alignment=1, spaceAfter=20
     )
     header_style = ParagraphStyle(
-        'Header',
-        fontName='Times-Bold',
-        fontSize=10,
-        alignment=1  # Centré
+        'Header', fontName='Times-Bold', fontSize=10, alignment=1
     )
     cell_style = ParagraphStyle(
-        'Cell',
-        fontName='Times-Roman',
-        fontSize=9,
-        alignment=1  # Centré pour uniformiser
+        'Cell', fontName='Times-Roman', fontSize=9, alignment=1
     )
 
     # En-têtes du tableau
-    headers = ["Nom", "Prénom", "Téléphone", "Email"]
+    headers = ["Nom", "Prénom", "Sexe", "Date de Naissance", "Age", "Téléphone", "Email"]
 
-    # Remplissage des données
+    # Remplissage des lignes
     all_rows = []
+
     for ad in adherents:
+        date_naissance_str = ad.date_naissance.strftime('%d/%m/%Y') if ad.date_naissance else ''
+        age = str(ad.calculate_age(ad.date_naissance)) if ad.date_naissance else ''
+        
         all_rows.append([
             Paragraph(ad.last_name or '', cell_style),
             Paragraph(ad.first_name or '', cell_style),
+            Paragraph(ad.sexe or '', cell_style),
+            Paragraph(date_naissance_str, cell_style),
+            Paragraph(age, cell_style),
             Paragraph(ad.telephone or '', cell_style),
             Paragraph(ad.email or '', cell_style),
         ])
 
-    elements = [Spacer(1, 30)]
 
-    # Création des pages avec pagination
-    for i, start in enumerate(range(0, len(all_rows), MAX_ROWS_PER_PAGE)):
-        chunk = all_rows[start:start + MAX_ROWS_PER_PAGE]
-        data = [[Paragraph(h, header_style) for h in headers]] + chunk
+    # Début des éléments PDF
+    elements = []
+    elements.append(Spacer(1, 250))
+    elements.append(Paragraph("<u>Liste des Adhérents</u>", title_style))
+    elements.append(Spacer(1, 15))
 
-        # ✅ Tableau optimisé et équilibré
-        table = Table(
-            data,
-            colWidths=[90, 90, 100, 140],  # Réduction largeur globale
-            repeatRows=1
-        )
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('FONTSIZE', (0, 0), (-1, -1), 9),
-        ]))
+    # Ajout des statistiques sous forme de liste à puces
+    bullet_style = styles["Normal"]
+    bullet_style.alignment = 0  # Alignement à gauche
 
-        # Ajout du titre uniquement sur la première page
-        if i == 0:
-            elements.append(Spacer(1, 120))
-            elements.append(Paragraph("<u>Liste des Adhérents</u>", title_style))
-            elements.append(Spacer(1, 15))
-            styles = getSampleStyleSheet()
-            bullet_style = styles["Normal"]
-            bullet_style.alignment = 0  # 0 = left
+    adherents_list = ListFlowable(
+        [
+            ListItem(Paragraph(f"Nombre total des Adhérents : {total_adherents}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents actifs : {total_actifs}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents inactifs : {total_inactifs}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 0 à 6 ans : {age_0_6}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 7 à 12 ans : {age_7_12}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 13 à 19 ans : {age_13_19}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 20 à 30 ans : {age_20_30}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 30 à 60 ans : {age_30_60}", bullet_style)),
+            ListItem(Paragraph(f"Nombre total des Adhérents de 60 ans et plus : {age_60_plus}", bullet_style)),
+        ],
+        bulletType='bullet',
+        start='disc'
+    )
 
-            # Créer la liste à puces
-            adherents_list = ListFlowable(
-                [
-                    ListItem(Paragraph(f"Nombre total des Adhérents : {total_adherents}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents actifs : {total_actifs}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents inactifs : {total_inactifs}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 0 à 6 ans : {age_0_6}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 7 à 12 ans : {age_7_12}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 13 à 19 ans : {age_13_19}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 20 à 30 ans : {age_20_30}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 30 à 60 ans : {age_30_60}", bullet_style)),
-                    ListItem(Paragraph(f"Nombre total des Adhérents de 60 ans et plus : {age_60_plus}", bullet_style)),
-                ],
-                bulletType='bullet',  # style de puce standard
-                start='disc'        # forme de la puce (disc, circle, square…)
-            )
+    # Ajout du tableau complet SANS pagination
+    data = [[Paragraph(h, header_style) for h in headers]] + all_rows
 
-            # Ajouter dans ton PDF
-            elements.append(adherents_list)
-            elements.append(Spacer(1, 20))
+    table = Table(
+        data,
+        colWidths=[80, 80, 50, 80, 50, 80, 120],  # Ajusté pour 7 colonnes : nom, prénom, sexe, date naissance, âge, téléphone, email
+        repeatRows=1
+    )
 
-        # Ajout du tableau
-        elements.append(table)
-
-        # Page suivante si nécessaire
-        if start + MAX_ROWS_PER_PAGE < len(all_rows):
-            elements.append(PageBreak())
-
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    elements.append(table)
+    elements.append(Spacer(1, 15))
+    elements.append(adherents_list)
+    elements.append(Spacer(1, 20))
     # Génération du PDF
     final_buffer = BytesIO()
 
@@ -310,15 +289,14 @@ def adherent_print_list(request):
         def save(self):
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
                 if i == 0 and structure:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
                 if i == len(self._saved_page_states) - 1:
                     generer_pied_structure_pdf(self)
                 canvas.Canvas.showPage(self)
             canvas.Canvas.save(self)
 
+    # Construction du document
     doc = SimpleDocTemplate(
         final_buffer,
         pagesize=A4,
@@ -328,13 +306,21 @@ def adherent_print_list(request):
         bottomMargin=60
     )
 
-    # ✅ Construction du document avec entête + pied de page
-    doc.build(elements, canvasmaker=CustomCanvas)
-
-    # Réponse PDF
     response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="liste_adherents.pdf"'
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
+    # Réponse HTTP
+    doc.build(elements, canvasmaker=CustomCanvas)
+
     return response
+
 
 
 # ---------------------- Impression fiche  opérations ----------------------

@@ -9,12 +9,17 @@
     <h1 class="text-center fw-bold display-4 mb-4">
       <i class="fas fa-notes-medical"></i> Liste des prises en charge
     </h1>
-
-    <!-- Barre d'action -->
     <div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap gap-2">
-      <a href="{% url 'prise_en_charge:create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
-        <i class="fas fa-plus"></i> Ajouter
-      </a>
+
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <a href="{% url 'prise_en_charge:create' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-plus"></i> Ajouter
+        </a>
+         <a href="{% url 'prise_en_charge:print_list' %}" class="btn btn-primary fw-semibold shadow-sm btn-sm">
+          <i class="fas fa-print"></i> Imprimer
+        </a>
+      </div>
+
       <form class="d-flex" method="GET" action="{% url 'prise_en_charge:list' %}">
         <input class="form-control me-2" type="search" name="q" placeholder="Rechercher..." value="{{ query }}">
         <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
@@ -48,10 +53,10 @@
               <a href="{% url 'prise_en_charge:update' prise.id %}" class="btn btn-primary btn-sm my-1">
                 <i class="fas fa-edit"></i> Modifier
               </a>
-              <a href="{% url 'prise_en_charge:delete' prise.id %}" class="btn btn-danger btn-sm my-1" onclick="return confirm('Supprimer cette prise en charge ?');">
+              <a href="{% url 'prise_en_charge:delete' prise.id %}" class="btn btn-primary btn-sm my-1" onclick="return confirm('Supprimer cette prise en charge ?');">
                 <i class="fas fa-trash"></i> Supprimer
               </a>
-              <a href="{% url 'prise_en_charge:print_detail' prise.id %}" target="_blank" class="btn btn-success btn-sm my-1">
+              <a href="{% url 'prise_en_charge:print_detail' prise.id %}" target="_blank" class="btn btn-primary btn-sm my-1">
                 <i class="fas fa-print"></i> Imprimer
               </a>
             </td>

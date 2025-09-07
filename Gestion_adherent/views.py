@@ -79,7 +79,7 @@ def statistic_adherent_view(request):
     # Cotisations du mois et de l'année en cours
     cotisations = Cotisation.objects.filter(
         date_cotisation__year=now.year,
-        date_cotisation__month=now.month
+        #date_cotisation__month=now.month
     )
 
     cotisations_valides = Cotisation.objects.filter(statut="valide")
@@ -98,7 +98,7 @@ def statistic_adherent_view(request):
     # ===============================
     prises = PriseEnChargeAdherent.objects.filter(
         date_creation__year=now.year,
-        date_creation__month=now.month
+        #date_creation__month=now.month
     )
 
     last_five_prises = PriseEnChargeAdherent.objects.order_by("-date_creation")[:5]

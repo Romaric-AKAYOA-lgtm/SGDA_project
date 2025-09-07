@@ -1,6 +1,13 @@
+from datetime import datetime
+from io import BytesIO
+import os
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+
+from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (
     SimpleDocTemplate,
     Table,
@@ -9,15 +16,12 @@ from reportlab.platypus import (
     Spacer,
     Image,
     Frame,
-    PageTemplate
+    PageTemplate,
+    PageBreak,
 )
 from reportlab.pdfgen import canvas
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from datetime import datetime
+
 from PyPDF2 import PdfMerger, PdfReader
-from io import BytesIO
-import os
 
 # Importations des fonctions personnalisées
 from Gestion_personnel.absence.vew_print import generer_pdf_absences_employe
@@ -26,6 +30,7 @@ from Gestion_personnel.operation.views import generer_pied_structure_pdf
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
 from Gestion_personnel.employe.models import Employe
+
 
 def employe_print_detail(request, pk):
     employe = get_object_or_404(Employe, pk=pk)
@@ -117,38 +122,29 @@ def employe_print_detail(request, pk):
     return response
 
 
-from io import BytesIO
-from django.http import HttpResponse
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, PageBreak
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib import colors
-from io import BytesIO
-
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, PageBreak
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib import colors
-from reportlab.pdfgen import canvas as rcanvas
-from io import BytesIO
-
 def employe_print_list(request):
+    # Récupérer les employés actifs
     employes = Employe.objects.filter(statut=Employe.STATUT_ACTIF).order_by('matricule')
+    employe_counts = employes.count()
     structure = Structure.objects.first()
-    MAX_ROWS_PER_PAGE = 15  # Ajuste selon la taille du tableau et la page
 
+    # Styles
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=20, alignment=1, spaceAfter=20)
+    title_style = ParagraphStyle(
+        'Title',
+        parent=styles['Title'],
+        fontName='Times-Bold',
+        fontSize=18,
+        alignment=1,
+        spaceAfter=20
+    )
     header_style = ParagraphStyle('Header', fontName='Times-Bold', fontSize=10, alignment=1)
     cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=9)
 
+    # En-têtes du tableau
     headers = ["Matricule", "Nom", "Prénom", "Sexe", "Statut", "Téléphone", "Email"]
 
-    # Construire les lignes du tableau
+    # Lignes du tableau
     all_rows = []
     for emp in employes:
         all_rows.append([
@@ -161,39 +157,46 @@ def employe_print_list(request):
             Paragraph(emp.email or '', cell_style),
         ])
 
+    # Préparer les éléments du PDF
     elements = []
-    elements.append(Spacer(1, 30))
-    # Découper en blocs pour chaque page
-    for i, start in enumerate(range(0, len(all_rows), MAX_ROWS_PER_PAGE)):
-        chunk = all_rows[start:start + MAX_ROWS_PER_PAGE]
-        data = [[Paragraph(h, header_style) for h in headers]] + chunk
-        table = Table(data, colWidths=[60, 80, 80, 40, 60, 80, 95], repeatRows=1)
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-            ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 11),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
-        ]))
+    elements.append(Spacer(1, 250))
+    elements.append(Paragraph("<u>Liste des Employés</u>", title_style))
+    elements.append(Spacer(1, 20))
 
-        if i == 0:
-            elements.append(Spacer(1, 100))
-            elements.append(Paragraph("<u>Liste des Employés</u>", title_style))
-            elements.append(Spacer(1, 20))
+    # Construire le tableau
+    data = [[Paragraph(h, header_style) for h in headers]] + all_rows
+    table = Table(data, colWidths=[60, 80, 80, 60, 40, 80, 120], repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 11),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+    ]))
 
-        elements.append(table)
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph(f"Total des Employés : {employe_counts}", cell_style))
 
-        if start + MAX_ROWS_PER_PAGE < len(all_rows):
-            elements.append(PageBreak())
+    # Préparer la réponse HTTP
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="liste_employes.pdf"'
 
-    final_buffer = BytesIO()
-    doc = SimpleDocTemplate(final_buffer, pagesize=A4, topMargin=180, leftMargin=50, rightMargin=50, bottomMargin=80)
+    # Utiliser la réponse directement dans SimpleDocTemplate
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
 
-    # --- Canvas personnalisé pour en-tête et pied ---
+    # Classe pour gérer l'en-tête et le pied de page
     class CustomCanvas(canvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
@@ -211,15 +214,13 @@ def employe_print_list(request):
                     generer_entete_structure_pdf(self, structure)
                 # Pied de page uniquement sur la dernière page
                 if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)  # <-- sans argument
+                    generer_pied_structure_pdf(self)
                 canvas.Canvas.showPage(self)
             canvas.Canvas.save(self)
 
+    # Construire le PDF
     doc.build(elements, canvasmaker=CustomCanvas)
-    #doc.build(elements, canvasmaker=HeaderFooterCanvas)
 
-    response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="liste_employes.pdf"'
     return response
 
 

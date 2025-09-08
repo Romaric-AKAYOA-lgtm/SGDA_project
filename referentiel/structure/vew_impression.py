@@ -11,6 +11,8 @@ from django.utils.timezone import localtime
 from textwrap import wrap  # <-- Pour couper le texte
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+
+from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from .models import Structure
 from io import BytesIO
 from django.http import HttpResponse
@@ -85,33 +87,41 @@ def generer_entete_structure_pdf(p):
     return y
 
 
-def generer_pied_structure_pdf(p, user=None):
-    """
-    Pied de page : lieu, date, utilisateur.
-    """
-    width, height = A4
-    x_offset_right = width - 200
-    y_infos = 200
-
-    date_du_jour = localtime().strftime("%d/%m/%Y")
-    nom = getattr(user, 'tnm', 'Nom').upper() if user else ''
-    prenom = getattr(user, 'tpm', 'Prénom') if user else ''
-
-    p.setFont("Times-Roman", 10)
-    p.drawString(x_offset_right, y_infos, f"Fait à Brazzaville, le {date_du_jour}")
-    if user:
-        p.drawString(x_offset_right, y_infos - 100, f"{nom} {prenom}")
-
-from django.shortcuts import get_object_or_404
-from .models import Structure  # importe ton modèle Structure
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph
-
+# Définir les styles globaux
 styles = getSampleStyleSheet()
 styleN = styles['Normal']
+
+# --- Classe personnalisée pour gérer en-tête, pied et pagination ---
+class CustomCanvas(canvas.Canvas):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        total_pages = len(self._saved_page_states)
+        for i, state in enumerate(self._saved_page_states):
+            self.__dict__.update(state)
+
+            # En-tête sur la première page uniquement
+            if i == 0:
+                generer_entete_structure_pdf(self, Structure.objects.first())
+
+            # Pied sur la dernière page uniquement
+            if i == total_pages - 1:
+                generer_pied_structure_pdf(self)
+
+            # Numéros de pages
+            page_num_text = f"Page {i + 1} / {total_pages}"
+            self.setFont("Times-Roman", 9)
+            self.drawRightString(550, 20, page_num_text)
+
+            super().showPage()
+        super().save()
+
 
 def generer_pdf_structure(request):
     structure = Structure.objects.first()
@@ -121,23 +131,21 @@ def generer_pdf_structure(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="structure.pdf"'
 
-    p = canvas.Canvas(response, pagesize=A4)
+    # Utiliser CustomCanvas
+    p = CustomCanvas(response, pagesize=A4)
     width, height = A4
     margin_top = 60
     margin_bottom = 40
     x_start = 60
     y = height - margin_top
-    cell_padding = 4  # padding interne pour chaque cellule
+    cell_padding = 4
 
-    # --- En-tête sur la première page seulement ---
-    y = generer_entete_structure_pdf(p, structure)
-
-    # --- Titre ---
+    # --- Titre principal ---
     p.setFont("Helvetica-Bold", 14)
     titre = "Informations générales"
-    y -= 15
+    y -= 290
     p.drawCentredString(width / 2, y, titre)
-    y -= 20
+    y -= 40
 
     # --- Données du tableau ---
     infos = [
@@ -153,21 +161,22 @@ def generer_pdf_structure(request):
     ]
     col_widths = [150, 350]
 
-    # --- Fonction pour dessiner un tableau avec padding ---
+    # --- Fonction pour dessiner un tableau avec Paragraph et padding ---
     def draw_table(c, x, y, data, col_widths, row_height=18, padding=4):
-        max_width = sum(col_widths)
         for row in data:
-            # Calcul de la hauteur de la ligne selon le texte
+            # Calcul dynamique de la hauteur des lignes
             cell_heights = []
             for i, cell in enumerate(row):
                 para = Paragraph(str(cell), styleN)
                 w, h = para.wrap(col_widths[i] - 2 * padding, row_height)
                 cell_heights.append(h)
             line_height = max(cell_heights) + 2 * padding
+
             # Nouvelle page si nécessaire
             if y - line_height < margin_bottom:
                 c.showPage()
                 y = height - margin_top
+
             # Dessiner chaque cellule
             x_pos = x
             for i, cell in enumerate(row):
@@ -175,36 +184,25 @@ def generer_pdf_structure(request):
                 w, h = para.wrap(col_widths[i] - 2 * padding, line_height)
                 para.drawOn(c, x_pos + padding, y - h - padding)
                 x_pos += col_widths[i]
+
             # Dessiner les bordures
             x_pos = x
-            for i, w_cell in enumerate(col_widths):
+            for w_cell in col_widths:
                 c.rect(x_pos, y - line_height, w_cell, line_height, stroke=1, fill=0)
                 x_pos += w_cell
+
             y -= line_height
         return y
 
     # --- Dessiner le tableau ---
     y = draw_table(p, x_start, y, infos, col_widths, padding=cell_padding)
 
-    # --- Pied de page ---
-    generer_pied_structure_pdf(p, user=request.user)
-
+    # Finalisation du PDF
     p.showPage()
     p.save()
     return response
 
 
-
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from .models import Structure
-from io import BytesIO
-from textwrap import wrap
-import re
-from reportlab.lib.pagesizes import A4
-from textwrap import wrap
 
 def generer_sigle(texte):
     """
@@ -338,12 +336,7 @@ def afficher_structure_direct(request, pk):
         "fonctions": fonctions_data,
         "organisations": organisations_data
     }
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-from io import BytesIO
-from textwrap import wrap
+
 
 def draw_table(p, x, y, data, col_widths, row_height=36, repeat_header=True, max_lines_per_cell=2):
     """
@@ -532,16 +525,26 @@ def generer_pdf_structure_detail(request, pk):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # En-tête uniquement sur la première page
+
+                # Ajouter en-tête sur la première page
                 if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self, user=request.user)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
+
 
     doc.build(elements, canvasmaker=CustomCanvas)
     buffer.seek(0)

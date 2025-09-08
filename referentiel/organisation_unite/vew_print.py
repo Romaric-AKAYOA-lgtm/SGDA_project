@@ -1,32 +1,37 @@
 from django.http import HttpResponse
+from datetime import datetime
+
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfgen import canvas
-from datetime import datetime
 
+from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from referentiel.organisation_unite.models import OrganisationUnite
 from referentiel.structure.models import Structure
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
 
 
 def organisation_unite_print(request):
+    structure_defaut = Structure.objects.first()
+    if not structure_defaut:
+        return HttpResponse("Aucune structure disponible", status=404)
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="liste_organisations_unites.pdf"'
 
     doc = SimpleDocTemplate(
         response,
         pagesize=A4,
-        topMargin=280,   # marge haute pour laisser place à l'en-tête
+        topMargin=280,   # marge haute pour l'en-tête
         leftMargin=50,
         rightMargin=50,
         bottomMargin=50, # marge basse pour pied de page
     )
 
     elements = []
-
     styles = getSampleStyleSheet()
 
     # Titre en Times-Bold
@@ -42,7 +47,7 @@ def organisation_unite_print(request):
     elements.append(title)
     elements.append(Spacer(1, 20))
 
-    # Style cellule en Times-Roman avec retour à la ligne
+    # Style cellule
     cell_style = ParagraphStyle(
         name='CellStyleTimes',
         fontName='Times-Roman',
@@ -51,7 +56,7 @@ def organisation_unite_print(request):
         wordWrap='CJK',
     )
 
-    # Style header en Times-Bold centré
+    # Style header
     header_style = ParagraphStyle(
         name='HeaderStyleTimes',
         parent=styles['Normal'],
@@ -89,47 +94,52 @@ def organisation_unite_print(request):
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),   # en-tête centré
         ('ALIGN', (0, 1), (-1, -1), 'LEFT'),    # contenu aligné à gauche
-
         ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 12),
-
         ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-
         ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]))
     elements.append(table)
 
-    # Fonction pour dessiner l'en-tête
-    def en_tete_page(pdf_canvas, doc):
-        structure = Structure.objects.first()
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Classe pour gérer en-tête/pied de page et pagination
+    class CustomCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    # Fonction pour dessiner le pied de page
-    def pied_de_page(pdf_canvas, doc):
-        structure = Structure.objects.first()
-        if structure:
-            texte = f"{structure.lieu_residence} , le  {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}"
-            pdf_canvas.saveState()
-            pdf_canvas.setFont("Times-Italic", 8)
-            width, height = A4
-            pdf_canvas.drawString(50, 30, texte)
-            pdf_canvas.restoreState()
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
-    # Combinaison des deux sur chaque page
-    def on_page(pdf_canvas, doc):
-        en_tete_page(pdf_canvas, doc)
-        pied_de_page(pdf_canvas, doc)
+        def save(self):
+            total_pages = len(self._saved_page_states)
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+
+                # En-tête sur la première page uniquement
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure_defaut)
+
+                # Pied sur la dernière page uniquement
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Numéro de page
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)
+
+                super().showPage()
+            super().save()
 
     # Générer le PDF
-    doc.build(elements, onFirstPage=on_page, onLaterPages=on_page)
+    doc.build(elements, canvasmaker=CustomCanvas)
 
     return response
+
 
 def organisation_print_hierarchique(request):
     # Récupérer toutes les organisations

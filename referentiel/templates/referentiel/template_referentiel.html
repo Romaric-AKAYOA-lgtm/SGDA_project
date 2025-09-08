@@ -4,7 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block titre %}Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Description de votre site ici">
+    <meta name="author" content="AKAYOA Géoffroy Romaric, Ingénieur des travaux informatique">
+    <meta name="keywords" content="mot-clé1, mot-clé2, mot-clé3">
+    <title>{% block titre %}Dashboard{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'images/building_icon.png' %}" />
 
   <!-- CSS -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
@@ -110,24 +115,6 @@
         </a>
       </li>
 
-      <div class="utilisateur-connecte fixed-bottom border-top shadow-sm px-3 py-3">
-        {% if user.is_authenticated %}
-          <div class="d-flex align-items-center gap-3">
-             {% if user.image %}
-               <img src="{{ user.image.url }}" alt="Photo de profil" class="rounded-circle" width="40" height="40" />
-             {% else %}
-              <i class="bi bi-person-circle fs-1 text-secondary rounded-circle bg-light p-1" style="width:40px; height:40px; line-height:38px;"></i>
-            {% endif %}
-            <div class="d-flex flex-column">
-              <span class="fw-semibold text-width">Bienvenue, {{ user.username }} !</span>
-              <small class="text-danger">Statut : En ligne</small>  </div>
-          </div>
-        {% else %}
-          <p class="mb-0 text-danger text-center">
-            <i class="bi bi-exclamation-circle me-1"></i> Vous n'êtes pas connecté.
-          </p>
-        {% endif %}
-      </div>
     </ul>
   </div>
 </div>
@@ -250,16 +237,48 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="custom-footer custom content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col text-center">
-          <p>Design by <strong>Géoffroy Romaric AAKAYOA</strong></p>
-        </div>
+<!-- Footer -->
+ 
+<footer class="custom-footer custom content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-center">
+        <p>
+          Design by <strong>Géoffroy Romaric AKAYOA</strong> |
+        <a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#infoAppModal">
+          Infos application
+        </a>
+
+        </p>
       </div>
     </div>
-  </footer>
+  </div>
+</footer>
+
+<!-- Modal d'informations de l'application -->
+<div class="modal fade" id="infoAppModal" tabindex="-1" aria-labelledby="infoAppModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoAppModalLabel">Informations Techniques</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li>Nom de l'application : Gestion Personnel Visites INRAP</li>
+          <li>Version : 1.0</li>
+          <li>Auteur : Géoffroy Romaric AKAYOA</li>
+          <li>Technologies utilisées : Django, Bootstrap, Font Awesome</li>
+          <li>Date de mise à jour : 24 août 2025</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- Scripts -->
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

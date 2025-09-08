@@ -37,13 +37,12 @@
                 {{ form.raison_sociale.errors }}
               </div>
 
-            <div class="mb-3">
-              {{ form.date_creation.label_tag }}
-              <input type="datetime-local" name="{{ form.date_creation.name }}" class="form-control"
-                    value="{% if form.date_creation.value %}{{ form.date_creation.value|date:'Y-m-d\\TH:i' }}{% endif %}">
-              {{ form.date_creation.errors }}
-            </div>
-
+              <div class="mb-3">
+                {{ form.date_creation.label_tag }}
+                <input type="datetime-local" name="{{ form.date_creation.name }}" class="form-control"
+                       value="{% if form.date_creation.value %}{{ form.date_creation.value|date:'Y-m-d\\TH:i' }}{% endif %}">
+                {{ form.date_creation.errors }}
+              </div>
 
               <div class="mb-3">
                 {{ form.adresse.label_tag }}

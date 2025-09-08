@@ -1,0 +1,383 @@
+2025-09-08 17:29:15,523 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:30:35,201 - INFO - basehttp - "GET / HTTP/1.1" 302 0
+2025-09-08 17:30:35,584 - INFO - basehttp - "GET /compte/login/ HTTP/1.1" 200 14502
+2025-09-08 17:30:35,645 - INFO - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 302 0
+2025-09-08 17:30:35,678 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 200 155845
+2025-09-08 17:30:35,682 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 200 7304
+2025-09-08 17:30:35,702 - INFO - basehttp - "GET /compte/login/ HTTP/1.1" 200 14502
+2025-09-08 17:30:35,711 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 200 74185
+2025-09-08 17:30:35,809 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 200 78743
+2025-09-08 17:30:35,941 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 113108
+2025-09-08 17:30:35,989 - INFO - basehttp - "GET /favicon.ico HTTP/1.1" 302 0
+2025-09-08 17:30:36,021 - INFO - basehttp - "GET /compte/login/ HTTP/1.1" 200 14502
+2025-09-08 17:30:47,255 - INFO - basehttp - "POST /compte/login/ HTTP/1.1" 302 0
+2025-09-08 17:30:47,400 - INFO - basehttp - "GET /Gestion_adherent/ HTTP/1.1" 200 23719
+2025-09-08 17:30:47,470 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:30:47,471 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:30:47,664 - WARNING - log - Not Found: /favicon.ico
+2025-09-08 17:30:47,665 - WARNING - basehttp - "GET /favicon.ico HTTP/1.1" 404 179
+2025-09-08 17:33:22,283 - INFO - basehttp - "GET /compte/logout/ HTTP/1.1" 302 0
+2025-09-08 17:33:22,322 - INFO - basehttp - "GET /compte/login/ HTTP/1.1" 200 14502
+2025-09-08 17:33:22,379 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 17:33:22,386 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 17:33:22,388 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 17:33:22,389 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 17:33:22,389 - INFO - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 302 0
+2025-09-08 17:33:22,415 - INFO - basehttp - "GET /compte/login/ HTTP/1.1" 200 14502
+2025-09-08 17:33:35,846 - INFO - basehttp - "POST /compte/login/ HTTP/1.1" 302 0
+2025-09-08 17:33:35,964 - INFO - basehttp - "GET / HTTP/1.1" 200 18584
+2025-09-08 17:33:36,044 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:33:36,046 - WARNING - log - Not Found: /static/js/chart.min.js
+2025-09-08 17:33:36,047 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:33:36,050 - WARNING - basehttp - "GET /static/js/chart.min.js HTTP/1.1" 404 179
+2025-09-08 17:33:36,051 - INFO - basehttp - - Broken pipe from ('127.0.0.1', 52384)
+2025-09-08 17:33:36,056 - WARNING - log - Not Found: /static/fontawesome/css/all.min.css
+2025-09-08 17:33:36,057 - WARNING - basehttp - "GET /static/fontawesome/css/all.min.css HTTP/1.1" 404 179
+2025-09-08 17:33:36,106 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 17:33:38,940 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14285
+2025-09-08 17:33:38,994 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:33:38,994 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:33:39,094 - WARNING - log - Not Found: /static/images/building_icon.png
+2025-09-08 17:33:39,095 - WARNING - basehttp - "GET /static/images/building_icon.png HTTP/1.1" 404 179
+2025-09-08 17:33:51,107 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 4629
+2025-09-08 17:36:33,614 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\models.py changed, reloading.
+2025-09-08 17:36:36,131 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:37:17,299 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\forms.py changed, reloading.
+2025-09-08 17:37:18,822 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:38:08,404 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\admin.py changed, reloading.
+2025-09-08 17:38:10,240 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:38:44,398 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py changed, reloading.
+2025-09-08 17:38:46,248 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:38:53,712 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py changed, reloading.
+2025-09-08 17:38:55,549 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:38:59,745 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py changed, reloading.
+2025-09-08 17:39:01,281 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:39:11,071 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py changed, reloading.
+2025-09-08 17:39:12,740 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:39:27,682 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py changed, reloading.
+2025-09-08 17:39:29,204 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:43:44,518 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:43:46,586 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:44:24,651 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:44:26,618 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:45:37,464 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:45:40,494 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:48:38,735 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:48:40,566 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:50:16,085 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:50:17,781 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:52:18,475 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:52:20,706 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:54:22,705 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:54:24,725 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:54:31,471 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:54:32,725 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:55:03,166 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:55:04,937 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:55:26,978 - ERROR - log - Internal Server Error: /structures/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+MySQLdb.OperationalError: (1054, "Unknown column 'structure_structure.numero_enregistrement' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\referentiel\structure\views.py", line 25, in structure_list
+    return render(request, 'structure/structure_list.html', {'structures': structures})
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 173, in render
+    with context.bind_template(self):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\context.py", line 254, in bind_template
+    updates.update(processor(self.request))
+  File "D:\Projet\AJCA\SGDA_project\referentiel\structure\context_processors.py", line 9, in administration
+    administration = Structure.objects.first()  # Ou votre logique spécifique pour obtenir l'objet administration
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1057, in first
+    for obj in queryset[:1]:
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'structure_structure.numero_enregistrement' in 'field list'")
+2025-09-08 17:55:27,237 - ERROR - basehttp - "GET /structures/ HTTP/1.1" 500 145
+2025-09-08 17:57:08,593 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 17:57:08,662 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 17:57:08,669 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 17:57:08,670 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 17:57:08,681 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 17:57:08,684 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:57:08,685 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:57:08,764 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 17:57:15,953 - INFO - basehttp - "GET /structures/modifier/1/ HTTP/1.1" 200 16287
+2025-09-08 17:57:16,029 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:57:16,030 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:57:27,684 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 17:57:27,745 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 17:57:27,745 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 17:57:32,291 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 2686
+2025-09-08 17:57:42,982 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2828
+2025-09-08 17:58:33,121 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\urls.py changed, reloading.
+2025-09-08 17:58:35,689 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 17:59:41,228 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 17:59:42,866 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:00:10,986 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:00:12,518 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:00:18,701 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:00:20,849 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:00:24,055 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:00:25,682 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:00:34,243 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:00:36,313 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:00:46,794 - ERROR - log - Internal Server Error: /structures/imprimer/1/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py", line 134, in generer_pdf_structure_detail
+NameError: name 'SimpleDocTemplate' is not defined
+2025-09-08 18:00:46,816 - ERROR - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 500 145
+2025-09-08 18:00:49,772 - ERROR - log - Internal Server Error: /structures/imprimer/1/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py", line 134, in generer_pdf_structure_detail
+NameError: name 'SimpleDocTemplate' is not defined
+2025-09-08 18:00:49,773 - ERROR - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 500 145
+2025-09-08 18:00:54,777 - ERROR - log - Internal Server Error: /structures/imprimer/1/
+Traceback (most recent call last):
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Romaric AKAYOA\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py", line 134, in generer_pdf_structure_detail
+NameError: name 'SimpleDocTemplate' is not defined
+2025-09-08 18:00:54,779 - ERROR - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 500 145
+2025-09-08 18:01:00,361 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2828
+2025-09-08 18:02:39,175 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:02:41,302 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:02:50,707 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:02:50,769 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:02:50,770 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:02:50,773 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:02:50,792 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:02:50,801 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:02:50,802 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:02:51,036 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:02:54,666 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 3361
+2025-09-08 18:04:13,342 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:04:16,376 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:04:32,820 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:04:39,098 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:04:52,537 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:04:54,106 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:05:06,353 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:05:07,782 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:05:17,039 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:05:18,543 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:05:26,646 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:05:28,305 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:05:45,286 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:05:47,372 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:05:56,461 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:05:56,527 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:05:56,528 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:05:56,531 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:05:56,537 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:05:56,551 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:05:56,552 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:05:56,582 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:06:05,175 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 3381
+2025-09-08 18:06:32,702 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2828
+2025-09-08 18:08:15,943 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:08:17,717 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:08:27,140 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 3381
+2025-09-08 18:08:34,155 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2733
+2025-09-08 18:10:28,171 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:10:30,551 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:11:30,275 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\urls.py changed, reloading.
+2025-09-08 18:11:32,124 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:11:36,035 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:11:37,536 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:12:38,178 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:12:40,049 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:12:48,803 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:12:48,866 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:12:48,875 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:12:48,878 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:12:48,883 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:12:48,888 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:12:48,889 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:12:49,160 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:12:51,383 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2732
+2025-09-08 18:16:27,182 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:16:29,791 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:16:38,053 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:16:38,103 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:16:38,112 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:16:38,122 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:16:38,125 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:16:38,134 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:16:38,135 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:16:38,314 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:16:40,711 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 2751
+2025-09-08 18:17:34,843 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:17:37,250 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:18:29,128 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:18:31,723 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:20:40,875 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:20:42,858 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:21:01,907 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:21:03,599 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:21:15,416 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:21:15,483 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:21:15,497 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:21:15,503 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:21:15,514 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:21:15,517 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:21:15,519 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:21:15,570 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:21:18,473 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3199
+2025-09-08 18:21:34,769 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:21:36,547 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:21:49,320 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3199
+2025-09-08 18:24:27,916 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:24:29,765 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:24:44,075 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:24:44,136 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:24:44,154 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:24:44,160 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:24:44,161 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:24:44,164 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:24:44,165 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:24:44,210 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:24:46,440 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3199
+2025-09-08 18:25:35,284 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:25:37,569 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:25:46,273 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:25:46,341 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:25:46,355 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:25:46,359 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:25:46,363 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:25:46,364 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:25:46,381 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:25:46,405 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:25:46,882 - INFO - basehttp - "GET /structures/modifier/1/ HTTP/1.1" 200 16287
+2025-09-08 18:25:46,955 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:25:46,956 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:25:48,811 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:25:48,870 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:25:48,871 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:25:51,461 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:26:23,935 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:26:26,729 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:26:35,907 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:26:42,004 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:28:40,128 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:28:42,171 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:28:54,794 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:28:54,848 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:28:54,877 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:28:54,882 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:28:54,884 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:28:54,886 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:28:54,890 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:28:54,925 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:28:58,645 - INFO - basehttp - "GET /structures/imprimer/1/ HTTP/1.1" 200 3381
+2025-09-08 18:29:05,662 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3191
+2025-09-08 18:29:26,718 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:29:29,245 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:29:37,792 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3191
+2025-09-08 18:29:58,597 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:30:02,144 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:30:14,215 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:30:16,089 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:30:28,228 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:30:28,291 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:30:28,307 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:30:28,310 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:30:28,312 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:30:28,317 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:30:28,338 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:30:28,366 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:30:30,019 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3197
+2025-09-08 18:30:51,130 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:30:53,162 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:31:02,165 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:31:23,549 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:31:25,178 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:31:34,096 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3199
+2025-09-08 18:31:45,546 - INFO - autoreload - D:\Projet\AJCA\SGDA_project\referentiel\structure\vew_impression.py changed, reloading.
+2025-09-08 18:31:47,590 - INFO - autoreload - Watching for file changes with StatReloader
+2025-09-08 18:31:59,667 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:32:38,765 - INFO - basehttp - "GET /structures/ HTTP/1.1" 200 14155
+2025-09-08 18:32:38,833 - INFO - basehttp - "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+2025-09-08 18:32:38,841 - INFO - basehttp - "GET /static/css/styles.css HTTP/1.1" 304 0
+2025-09-08 18:32:38,852 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/css/all.min.css HTTP/1.1" 304 0
+2025-09-08 18:32:38,853 - INFO - basehttp - "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 304 0
+2025-09-08 18:32:38,858 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:32:38,859 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:32:38,888 - INFO - basehttp - "GET /static/fontawesome-free-7.0.0-web/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+2025-09-08 18:32:40,156 - INFO - basehttp - "GET /structures/rechercher/ HTTP/1.1" 200 14207
+2025-09-08 18:32:40,228 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:32:40,229 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:32:41,965 - INFO - basehttp - "GET /structures/imprimer/ HTTP/1.1" 200 3198
+2025-09-08 18:32:52,174 - INFO - basehttp - "GET /fonctions/ HTTP/1.1" 200 17017
+2025-09-08 18:32:52,232 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:32:52,233 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:32:54,194 - INFO - basehttp - "GET /fonctions/imprimer/ HTTP/1.1" 200 3084
+2025-09-08 18:33:04,690 - INFO - basehttp - "GET /fonctions/modifier/1/ HTTP/1.1" 200 13587
+2025-09-08 18:33:04,758 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:33:04,759 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:33:08,250 - INFO - basehttp - "POST /fonctions/modifier/1/ HTTP/1.1" 302 0
+2025-09-08 18:33:08,292 - INFO - basehttp - "GET /fonctions/ HTTP/1.1" 200 17017
+2025-09-08 18:33:08,349 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:33:08,350 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179
+2025-09-08 18:33:10,769 - INFO - basehttp - "GET /referentiel/ HTTP/1.1" 200 16325
+2025-09-08 18:33:10,829 - WARNING - log - Not Found: /static/css/dist/style.css
+2025-09-08 18:33:10,830 - WARNING - basehttp - "GET /static/css/dist/style.css HTTP/1.1" 404 179

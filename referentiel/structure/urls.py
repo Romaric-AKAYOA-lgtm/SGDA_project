@@ -16,4 +16,4 @@ urlpatterns = [
     path('imprimer/<int:pk>/', vew_impression.generer_pdf_structure_detail, name='imprimer_detail'),
 ]
 
-
+  

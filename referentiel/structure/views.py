@@ -13,8 +13,11 @@ def structure_list(request):
             Q(raison_sociale__icontains=query) |
             Q(email__icontains=query) |
             Q(telephone__icontains=query) |
-            Q(structure_sous_tutelle__icontains=query)|
-            Q(matricule__icontains=query)
+            Q(structure_sous_tutelle__icontains=query) |
+            Q(matricule__icontains=query) |
+            Q(contact_personne__icontains=query) |
+            Q(numero_enregistrement__icontains=query) |
+            Q(site_web__icontains=query)
         ).order_by('raison_sociale')
     else:
         structures = Structure.objects.all().order_by('raison_sociale')
@@ -54,8 +57,11 @@ def structure_search(request):
             Q(raison_sociale__icontains=query) |
             Q(email__icontains=query) |
             Q(telephone__icontains=query) |
-            Q(structure_sous_tutelle__icontains=query)|
-            Q(matricule__icontains=query)
+            Q(structure_sous_tutelle__icontains=query) |
+            Q(matricule__icontains=query) |
+            Q(contact_personne__icontains=query) |
+            Q(numero_enregistrement__icontains=query) |
+            Q(site_web__icontains=query)
         ).order_by('raison_sociale')
     else:
         structures = Structure.objects.all().order_by('-date_creation')

@@ -13,8 +13,8 @@ IP = os.getenv("DJANGO_IP", "127.0.0.1")
 PORT = os.getenv("DJANGO_PORT", "8000")
 
 # Définir les commandes à bloquer en production
-#DISABLE_MANAGE_COMMANDS = ['createsuperuser', 'flush','makemigrations','migrate', 'dbshell']
-DISABLE_MANAGE_COMMANDS = []
+DISABLE_MANAGE_COMMANDS = ['createsuperuser', 'flush','makemigrations','migrate', 'dbshell']
+#DISABLE_MANAGE_COMMANDS = []
 
 def main():
     """Run administrative tasks."""

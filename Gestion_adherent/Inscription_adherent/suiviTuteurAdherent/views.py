@@ -267,6 +267,7 @@ def suivi_print_list(request):
     elements.append(table)
 
     # Canvas personnalisé
+
     class CustomCanvas(canvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
@@ -277,17 +278,25 @@ def suivi_print_list(request):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
-                if i == 0 and structure:
-                    generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
 
+                # Ajouter en-tête sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
     doc.build(elements,  canvasmaker=CustomCanvas)
 
     return response

@@ -6,6 +6,7 @@ from reportlab.platypus import (
     SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer,
     PageBreak
 )
+from reportlab.pdfgen import canvas as rcanvas
 from reportlab.platypus import ListFlowable, ListItem, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfgen import canvas
@@ -137,7 +138,7 @@ def adherent_print_detail(request, pk):
     elements.append(Paragraph("<i>Document généré automatiquement par le système AJCA</i>", styles["Normal"]))
 
     # Canvas personnalisé
-    class CustomCanvas(canvas.Canvas):
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -147,16 +148,25 @@ def adherent_print_detail(request, pk):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
-                if i == 0 and structure:
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
     # Génération finale du PDF
     doc.build(elements, canvasmaker=CustomCanvas)
    #doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
@@ -277,7 +287,8 @@ def adherent_print_list(request):
     final_buffer = BytesIO()
 
     # Canvas personnalisé
-    class CustomCanvas(canvas.Canvas):
+
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -287,14 +298,25 @@ def adherent_print_list(request):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                if i == 0 and structure:
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
 
     # Construction du document
     doc = SimpleDocTemplate(
@@ -373,7 +395,7 @@ def adherent_print_list_operation(request, pk):
         )
 
     # Canvas personnalisé
-    class CustomCanvas(canvas.Canvas):
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -383,17 +405,25 @@ def adherent_print_list_operation(request, pk):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
-                if i == 0 and structure:
-                    generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
 
+                # Ajouter en-tête sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
     doc_all.build(
             all_elements,
           canvasmaker=CustomCanvas)
@@ -448,7 +478,8 @@ def adherent_print_detail(request, pk):
     elements.append(table)
     elements.append(Spacer(1, 12))
     # Canvas personnalisé
-    class CustomCanvas(canvas.Canvas):
+
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -458,16 +489,25 @@ def adherent_print_detail(request, pk):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
-                if i == 0 and structure:
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
 
     # Génération PDF
     buffer = BytesIO()
@@ -510,7 +550,8 @@ def adherent_print_detail_print(request, pk):
     ]))
     elements.append(table)
     elements.append(Spacer(1, 12))
-    class CustomCanvas(canvas.Canvas):
+
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -520,16 +561,25 @@ def adherent_print_detail_print(request, pk):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # Entête uniquement sur la première page
-                if i == 0 and structure:
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
 
     doc_landscape.build(elements,  canvasmaker=CustomCanvas)
 

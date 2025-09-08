@@ -1,6 +1,6 @@
 from datetime import datetime
 from io import BytesIO
-
+from reportlab.pdfgen import canvas as rcanvas
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
@@ -180,7 +180,8 @@ def prise_en_charge_print_list(request):
         elements.append(Spacer(1, 20))
 
     # Canvas personnalisé pour entête et pied de page
-    class CustomCanvas(canvas.Canvas):
+
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -190,14 +191,25 @@ def prise_en_charge_print_list(request):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                if i == 0 and structure:
-                    generer_entete_structure_pdf(self, structure)  # entête première page
-                if i == len(self._saved_page_states) - 1:
-                    generer_pied_structure_pdf(self)  # pied dernière page
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
 
     # Construction finale du PDF
     doc.build(elements, canvasmaker=CustomCanvas)
@@ -210,9 +222,9 @@ def prise_en_charge_print_list(request):
 # === Détail d'une prise en charge ===
 def prise_en_charge_print_detail(request, pk):
     prise = get_object_or_404(PriseEnChargeAdherent, pk=pk)
-    structure = Structure.objects.first()  # Assure que structure est définie
+    structure = Structure.objects.first()  # Pour l'en-tête
 
-    # Pour PDF : création d'une liste de Flowables
+    # Styles PDF
     styles = getSampleStyleSheet()
     title_style = ParagraphStyle(
         name='Title',
@@ -227,9 +239,13 @@ def prise_en_charge_print_detail(request, pk):
         fontSize=12
     )
 
+    # Contenu PDF
     elements = []
     elements.append(Spacer(1, 250))
-    elements.append(Paragraph(f"Prise en charge : {prise.objet} du {prise.date_creation.strftime('%d/%m/%Y')}", title_style))
+    elements.append(Paragraph(
+        f"Prise en charge : {prise.objet} du {prise.date_creation.strftime('%d/%m/%Y')}",
+        title_style
+    ))
     elements.append(Spacer(1, 20))
 
     adherent = prise.adherent
@@ -239,7 +255,6 @@ def prise_en_charge_print_detail(request, pk):
         [Paragraph("Âge", cell_style), Paragraph(str(adherent.calculate_age(adherent.date_naissance)) if adherent.date_naissance else '', cell_style)],
         [Paragraph("Sexe", cell_style), Paragraph(adherent.sexe or '', cell_style)],
         [Paragraph("Téléphone", cell_style), Paragraph(adherent.telephone or '', cell_style)],
-        [Paragraph("Champ", cell_style), Paragraph("Valeur", cell_style)],
         [Paragraph("Objet", cell_style), Paragraph(prise.objet, cell_style)],
         [Paragraph("Description", cell_style), Paragraph(prise.description or '', cell_style)],
         [Paragraph("Date de création", cell_style), Paragraph(prise.date_creation.strftime('%d/%m/%Y %H:%M'), cell_style)],
@@ -257,22 +272,47 @@ def prise_en_charge_print_detail(request, pk):
     ]))
     elements.append(table)
 
-    # Affichage HTML si demandé
+    # HTML si demandé
     if request.GET.get('format') == 'html':
-        return render(request, 'Prise_en_charge_adherent/prise_en_charge_print_detail.html', {
-            'prise': prise
-        })
+        return render(request, 'Prise_en_charge_adherent/prise_en_charge_print_detail.html', {'prise': prise})
 
     # Génération PDF
     buffer = BytesIO()
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="prise_en_charge_{pk}.pdf"'
 
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Canvas personnalisé pour gérer en-tête, pied et pagination
+    class CustomCanvas(rcanvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
+        def save(self):
+            total_pages = len(self._saved_page_states)
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
+
+    # Création du document PDF
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
@@ -282,14 +322,9 @@ def prise_en_charge_print_detail(request, pk):
         bottomMargin=50
     )
 
-    doc.build(
-        elements,
-        onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)),
-        onLaterPages=lambda c, d: pied_de_page(c, d)
-    )
-
-    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="prise_en_charge_{pk}.pdf"'
+    doc.build(elements, canvasmaker=CustomCanvas)
+    buffer.seek(0)
+    response.write(buffer.read())
     return response
 
 
@@ -298,6 +333,19 @@ def adherent_prises_en_charge_print_pdf(adherent):
     Retourne une liste de Flowables représentant les prises en charge
     pour un adhérent donné. Ne crée pas de page si aucune prise en charge.
     """
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        name='Title',
+        parent=styles['Title'],
+        fontName='Times-Bold',
+        fontSize=16
+    )
+    cell_style = ParagraphStyle(
+        name='Cell',
+        parent=styles['Normal'],
+        fontName='Times-Roman',
+        fontSize=12
+    )
     prises = PriseEnChargeAdherent.objects.filter(adherent=adherent).order_by('-date_creation')
     elements = []
 
@@ -309,14 +357,23 @@ def adherent_prises_en_charge_print_pdf(adherent):
         elements.append(Spacer(1, 20))
 
         for prise in prises:
+            adherent = prise.adherent
             data = [
-                ['Objet', prise.objet or ''],
-                ['Description', prise.description or ''],
-                ['Date création', prise.date_creation.strftime('%d/%m/%Y %H:%M') if prise.date_creation else ''],
-                ['Nom médecin', prise.nom_complet_medecin or ''],
-                ['Fonction médecin', prise.fonction_medecin or ''],
-                ['Spécialité médecin', prise.specialite_medecin or ''],
+                [Paragraph("Nom complet", cell_style), Paragraph(f"{adherent.last_name} {adherent.first_name}", cell_style)],
+                [Paragraph("Date de naissance", cell_style), Paragraph(adherent.date_naissance.strftime('%d/%m/%Y') if adherent.date_naissance else '', cell_style)],
+                [Paragraph("Âge", cell_style), Paragraph(str(adherent.calculate_age(adherent.date_naissance)) if adherent.date_naissance else '', cell_style)],
+                [Paragraph("Sexe", cell_style), Paragraph(adherent.sexe or '', cell_style)],
+                [Paragraph("Téléphone", cell_style), Paragraph(adherent.telephone or '', cell_style)],
+                [Paragraph("Objet", cell_style), Paragraph(prise.objet, cell_style)],
+                [Paragraph("Description", cell_style), Paragraph(prise.description or '', cell_style)],
+                [Paragraph("Date de création", cell_style), Paragraph(prise.date_creation.strftime('%d/%m/%Y %H:%M'), cell_style)],
+                [Paragraph("Nom médecin", cell_style), Paragraph(prise.nom_complet_medecin or '', cell_style)],
+                [Paragraph("Fonction médecin", cell_style), Paragraph(prise.fonction_medecin or '', cell_style)],
+                [Paragraph("Spécialité médecin", cell_style), Paragraph(prise.specialite_medecin or '', cell_style)],
+                [Paragraph("Opération enregistrée", cell_style), Paragraph(str(prise.operation_enregistrer), cell_style)],
+                [Paragraph("Opération médecin", cell_style), Paragraph(str(prise.operation_medecin) if prise.operation_medecin else '', cell_style)],
             ]
+
             table = Table(data, colWidths=[150, 300])
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
@@ -324,7 +381,7 @@ def adherent_prises_en_charge_print_pdf(adherent):
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ]))
             elements.append(table)
-            elements.append(Spacer(1, 20))
+            elements.append(Spacer(1, 40))
 
     # Toujours retourner une liste, même vide, pour compatibilité avec la fusion PDF
     return elements

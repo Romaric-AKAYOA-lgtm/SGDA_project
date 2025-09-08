@@ -9,6 +9,7 @@ from Gestion_personnel.operation.vew_print1 import generer_pied_structure_pdf
 from referentiel.structure.vew_impression import generer_entete_structure_pdf
 from .models import Cotisation
 from .forms import CotisationForm
+from reportlab.pdfgen import canvas as rcanvas
 from datetime import datetime, timedelta
 from io import BytesIO
 from django.http import HttpResponse
@@ -235,14 +236,25 @@ def cotisation_print_list(request):
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                if i == 0 and structure:
+
+                # Ajouter en-tête sur la première page
+                if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
     response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="liste_cotisations.pdf"'
     doc = SimpleDocTemplate(
@@ -266,81 +278,115 @@ def cotisation_print_detail(request, pk):
 
     # Vérifier si pk correspond à une cotisation
     cotisation = Cotisation.objects.filter(pk=pk).first()
-
     if cotisation:
         # === CAS 1 : Une seule cotisation ===
         cotisations = [cotisation]
     else:
         # === CAS 2 : pk correspond à un adherent_id ===
         cotisations = Cotisation.objects.filter(adherent_id=pk)
-
         if not cotisations.exists():
             return HttpResponse("Aucune cotisation trouvée pour cet adhérent ou cette cotisation.", status=404)
 
-    # === Génération du PDF ===
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="cotisation_{pk}.pdf"'
-
-    doc = SimpleDocTemplate(response, pagesize=A4, topMargin=180, leftMargin=50, rightMargin=50, bottomMargin=80)
-    elements = []
+    # Création d'un buffer mémoire pour générer le PDF
+    final_buffer = BytesIO()
 
     # Styles
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=18, leading=22)
-    cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=12, leading=14)
+    title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=18, alignment=1, spaceAfter=15)
+    header_style = ParagraphStyle('Header', fontName='Times-Bold', fontSize=11, alignment=1)
+    cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=10, alignment=1)
 
-    # Titre
+    # Contenu du PDF
+    elements = []
     elements.append(Spacer(1, 120))
-    elements.append(Paragraph("Détails des Cotisations", title_style))
+    elements.append(Paragraph("<u>Détails des Cotisations</u>", title_style))
     elements.append(Spacer(1, 20))
 
-    # Préparer les données du tableau
-    data = [[Paragraph("Adhérent", title_style),
-             Paragraph("Montant", title_style),
-             Paragraph("Date de cotisation", title_style),
-             Paragraph("Mode de paiement", title_style),
-           ]]
+    # En-têtes du tableau
+    data = [[
+        Paragraph("Adhérent", header_style),
+        Paragraph("Montant", header_style),
+        Paragraph("Date de cotisation", header_style),
+        Paragraph("Statut", header_style),
+    ]]
 
-    # Remplir le tableau avec les cotisations trouvées
+    # Remplir le tableau avec les cotisations
     for c in cotisations:
         data.append([
             Paragraph(f"{c.adherent.last_name} {c.adherent.first_name}", cell_style),
-            Paragraph(str(c.montant)+" FCFA" if c.montant else "", cell_style),
+            Paragraph(f"{c.montant} FCFA" if c.montant else "", cell_style),
             Paragraph(c.date_cotisation.strftime('%d/%m/%Y') if c.date_cotisation else "", cell_style),
             Paragraph(c.statut or "", cell_style),
         ])
 
     # Créer le tableau
-    # Largeur totale A4 ≈ 595, marges gauche/droite 50 => largeur utile ≈ 495
-    # Largeur utile pour A4 = 595 - (marges gauche+droite)
-    # Créer le tableau
-    table = Table(
-        data,
-        colWidths=[180, 120, 120, 120],  # 4 colonnes correspondant aux champs
-        splitByRow=1
-    )
+    table = Table(data, colWidths=[180, 120, 120, 120], repeatRows=1)
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centrer le contenu dans les colonnes
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 11),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
     ]))
-
 
     elements.append(table)
 
-    # Entête & pied de page
-    def en_tete_page(pdf_canvas, doc):
-        if structure:
-            generer_entete_structure_pdf(pdf_canvas, structure)
+    # Ajouter le nombre total
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph(f"Nombre total de cotisations : {len(cotisations)}", cell_style))
+    elements.append(Spacer(1, 10))
 
-    def pied_de_page(pdf_canvas, doc):
-        generer_pied_structure_pdf(pdf_canvas)
+    # === Classe personnalisée pour en-tête, pied de page et pagination ===
+    class CustomCanvas(rcanvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved_page_states = []
 
-    # Construire le PDF
-    doc.build(elements, onFirstPage=lambda c, d: (en_tete_page(c, d), pied_de_page(c, d)))
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
 
+        def save(self):
+            total_pages = len(self._saved_page_states)
+            for i, state in enumerate(self._saved_page_states):
+                self.__dict__.update(state)
+
+                # En-tête uniquement sur la première page
+                if i == 0:
+                    generer_entete_structure_pdf(self, structure)
+
+                # Pied de page sur la dernière page
+                if i == total_pages - 1:
+                    generer_pied_structure_pdf(self)
+
+                # Numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)
+
+                super().showPage()
+            super().save()
+
+    # Création du document PDF
+    doc = SimpleDocTemplate(
+        final_buffer,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
+    doc.build(elements, canvasmaker=CustomCanvas)
+
+    # Réponse HTTP
+    response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="cotisation_{pk}.pdf"'
     return response
+
 
 
 def is_cotisation_valide(cotisation):

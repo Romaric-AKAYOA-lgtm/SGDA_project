@@ -224,7 +224,6 @@ def generer_paragraphe_operation(id_operation, type_doc=None):
     return texte
 
 def _build_operations_pdf(operations, titre_pdf, request):
-    MAX_ROWS_PER_PAGE = 15  # ajustable
     structure = Structure.objects.first()
     if not structure:
         return HttpResponse("Structure introuvable", status=404)
@@ -241,6 +240,7 @@ def _build_operations_pdf(operations, titre_pdf, request):
     cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=9)
 
     headers = ["N° Fiche", "Type", "Employé", "Fonction", "Début", "Fin", "Statut"]
+    count = operations.count()
 
     # Construire les lignes du tableau
     all_rows = []
@@ -255,29 +255,29 @@ def _build_operations_pdf(operations, titre_pdf, request):
             Paragraph(op.get_statut_display(), cell_style),
         ])
 
-    # Découper en pages
-    for i, start in enumerate(range(0, len(all_rows), MAX_ROWS_PER_PAGE)):
-        chunk = all_rows[start:start + MAX_ROWS_PER_PAGE]
-        data = [[Paragraph(h, header_style) for h in headers]] + chunk
-        table = Table(data, colWidths=[50, 60, 100, 100, 60, 60, 60], repeatRows=1)
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-            ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 10),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
-        ]))
-        if i == 0:
-            elements.append(Spacer(1, 80))
-            elements.append(Paragraph(f"<u>{titre_pdf}</u>", title_style))
-            elements.append(Spacer(1, 20))
-        elements.append(table)
-        if start + MAX_ROWS_PER_PAGE < len(all_rows):
-            elements.append(PageBreak())
+    # Construire le tableau complet
+    data = [[Paragraph(h, header_style) for h in headers]] + all_rows
+    table = Table(data, colWidths=[50, 60, 100, 100, 60, 60, 60], repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+    ]))
+
+    # Ajouter le titre, le tableau et le total
+    elements.append(Spacer(1, 230))
+    elements.append(Paragraph(f"<u>{titre_pdf}</u>", title_style))
+    elements.append(Spacer(1, 20))
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph(f"Nombre total d'opérations : {count}", cell_style))
+    elements.append(Spacer(1, 10))
 
     # Création PDF
     final_buffer = BytesIO()
@@ -295,20 +295,40 @@ def _build_operations_pdf(operations, titre_pdf, request):
             total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
+
+                # Ajouter en-tête sur la première page
                 if i == 0:
                     generer_entete_structure_pdf(self, structure)
+
+                # Ajouter pied sur la dernière page
                 if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
                 super().showPage()
             super().save()
 
-
-    doc = SimpleDocTemplate(final_buffer, pagesize=A4, topMargin=180, leftMargin=50, rightMargin=50, bottomMargin=80)
+    # Création du document
+    doc = SimpleDocTemplate(
+        final_buffer,
+        pagesize=A4,
+        topMargin=50,
+        leftMargin=50,
+        rightMargin=50,
+        bottomMargin=50,
+    )
     doc.build(elements, canvasmaker=CustomCanvas)
 
+    # Réponse HTTP
     response = HttpResponse(final_buffer.getvalue(), content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{titre_pdf}.pdf"'
     return response
+
+
 
 
 # Vues pour urls.py

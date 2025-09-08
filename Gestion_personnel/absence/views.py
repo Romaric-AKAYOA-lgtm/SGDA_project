@@ -27,7 +27,7 @@ from xhtml2pdf import pisa
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import simpleSplit
-
+from reportlab.pdfgen import canvas as rcanvas
 from .models import Operation, Absence
 from .forms import AbsenceForm
 from referentiel.structure.models import Structure
@@ -329,11 +329,6 @@ def  generer_paragraphe_calendrier_conge():
       return generer_paragraphe_absence_operation( type_doc='calendrier')
 
 def generer_pdf_template(request, id_absence, paragraphe_func, nom_fichier, titre_document):
-    from reportlab.lib.pagesizes import A4
-    from reportlab.lib.utils import simpleSplit
-    from django.http import HttpResponse
-    from django.shortcuts import get_object_or_404
-
     width, height = A4
     marge_gauche = 50
     marge_droite = 50
@@ -491,7 +486,8 @@ def generer_pdf_template_tableau(request, lignes_func, nom_fichier, titre_docume
     annee = datetime.now().year
 
     # --- Canvas personnalisé pour en-tête et pied ---
-    class CustomCanvas(canvas.Canvas):
+
+    class CustomCanvas(rcanvas.Canvas):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self._saved_page_states = []
@@ -501,16 +497,25 @@ def generer_pdf_template_tableau(request, lignes_func, nom_fichier, titre_docume
             self._startPage()
 
         def save(self):
+            total_pages = len(self._saved_page_states)
             for i, state in enumerate(self._saved_page_states):
                 self.__dict__.update(state)
-                # En-tête uniquement sur la première page
+
+                # Ajouter en-tête sur la première page
                 if i == 0:
                     generer_entete_structure_pdf(self, structure)
-                # Pied de page uniquement sur la dernière page
-                if i == len(self._saved_page_states) - 1:
+
+                # Ajouter pied sur la dernière page
+                if i == total_pages - 1:
                     generer_pied_structure_pdf(self)
-                canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
+
+                # Ajouter numéro de page en bas à droite
+                page_num_text = f"Page {i + 1} / {total_pages}"
+                self.setFont("Times-Roman", 9)
+                self.drawRightString(550, 20, page_num_text)  # Position bas à droite
+
+                super().showPage()
+            super().save()
 
     # --- Définir le cadre de contenu principal ---
     frame = Frame(

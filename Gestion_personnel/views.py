@@ -21,7 +21,7 @@ def statistic_personnel_view(request):
     # ---------------------------
     employes = Employe.objects.filter(
         date_creation__year=current_year,
-        date_creation__month=current_month
+        #date_creation__month=current_month
     ).order_by('-date_creation')
     employes=employes.order_by('-date_creation')
     employes_actifs = employes.filter(statut="actif")
@@ -47,7 +47,7 @@ def statistic_personnel_view(request):
     # ---------------------------
     operations = Operation.objects.filter(
         date_debut__year=current_year,
-        date_debut__month=current_month
+       # date_debut__month=current_month
     ).order_by('-date_debut')
     operations_recentes = operations.order_by('-date_creation')[:5]
 
@@ -72,7 +72,7 @@ def statistic_personnel_view(request):
     # ---------------------------
     absences = Absence.objects.filter(
         date_creation__year=current_year,
-        date_creation__month=current_month
+       # date_creation__month=current_month
     ).order_by('-date_creation')
     absences_recentes = absences.order_by('-date_creation')[:5]
 

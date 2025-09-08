@@ -58,54 +58,74 @@
             <i class="fas fa-home me-1"></i> Accueil
             </a>
         </li>
-                <!-- GESTION DES TUTEURS -->
-                <li class="nav-item">
+        <!-- GESTION DES TUTEURS, ADHÉRENTS ET SUIVI TUTEURS -->
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="collapse" href="#gestionTuteursAdherentsSubmenu" role="button"
+            aria-expanded="
+              {% if request.resolver_match.namespace in 'tuteur adherent suivi_tuteur' %}true{% else %}false{% endif %}"
+            aria-controls="gestionTuteursAdherentsSubmenu">
+            <i class="fas fa-flag me-1"></i> Inscription Adhérent <i class="fas fa-caret-down ms-1"></i>
+          </a>
+
+          <div class="collapse {% if request.resolver_match.namespace in 'tuteur adherent suivi_tuteur' %}show{% endif %}"
+            id="gestionTuteursAdherentsSubmenu">
+            <ul class="nav flex-column ms-3">
+
+              <!-- SOUS-MENU TUTEURS -->
+              <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#tuteurSubmenu" role="button"
-                    aria-expanded="{% if request.resolver_match.namespace == 'tuteur' %}true{% else %}false{% endif %}"
-                    aria-controls="tuteurSubmenu">
-                    <i class="fas fa-user-tie me-1"></i> Tuteurs <i class="fas fa-caret-down ms-1"></i>
+                  aria-expanded="{% if request.resolver_match.namespace == 'tuteur' %}true{% else %}false{% endif %}"
+                  aria-controls="tuteurSubmenu">
+                  <i class="fas fa-user-tie me-1"></i> Tuteurs <i class="fas fa-caret-down ms-1"></i>
                 </a>
                 <div class="collapse {% if request.resolver_match.namespace == 'tuteur' %}show{% endif %}" id="tuteurSubmenu">
-                    <ul class="nav flex-column ms-3">
+                  <ul class="nav flex-column ms-3">
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'tuteur_list' %}active{% endif %}" href="{% url 'tuteur:tuteur_list' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'tuteur_create' %}active{% endif %}" href="{% url 'tuteur:tuteur_create' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'tuteur_search' %}active{% endif %}" href="{% url 'tuteur:tuteur_search' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'tuteur_print_list' %}active{% endif %}" href="{% url 'tuteur:tuteur_print_list' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
-                    </ul>
+                  </ul>
                 </div>
-                </li>
-                <!-- GESTION DES ADHÉRENTS -->
-                <li class="nav-item">
+              </li>
+
+              <!-- SOUS-MENU ADHÉRENTS -->
+              <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#adherentSubmenu" role="button"
-                    aria-expanded="{% if request.resolver_match.namespace == 'adherent' %}true{% else %}false{% endif %}"
-                    aria-controls="adherentSubmenu">
-                    <i class="fas fa-id-card me-1"></i> Adhérents <i class="fas fa-caret-down ms-1"></i>
+                  aria-expanded="{% if request.resolver_match.namespace == 'adherent' %}true{% else %}false{% endif %}"
+                  aria-controls="adherentSubmenu">
+                  <i class="fas fa-id-card me-1"></i> Adhérents <i class="fas fa-caret-down ms-1"></i>
                 </a>
                 <div class="collapse {% if request.resolver_match.namespace == 'adherent' %}show{% endif %}" id="adherentSubmenu">
-                    <ul class="nav flex-column ms-3">
+                  <ul class="nav flex-column ms-3">
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_list' %}active{% endif %}" href="{% url 'adherent:adherent_list' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_create' %}active{% endif %}" href="{% url 'adherent:adherent_create' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_search' %}active{% endif %}" href="{% url 'adherent:adherent_search' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_print_list' %}active{% endif %}" href="{% url 'adherent:adherent_print_list' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
-                    </ul>
+                  </ul>
                 </div>
-                </li>
-                <!-- SUIVI TUTEURS -->
-                <li class="nav-item">
+              </li>
+
+              <!-- SOUS-MENU SUIVI TUTEURS -->
+              <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#suiviTuteurSubmenu" role="button"
-                    aria-expanded="{% if request.resolver_match.namespace == 'suivi_tuteur' %}true{% else %}false{% endif %}"
-                    aria-controls="suiviTuteurSubmenu">
-                    <i class="fas fa-tasks me-1"></i> Suivi Tuteurs <i class="fas fa-caret-down ms-1"></i>
+                  aria-expanded="{% if request.resolver_match.namespace == 'suivi_tuteur' %}true{% else %}false{% endif %}"
+                  aria-controls="suiviTuteurSubmenu">
+                  <i class="fas fa-tasks me-1"></i> Suivi Tuteurs <i class="fas fa-caret-down ms-1"></i>
                 </a>
                 <div class="collapse {% if request.resolver_match.namespace == 'suivi_tuteur' %}show{% endif %}" id="suiviTuteurSubmenu">
-                    <ul class="nav flex-column ms-3">
+                  <ul class="nav flex-column ms-3">
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'suivi_list' %}active{% endif %}" href="{% url 'suivi_tuteur:suivi_list' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'suivi_create' %}active{% endif %}" href="{% url 'suivi_tuteur:suivi_create' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'suivi_search' %}active{% endif %}" href="{% url 'suivi_tuteur:suivi_search' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
                     <li><a class="nav-link {% if request.resolver_match.url_name == 'suivi_print_list' %}active{% endif %}" href="{% url 'suivi_tuteur:suivi_print_list' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
-                    </ul>
+                  </ul>
                 </div>
-                </li>
+              </li>
+
+            </ul>
+          </div>
+        </li>
+
 
                 <!-- GESTION DES COTISATIONS -->
                 <li class="nav-item">
@@ -168,7 +188,20 @@
         </a>
       </li>
 
-      <!-- GESTION DES TUTEURS -->
+<!-- GESTION DES TUTEURS, ADHÉRENTS ET SUIVI TUTEURS -->
+<li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#gestionTuteursAdherentsSubmenu" role="button"
+    aria-expanded="
+      {% if request.resolver_match.namespace in 'tuteur adherent suivi_tuteur' %}true{% else %}false{% endif %}"
+    aria-controls="gestionTuteursAdherentsSubmenu">
+    <i class="fas fa-flag me-1"></i> Inscription Adhérent <i class="fas fa-caret-down ms-1"></i>
+  </a>
+
+  <div class="collapse {% if request.resolver_match.namespace in 'tuteur adherent suivi_tuteur' %}show{% endif %}"
+    id="gestionTuteursAdherentsSubmenu">
+    <ul class="nav flex-column ms-3">
+
+      <!-- SOUS-MENU TUTEURS -->
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#tuteurSubmenu" role="button"
           aria-expanded="{% if request.resolver_match.namespace == 'tuteur' %}true{% else %}false{% endif %}"
@@ -184,23 +217,25 @@
           </ul>
         </div>
       </li>
-                <!-- GESTION DES ADHÉRENTS -->
-                <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#adherentSubmenu" role="button"
-                    aria-expanded="{% if request.resolver_match.namespace == 'adherent' %}true{% else %}false{% endif %}"
-                    aria-controls="adherentSubmenu">
-                    <i class="fas fa-id-card me-1"></i> Adhérents <i class="fas fa-caret-down ms-1"></i>
-                </a>
-                <div class="collapse {% if request.resolver_match.namespace == 'adherent' %}show{% endif %}" id="adherentSubmenu">
-                    <ul class="nav flex-column ms-3">
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_list' %}active{% endif %}" href="{% url 'adherent:adherent_list' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_create' %}active{% endif %}" href="{% url 'adherent:adherent_create' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_search' %}active{% endif %}" href="{% url 'adherent:adherent_search' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
-                    <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_print_list' %}active{% endif %}" href="{% url 'adherent:adherent_print_list' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
-                    </ul>
-                </div>
-                </li>
-      <!-- SUIVI TUTEURS -->
+
+      <!-- SOUS-MENU ADHÉRENTS -->
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#adherentSubmenu" role="button"
+          aria-expanded="{% if request.resolver_match.namespace == 'adherent' %}true{% else %}false{% endif %}"
+          aria-controls="adherentSubmenu">
+          <i class="fas fa-id-card me-1"></i> Adhérents <i class="fas fa-caret-down ms-1"></i>
+        </a>
+        <div class="collapse {% if request.resolver_match.namespace == 'adherent' %}show{% endif %}" id="adherentSubmenu">
+          <ul class="nav flex-column ms-3">
+            <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_list' %}active{% endif %}" href="{% url 'adherent:adherent_list' %}"><i class="fas fa-list me-1"></i> Liste</a></li>
+            <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_create' %}active{% endif %}" href="{% url 'adherent:adherent_create' %}"><i class="fas fa-plus me-1"></i> Ajouter</a></li>
+            <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_search' %}active{% endif %}" href="{% url 'adherent:adherent_search' %}"><i class="fas fa-search me-1"></i> Rechercher</a></li>
+            <li><a class="nav-link {% if request.resolver_match.url_name == 'adherent_print_list' %}active{% endif %}" href="{% url 'adherent:adherent_print_list' %}"><i class="fas fa-print me-1"></i> Imprimer</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- SOUS-MENU SUIVI TUTEURS -->
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#suiviTuteurSubmenu" role="button"
           aria-expanded="{% if request.resolver_match.namespace == 'suivi_tuteur' %}true{% else %}false{% endif %}"
@@ -216,6 +251,11 @@
           </ul>
         </div>
       </li>
+
+    </ul>
+  </div>
+</li>
+
 
       <!-- GESTION DES COTISATIONS -->
       <li class="nav-item">

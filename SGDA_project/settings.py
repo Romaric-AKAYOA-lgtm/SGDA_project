@@ -23,7 +23,9 @@ SECRET_KEY = 'django-insecure-0&1jdxl9m+2^9s#e5gq03vv*z1+^%^cru(o6haejoe__t8stun
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Mode debug pour le développement
-DEBUG = True
+#DEBUG = False
+DEBUG = False
+#DEBUG = True
 # Ne transmettre les cookies de session que via HTTPS
 SESSION_COOKIE_SECURE = False  
 
@@ -37,6 +39,12 @@ ALLOWED_HOSTS = [
     'romaric.com',  # domaine principal
     'www.romaric.com'  # sous-domaine
 ]
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+# Sert les fichiers statiques même avec DEBUG=False
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# Utilisateur personnalisé
 AUTH_USER_MODEL = 'personne.Personne'
 # Application definition
 
@@ -79,7 +87,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',  # Une seule fois, doit être avant AuthenticationMiddleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',  # Toujours après SessionMiddleware
-    
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- ajouter ici
+   
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # DOIT venir après SessionMiddleware
     'compte.middleware.LoginRequiredMiddleware',  # Middleware perso pour exiger login
     # Middleware sauvegarde

@@ -10,7 +10,7 @@ ON SGDA_project_db.* TO 'admin1'@'localhost';
 -- 3️⃣ Appliquer les changements
 FLUSH PRIVILEGES;
 
-
+python manage.py collectstatic
 
 
 
@@ -47,3 +47,50 @@ python manage.py test Gestion_adherent.Inscription_adherent.adherent
 python manage.py test Gestion_adherent.Inscription_adherent.suiviTuteurAdherent
 python manage.py test Gestion_adherent.Prise_en_charge_adherent
 python manage.py test Gestion_adherent.Cotisation_adherent
+
+
+DELIMITER $$
+
+CREATE PROCEDURE repair_and_optimize_all2()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE tname VARCHAR(255);
+
+    -- Déclarer un curseur pour parcourir toutes les tables de la base
+    DECLARE cur CURSOR FOR
+        SELECT TABLE_NAME
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_SCHEMA = 'SGDA_project_db';
+
+    -- Gérer la fin du curseur
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur;
+
+    -- Boucle sur toutes les tables
+    read_loop: LOOP
+        FETCH cur INTO tname;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Exécuter REPAIR TABLE
+        SET @sql_repair = CONCAT('REPAIR TABLE `', tname, '`');
+        PREPARE stmt FROM @sql_repair;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+
+        -- Exécuter OPTIMIZE TABLE
+        SET @sql_optimize = CONCAT('OPTIMIZE TABLE `', tname, '`');
+        PREPARE stmt FROM @sql_optimize;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+
+    END LOOP;
+
+    CLOSE cur;
+END$$
+
+DELIMITER ;
+CALL repair_and_optimize_all2();
+

@@ -1,0 +1,103 @@
+{% extends "Gestion_adherent/templates_Gestion_adherent.html" %}
+{% load static %}
+
+{% block titre %}
+  Upload de fichiers
+{% endblock %}
+
+{% block contenue %}
+<div class="modal fade show d-block" id="uploadModal" tabindex="-1" aria-modal="true" role="dialog" style="background: rgba(0,0,0,0.3);">
+  <div class="modal-dialog modal-lg" style="max-width: 600px;">
+    <div class="modal-content border-0 shadow-sm">
+
+      <!-- En-tête -->
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title">
+          <i class="fas fa-upload text-primary me-2"></i> Upload de fichiers
+        </h5>
+   </div>
+
+      <!-- Titre centré -->
+      <div class="text-center mt-3 mb-3 text-primary">
+        <i class="fas fa-file-upload fa-4x mb-3"></i>
+        <h1>
+          <small>---------</small> <strong>Glisser-déposer</strong> <small>---------</small>
+        </h1>
+      </div>
+
+      <!-- Contenu drag & drop -->
+      <div class="modal-body bg-white text-center">
+
+        <div id="drop-zone" data-url="{% url 'Gestion_adherent:upload' %}" 
+             style="border: 2px dashed #007bff; padding: 30px; cursor: pointer;">
+            <p>Glissez-déposez votre fichier ici ou cliquez pour sélectionner</p>
+            <input type="file" id="file-input" style="display: none;">
+        </div>
+
+        <div id="file-info" style="margin-top: 15px;"></div>
+        <div id="extracted-data" style="margin-top: 15px; white-space: pre-wrap;"></div>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Ouvrir la modale automatiquement
+document.addEventListener("DOMContentLoaded", () => {
+    // Drag & Drop JS
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file-input");
+    const fileInfo = document.getElementById("file-info");
+    const extractedData = document.getElementById("extracted-data");
+    const url = dropZone.dataset.url;
+
+    dropZone.addEventListener("click", () => fileInput.click());
+    dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.style.backgroundColor = "#e9f5ff"; });
+    dropZone.addEventListener("dragleave", () => { dropZone.style.backgroundColor = "white"; });
+
+    dropZone.addEventListener("drop", (e) => {
+        e.preventDefault(); dropZone.style.backgroundColor = "white";
+        handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener("change", (e) => handleFile(e.target.files[0]));
+
+    function handleFile(file) {
+        fileInfo.innerHTML = `<b>Nom :</b> ${file.name} <br><b>Taille :</b> ${(file.size/1024).toFixed(2)} Ko<br><b>Type :</b> ${file.type}`;
+        extractedData.innerHTML = "Extraction en cours...";
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch(url, {
+            method: "POST",
+            body: formData,
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .then(r => r.json())
+        .then(data => { extractedData.innerHTML = `<pre>${data.extracted}</pre>`; })
+        .catch(err => { extractedData.innerHTML = "Erreur lors de l'extraction"; console.error(err); });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+{% endblock %}

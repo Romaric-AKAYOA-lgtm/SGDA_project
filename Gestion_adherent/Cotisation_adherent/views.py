@@ -295,10 +295,16 @@ def cotisation_print_detail(request, pk):
     title_style = ParagraphStyle('Title', parent=styles['Title'], fontName='Times-Bold', fontSize=18, alignment=1, spaceAfter=15)
     header_style = ParagraphStyle('Header', fontName='Times-Bold', fontSize=11, alignment=1)
     cell_style = ParagraphStyle('Cell', fontName='Times-Roman', fontSize=10, alignment=1)
+    cell_style1 = ParagraphStyle(
+        'Cell',
+        fontName='Times-Roman',
+        fontSize=10,
+        alignment=0  # LEFT
+    )
 
     # Contenu du PDF
     elements = []
-    elements.append(Spacer(1, 120))
+    elements.append(Spacer(1, 250))
     elements.append(Paragraph("<u>Détails des Cotisations</u>", title_style))
     elements.append(Spacer(1, 20))
 
@@ -337,7 +343,7 @@ def cotisation_print_detail(request, pk):
 
     # Ajouter le nombre total
     elements.append(Spacer(1, 20))
-    elements.append(Paragraph(f"Nombre total de cotisations : {len(cotisations)}", cell_style))
+    elements.append(Paragraph(f"Nombre total de cotisations : {len(cotisations)}", cell_style1))
     elements.append(Spacer(1, 10))
 
     # === Classe personnalisée pour en-tête, pied de page et pagination ===
